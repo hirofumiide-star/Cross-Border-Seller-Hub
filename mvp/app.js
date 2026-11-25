@@ -83,7 +83,7 @@
 
   function activeRoute() {
     const value = location.hash.slice(1);
-    return ['overview', 'insights', 'shops', 'sources', 'store'].includes(value) ? value : 'overview';
+    return ['overview', 'insights', 'shops', 'sources', 'shopify', 'store'].includes(value) ? value : 'overview';
   }
 
   function toast(message) {
@@ -105,9 +105,9 @@
     return options(withAll ? [['all', 'すべての市場'], ...items] : items, selected);
   }
 
-  function page(crumb, title, note, body) {
+  function page(crumb, title, note, body, label = '架空データ') {
     return `<div class="content-wrap">
-      <div class="topbar"><span>Seller Hub / ${crumb}</span><div><span class="tag gray">架空データ</span><a class="button" href="#store">お茶の販売サンプル</a></div></div>
+      <div class="topbar"><span>Seller Hub / ${crumb}</span><div><span class="tag gray">${label}</span><a class="button" href="#store">お茶の販売サンプル</a></div></div>
       <header class="page-head"><div><h1>${title}</h1><p class="sub">${note}</p></div></header>
       ${body}
     </div>`;
@@ -350,6 +350,11 @@
       return;
     }
     document.title = 'Seller Hub | 日本茶の販売分析';
+    if (route === 'shopify') {
+      content.innerHTML = page('Shopify取込', 'Shopifyテスト注文', '開発ストア1店の注文を読み取り、商品別・入金状態別に確認。ページを再読み込みすると取り込み結果はクリアされます。', ShopifyTestImport.render(), '開発ストア');
+      ShopifyTestImport.bind(content, render);
+      return;
+    }
     if (route === 'shops') {
       content.innerHTML = shops();
       $('shop-search').value = shopSearch;
