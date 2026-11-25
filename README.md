@@ -1,12 +1,22 @@
 # Cross-Border Seller Hub
 
-**Shopify × OPENLOGI fulfillment and AI market intelligence for Japanese tea and regional food producers.**
+**日本の地域食品メーカー向けのサイト制作、台湾團購、販売データを使った商品改善。**
 
-Regional producers can start with a single overseas storefront and a repeatable fulfillment process. As participating sellers build transaction, shipping, and review history, the platform can turn that data into category benchmarks and product recommendations.
+日・繁体字のホームページ・商品ページ制作で初期売上をつくる。台湾では既存の團購主と現地の輸入・販売パートナーと組み、成立数量を満たした商品をまとめて仕入れる。注文別採算と繁体字の顧客の声を日本の生産者に返し、次回の発注や商品改良につなげる。
 
-The first lane is Japan → United States for shelf-stable, single-ingredient tea. Matcha, sencha, and hōjicha provide a starting point for measuring repeat purchase and testing bundles. Taiwan, Singapore, the United Kingdom, and regional foods follow lane- and SKU-specific review. Treat a 28-day replenishment cycle and USD 30–80 premium pricing as hypotheses to test with sellers.
+最初の事業実証は**日本茶 → 台湾**。制作は受託費、團購は開催運営料、販売改善は継続契約を検証する。
 
-## Try the prototype
+| ドキュメント | 内容 |
+| --- | --- |
+| [事業計画](docs/business-plan.md) | 対象顧客、3段階の収益、台湾團購の商流、採算、90日間の検証 |
+| [制作サービスと補助金](docs/website-service-and-subsidies.md) | 制作パッケージの見積もり、制度の対象条件、交付決定前後の進め方 |
+| [市場フィードバックのMVP](docs/market-feedback-mvp.md) | 繁体字VOC、併買、価格テスト、参照元計測、次回の施策と判定指標 |
+
+## D2C fulfillment sandbox
+
+The existing Shopify × OPENLOGI demo illustrates parcel-level order consolidation and a U.S. test scenario. The Taiwan business pilot uses campaign-level demand aggregation with a local importer and seller.
+
+### Try the prototype
 
 Open [prototype/index.html](prototype/index.html) in a browser. It runs using embedded sample data and has no build step. If you prefer a local server, run this at the repository root and visit `http://localhost:8000/prototype/`.
 
@@ -21,7 +31,7 @@ python3 -m http.server 8000
 
 The browser stores simulated dispatch and clock progress locally when storage is available. **Reset demo** restores the starting state. The prototype does not contact Shopify, OPENLOGI, customs, carriers, or an LLM. Its addresses, carrier estimates, tracking numbers, and merchant data are fictional.
 
-## Proposed architecture
+### Proposed sandbox architecture
 
 ```mermaid
 flowchart TD
@@ -39,23 +49,16 @@ flowchart TD
 - **Fulfillment** — Verify OPENLOGI warehouse eligibility for food, lot and expiry controls, FEFO (first-expired, first-out), tracking, and invoice/waybill workflows for each carrier and service.
 - **Analytics** — Compare anonymized category cohorts by market and period. Generate Japanese digests on co-purchases, multilingual review themes, and freight costs. Test pricing recommendations against seller margins.
 
-### Production integration rules
+#### Production integration rules
 
 - Verify Shopify HTTPS webhook signatures on the raw body, deduplicate by shop and event ID, persist events before processing, and reconcile order edits, cancellations, and fulfillment changes. Pin a supported Admin GraphQL version. Use a single writer for warehouse requests to avoid native connector and middleware double dispatch. [Shopify webhook verification](https://shopify.dev/docs/apps/build/webhooks/verify-deliveries)
 - Normalize structured addresses conservatively and match the customer ID, seller, complete address (including unit), fulfillment location, service, duty treatment, and currency. Keep orders with missing or ambiguous data separate pending review. Start a new group after 12 hours from the oldest order, rather than sliding the window. Revalidate paid state, stock, customs, and destination before dispatch.
 - Persist one immutable external reference per warehouse shipment and reconcile that reference after ambiguous responses. After dispatch, update the Shopify fulfillment orders and line quantities belonging to that parcel with the shared tracking number. Treat partial failures and retries per order.
 - Calculate declared value from validated line values after discounts, in the declared currency. Confirm chargeable weight, actual carrier fees, and the label's DDP/DAP setting before release. [Shopify customs and DDP guidance](https://help.shopify.com/en/manual/international/duties-and-import-taxes/additional-tasks)
 
-## Commercial hypotheses
+### Sandbox metrics
 
-| Offering | Buyer | Value | Indicative price |
-| --- | --- | --- | --- |
-| Initial integration | Tea farms and regional food makers | Shopify × OPENLOGI setup, customs setup and consolidation | ¥300,000–¥800,000 once |
-| Seller Benchmark SaaS | D2C brands and producers | Category comparisons, bundle recommendations and review insights | ¥30,000–¥80,000/month |
-| Regional trade intelligence | Municipalities, trading companies and banks | Aggregate demand, customs clearance and freight by market | ¥1,000,000–¥3,000,000/year |
-| Overseas B2B buyer matching | Specialty retailers and cafés | Discovery of Japanese brands for wholesale sourcing | 10–15% wholesale commission |
-
-Confirm willingness to pay and any subsidy eligibility per program. License aggregated insights subject to data-use terms. Define benchmarking and any model-training use separately with seller authorization, appropriate data handling, and review of applicable privacy obligations. Keep operational contact/address data out of the shared analytics pipeline. Suppress small and dominant-seller cohorts. The demo uses minimums of five sellers and 100 orders. In production, add a dominance threshold, prevent complementary slices from exposing suppressed data, and redact review PII before inference.
+The benchmark screen uses fictional cohorts. Any production use of cross-seller comparisons or AI training requires a review of permitted data sources and purposes. See the [market feedback specification](docs/market-feedback-mvp.md#データと判断).
 
 | Metric | Proposed definition |
 | --- | --- |
@@ -64,7 +67,7 @@ Confirm willingness to pay and any subsidy eligibility per program. License aggr
 | 60-day repeat rate | Share of first-time buyers ordering again within 60 days, using fully observed cohorts |
 | Freight-to-GMV | Outbound carrier freight divided by net merchandise sales, in a shared reporting currency |
 
-## Fast-track sandbox validation
+### Fast-track sandbox validation
 
 Use the [sandbox setup and read-only access check](docs/sandbox-setup.md) to confirm both test environments first.
 
