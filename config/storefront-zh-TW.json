@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "status": "prepared-not-applied",
+  "status": "applied-and-verified-seo-pending",
   "preparedDate": "2026-11-26",
   "store": "uji-tsukino-sabo-demo.myshopify.com",
   "apiVersion": "2026-10",
@@ -24,14 +24,19 @@
     "japaneseSourceContent": true
   },
   "localePlan": {
+    "status": "applied-and-verified",
+    "settingsMethod": "Shopify admin UI",
     "enableLocale": "zh-TW",
     "publishAfterContentVerification": true,
+    "localePublished": true,
     "shopPrimaryLocale": "ja",
     "changeShopPrimaryLocale": false,
     "preferredDisplayLocale": "zh-TW",
-    "displayMethod": "Publish zh-TW translations, then set the relevant domain web presence's defaultLocale to zh-TW if supported. Preserve Japanese as an alternate locale. Otherwise use the verified localized storefront URL.",
+    "domainDefaultLocale": "zh-TW",
+    "displayMethod": "Published zh-TW and set the domain default to zh-TW through the Shopify admin UI. Japanese source content and the shop primary locale ja are retained.",
     "webPresenceId": null,
-    "localizedUrl": null,
+    "localizedUrl": "https://uji-tsukino-sabo-demo.myshopify.com/",
+    "japaneseUrl": "https://uji-tsukino-sabo-demo.myshopify.com/ja",
     "note": "Changing the shop's primary language is a different operation. Shopify states that switching the shop default language deletes translations for the newly selected language without replacing source content. Do not perform that switch after registering these translations."
   },
   "products": [
@@ -56,6 +61,8 @@
         "source": null,
         "sourceStatus": "not-observed",
         "translated": "宇治 月野茶房的宇治煎茶，清新茶香與爽口甘甜，適合每日用茶壺沖泡。淨重 80g。此為示範商品，售價以日圓（JPY）標示。",
+        "status": "prepared-not-applied",
+        "applied": false,
         "applyRule": "Read the current translatableContent entry and digest before applying. If meta_description is not exposed, leave this as prepared SEO copy and report it as unapplied."
       }
     },
@@ -80,6 +87,8 @@
         "source": null,
         "sourceStatus": "not-observed",
         "translated": "宇治 月野茶房的宇治抹茶，質地細緻，適合茶道沖泡或製作抹茶拿鐵。淨重 30g。此為示範商品，售價以日圓（JPY）標示。",
+        "status": "prepared-not-applied",
+        "applied": false,
         "applyRule": "Read the current translatableContent entry and digest before applying. If meta_description is not exposed, leave this as prepared SEO copy and report it as unapplied."
       }
     },
@@ -104,6 +113,8 @@
         "source": null,
         "sourceStatus": "not-observed",
         "translated": "宇治 月野茶房的宇治焙茶，帶有茶葉烘焙的香氣與清爽餘韻，餐後也適合享用。淨重 60g。此為示範商品，售價以日圓（JPY）標示。",
+        "status": "prepared-not-applied",
+        "applied": false,
         "applyRule": "Read the current translatableContent entry and digest before applying. If meta_description is not exposed, leave this as prepared SEO copy and report it as unapplied."
       }
     },
@@ -128,6 +139,8 @@
         "source": null,
         "sourceStatus": "not-observed",
         "translated": "宇治 月野茶房的三款品飲組，內含煎茶、抹茶與焙茶的小份量組合，一次比較不同茶香與風味。此為示範商品，售價以日圓（JPY）標示。",
+        "status": "prepared-not-applied",
+        "applied": false,
         "applyRule": "Read the current translatableContent entry and digest before applying. If meta_description is not exposed, leave this as prepared SEO copy and report it as unapplied."
       }
     }
@@ -150,7 +163,7 @@
         "location": "home page slideshow heading",
         "translationKey": null,
         "source": "毎日を彩る、宇治のお茶。",
-        "translated": "用宇治茶香，點綴每一天。"
+        "translated": "宇治茶香，點綴日常。"
       },
       {
         "label": "heroDescription",
@@ -231,9 +244,49 @@
     "Do not translate product handles, SKU codes, prices or currency. Do not change shipping destinations or activate Taiwan shipping as part of this language update.",
     "Do not guess missing menu-link IDs, theme keys, web-presence IDs, meta-description source text or per-item quantities for the tasting set.",
     "Publish the locale after registering and reading back translations; verify the resulting localized storefront, product pages, cart and checkout.",
-    "Keep applied status false until API or browser evidence confirms actual changes."
+    "Record applied status only for fields supported by API or browser evidence. The verified storefront changes do not include the prepared dedicated SEO descriptions."
   ],
-  "applied": false,
+  "applied": true,
+  "applicationRecord": {
+    "verifiedDate": "2026-11-26",
+    "timeZone": "Asia/Tokyo",
+    "translationMethod": "Shopify Translate & Adapt",
+    "verificationMethod": "Shopify admin and live storefront browser checks",
+    "appliedScope": {
+      "products": "All four product titles, body descriptions and product types were saved.",
+      "navigation": "All three main-menu link titles were saved.",
+      "collectionTitle": "精選茶品",
+      "contactPageTitle": "聯絡我們",
+      "theme": "Hero heading, subheading, CTA, featured collection description and announcement were saved.",
+      "heroHeading": "宇治茶香，點綴日常。",
+      "slideshowAccessibilityText": "宇治月野茶房品牌介紹"
+    },
+    "verifiedViews": [
+      "Traditional Chinese storefront at the root URL",
+      "All four product titles",
+      "Traditional Chinese sencha product detail",
+      "Cart",
+      "Checkout, without entering or submitting an order",
+      "Contact form",
+      "Shopify automatic privacy policy",
+      "Switching between Japanese and Traditional Chinese"
+    ],
+    "dedicatedSeoFields": {
+      "status": "prepared-not-applied",
+      "applied": false,
+      "fields": "products[*].metaDescription"
+    },
+    "manualLocaleSettings": {
+      "status": "applied-and-verified",
+      "publishedLocale": "zh-TW",
+      "domainDefaultLocale": "zh-TW",
+      "shopPrimaryLocale": "ja"
+    },
+    "storefrontPasswordProtection": "retained",
+    "currency": "JPY",
+    "shippingDestinations": "Japan domestic only",
+    "apiTranslationWritePerformed": false
+  },
   "officialReferences": [
     "https://shopify.dev/docs/apps/build/markets/manage-translated-content",
     "https://shopify.dev/docs/api/admin-graphql/2026-10/queries/availableLocales",

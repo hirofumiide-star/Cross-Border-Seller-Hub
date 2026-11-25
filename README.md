@@ -28,17 +28,17 @@
 
 **Shopify取込**では、別途用意したShopify開発ストア1店のテスト注文を、[手順](docs/shopify-test-import.md)に沿って読み取り専用で取り込める。「架空サンプルを読み込む」で画面だけ試すこともできる。
 
-## Shopify実ストアと物流連携の検証
+## Shopify storefront and fulfillment verification
 
-[宇治 月野茶房のShopify開発ストア](https://uji-tsukino-sabo-demo.myshopify.com/)を作成し、日本茶4商品とテスト決済を設定しました。2026年11月26日にテスト注文 #1001 の完了を確認しています。開発ストアの閲覧はパスワードまたは管理画面からのプレビューを使用します。
+[The 宇治 月野茶房 Shopify dev store](https://uji-tsukino-sabo-demo.myshopify.com/) contains four Japanese tea products and a test checkout. Test order #1001 was completed on November 26, 2026 (JST). Traditional Chinese (`zh-TW`) is now the domain's default display language, with [Japanese available at `/ja`](https://uji-tsukino-sabo-demo.myshopify.com/ja). Product copy, the homepage, navigation and contact page have been translated. The cart, checkout, privacy policy and language switch were verified in the live storefront. The dev store remains password protected; the store owner can also use the admin preview.
 
-MVPの **物流連携** では、CLIが生成したテスト注文・出荷依頼の結果JSONを確認できます。架空サンプルとOPENLOGIデモAPIの実行結果を区別し、購入者への請求送料と実績配送費を分けて表示します。
+The MVP's **物流連携** view imports the CLI's redacted test-order and shipment-request reports. It distinguishes fixture data from OPENLOGI demo API results and separates customer-paid shipping from actual freight costs.
 
 ```sh
 node scripts/run-fulfillment-demo.mjs --mode fixture --output .runtime/fulfillment-report.json
 ```
 
-外部接続なしのサンプルから、Shopify開発ストアの注文読み取り、OPENLOGIデモ環境への保留出荷依頼、依頼番号による再取得までを検証するコードがあります。認証情報を使った実API接続・デモ倉庫の出荷進行・Shopifyへの発送済み反映は未完了です。詳細は[物流連携の実行手順と到達点](docs/fulfillment-demo.md)を参照してください。
+The code supports an offline fixture, Shopify dev-store order reads, suspended OPENLOGI demo shipment requests and reconciliation by request identifier. All 27 local tests pass. On November 26, 2026 (JST), the OPENLOGI demo token portal displayed its HTTP 503 maintenance page, so credentialed provider calls remain unverified. Warehouse release and fulfillment write-back to Shopify are not implemented. See the [fulfillment runbook and verification status](docs/fulfillment-demo.md).
 
 ## D2C fulfillment sandbox
 

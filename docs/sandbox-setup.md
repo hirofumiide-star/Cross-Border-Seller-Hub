@@ -6,6 +6,14 @@ Use a Shopify Dev store for storefront, checkout and test orders, and OPENLOGI's
 
 The Shopify development store `uji-tsukino-sabo-demo.myshopify.com` and its first paid test checkout are available. The new [one-order fulfillment demo](fulfillment-demo.md) implements a fixture run and a separate demo-API path with suspended shipment creation and read-back. It does not implement Shopify fulfillment writeback or simulate warehouse inventory through an undocumented API. Provider credentials and live API verification are still pending.
 
+### Verified storefront language update
+
+On 2026-11-26 (JST), Traditional Chinese for Taiwan (`zh-TW`) was applied through Shopify Translate & Adapt, published and verified in the live storefront. The domain default is now `zh-TW`; the shop primary locale remains `ja`, with Japanese source content preserved. The [root storefront](https://uji-tsukino-sabo-demo.myshopify.com/) displays Traditional Chinese, and the [Japanese storefront](https://uji-tsukino-sabo-demo.myshopify.com/ja) remains available.
+
+Saved translations cover all four products' titles, descriptions and product types; the three main-menu links; the Home page collection title (`精選茶品`); the Contact page title (`聯絡我們`); and the theme's hero, subheading, CTA, featured collection description and announcement. The final hero heading is `宇治茶香，點綴日常。`, and the slideshow accessibility text is `宇治月野茶房品牌介紹`.
+
+Browser checks covered all four product titles, the sencha detail page, cart, checkout without order entry or submission, contact form, Shopify's automatic privacy policy, and switching between Japanese and Traditional Chinese. [The translation record](../config/storefront-zh-TW.json) separates the applied content and manual locale settings from dedicated SEO descriptions, which remain prepared but unapplied. Storefront password protection, JPY prices and Japan-only domestic shipping are retained. These storefront checks do not verify the fulfillment APIs; OPENLOGI's demo token portal returned HTTP 503 during the 2026-11-26 check, and real API access remains unverified.
+
 Use `node scripts/run-fulfillment-demo.mjs --mode fixture --output .runtime/fulfillment-report.json` to exercise the local path. Open the MVP's **物流連携** view to inspect the generated report. The commands below for the original sandbox access checker remain read-only.
 
 ## Shopify Dev store
