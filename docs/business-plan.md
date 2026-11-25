@@ -31,7 +31,7 @@ Use “Discuss selling overseas” as the primary call to action on the company 
 | Taiwanese customs broker or carrier's brokerage team | File customs and Taiwan FDA food inspection applications when authorized by the importer. Coordinate official sampling when required. |
 | Taiwanese delivery carrier | Deliver and track individual orders from the Taiwan hub to each buyer. If an organizer handles delivery, agree on who arranges it and what they are responsible for before launch. |
 
-Show the flow from the Japanese producer through collection and consolidated shipping in Japan to the designated receiving hub in Taiwan, where orders are packed for individual domestic delivery. Use the receiving hub to mark the handoff. Explain service areas, product eligibility, cost and timing by leg, tracking, and how to request a return. Display provider names and logos once the parties agree on the scope and grant permission. Seller Hub is the primary contact.
+Show the flow from the Japanese producer through collection and consolidated shipping in Japan to the designated receiving hub in Taiwan, where orders are packed for individual domestic delivery. Use the receiving hub to mark the logistics handoff. The group-buy delivery service is complete for each order when the Taiwan buyer receives it, and the campaign's delivery phase closes when all outstanding orders have reached a final outcome. Explain service areas, product eligibility, cost and timing by leg, tracking, and how to request a return. Display provider names and logos once the parties agree on the scope and grant permission. Seller Hub is the primary contact.
 
 #### Proposed logistics provider profile
 
@@ -39,7 +39,7 @@ Show the flow from the Japanese producer through collection and consolidated shi
 
 OPENLOGI integrates with Shopify and provides inventory storage, packing, and dispatch for e-commerce. Seller Hub is assessing its scope for warehousing and dispatch in Japan. [OPENLOGI fulfillment for Shopify](https://service.openlogi.com/shopify_logistics/)
 
-Before launch, confirm whether the warehouse accepts Japanese tea, how it handles expiry dates and lots, whether it can dispatch consolidated Taiwan group-buy orders, what it costs, and how it can hand over shipments to the Taiwanese import and retail partner. Use the logistics partner label and logo once the scope and publishing permission are agreed.
+Before launch, confirm whether the warehouse accepts Japanese tea, how it handles expiry dates and lots, whether it can dispatch consolidated Taiwan group-buy orders, what it costs, and how it can hand over shipments to the Taiwanese import and retail partner. Obtain written confirmation from OPENLOGI for the first SKU and shipment profile. Ask whether its carrier can arrange Taiwan FDA food inspection filing and sampling support, or transfer the shipment and documents to the importer's nominated broker. Use the logistics partner label and logo once the scope and publishing permission are agreed.
 
 ## Initial market
 
@@ -82,9 +82,15 @@ Producers can buy website development independently of any grant. Use the existi
 2. **For each shipment.** Seller Hub coordinates the document handoff and tracks progress. The Taiwanese retail partner acts as the registered food importer and authorizes the broker or carrier's brokerage team to file the customs declaration and food inspection application. Taiwan FDA or its authorized inspection body decides whether to inspect or sample the shipment. Consolidated shipping can still require separate inspection applications for different products.
 3. **For repeat campaigns.** Reuse verified product information and reconfirm changes to ingredients, labeling, manufacturer, or origin. Make the required filings for each shipment. Include product preparation and coordination in the group-buy operating service. Quote third-party charges separately. [JETRO tea import procedures for Taiwan](https://www.jetro.go.jp/world/asia/tw/foods/exportguide/greentea.html) · [Taiwan Food and Drug Administration rules for imported food inspections](https://www.fda.gov.tw/ENG/lawContent.aspx?cid=5094&id=3068)
 
+### Service completion and producer cost responsibility
+
+The Taiwan buyer's confirmed delivery completes the group-buy delivery service for that order. Customs release and receipt at the Taiwan hub are intermediate milestones. Keep failed deliveries open until resolved or refunded. The Taiwanese retail partner remains the buyer's contact for returns and refunds. Reconcile delivered, non-refunded sets for Seller Hub's operating fee.
+
+As a default commercial term, the Japanese producer bears the agreed third-party campaign expenses incurred after the campaign qualifies and additional costs resulting from a customs hold, such as storage, further inspection, or handling. Before launch, document the approved cost items and limits, how the importer or broker is paid or reimbursed, and who authorizes overruns. Agree separately on costs if the campaign never qualifies. The Taiwanese partner remains the importer.
+
 ### Illustrative campaign economics
 
-These figures illustrate the Taiwanese retail partner's economics before supplier quotes.
+These figures show a baseline for the Taiwanese retail partner before supplier quotes or producer reimbursements. In final budgets, identify producer-funded items and show each party's net cost once. Keep the total campaign cost visible when checking break-even.
 
 | Item | TWD per set |
 | --- | ---: |

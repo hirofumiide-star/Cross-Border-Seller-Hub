@@ -38,7 +38,7 @@ flowchart TD
 
 - The Taiwanese import and retail partner accepts orders and payments. It pools orders across groups, checks the minimum quantity and margin, and places a bulk order when the campaign qualifies. It also handles refunds if the campaign falls short.
 - **The receiving hub in Taiwan is the handoff to local delivery.** OPENLOGI is a candidate for warehousing and dispatch in Japan. Assign an international carrier for the shipment. The Taiwanese retail partner leads import and receiving and arranges local delivery for each order.
-- Track costs, schedules, and tracking numbers separately for the consolidated international shipment and local deliveries in Taiwan.
+- Track costs, schedules, and tracking numbers separately for the consolidated international shipment and local deliveries in Taiwan. A carrier delivery confirmation completes the delivery service for each Taiwan buyer's order. Failed or undelivered orders stay open for resolution or refund.
 
 ## Payments and fees
 
@@ -59,7 +59,7 @@ flowchart TD
 
 </details>
 
-This is the proposed settlement flow for Taiwan. Confirm the contracting party and payer for each shipping leg before ordering. The Taiwanese retail partner handles customer payments and refunds. Seller Hub earns the campaign operating fee on sets that are delivered and never refunded. Test a separate monthly plan for ongoing sales improvements after the second paid campaign and a review of the results.
+This is the proposed settlement flow for Taiwan. Confirm the contracting party and initial payer for each shipping leg before ordering. Under the proposed commercial terms, the Japanese producer bears agreed third-party expenses incurred after the campaign qualifies and additional customs hold costs by default. Record approved costs, any reimbursement, and overrun approval separately. Agree on costs for campaigns that never qualify before launch. The Taiwanese retail partner handles customer payments and refunds. Seller Hub earns the campaign operating fee on sets that are delivered and never refunded. Test a separate monthly plan for ongoing sales improvements after the second paid campaign and a review of the results.
 
 | Partner | Role |
 | --- | --- |

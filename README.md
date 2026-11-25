@@ -31,7 +31,7 @@ The **Shopify import** screen can load test orders read from one Shopify develop
 
 ### Taiwan broker portal MVP
 
-Open [the broker portal](mvp/index.html#broker) or select the broker portal in the sidebar. Switch between Seller Hub and the Taiwanese broker to try the importer mandate check, document handoff, information requests, filing, optional sampling, and release to the Taiwan receiving hub. The workflow uses a fictional campaign and produces no external submissions. See the [workflow and operating-model review](docs/broker-portal-mvp.md).
+Open [the broker portal](mvp/index.html#broker) or select the broker portal in the sidebar. Switch between Seller Hub and the Taiwanese broker to try the importer mandate check, document handoff, information requests, filing, optional sampling, handoff to the Taiwan receiving hub, and confirmation of final delivery to Taiwan buyers. The workflow uses a fictional campaign and produces no external submissions. See the [workflow and operating-model review](docs/broker-portal-mvp.md).
 
 ## D2C fulfillment sandbox
 

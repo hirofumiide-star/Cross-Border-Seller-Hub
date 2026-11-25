@@ -11,7 +11,8 @@
     sampling: '抜き取り検査の結果待ち',
     held: '保留・要調整',
     cleared: '食品報驗・輸入通関完了',
-    handedOff: '台湾の荷受け拠点へ引き渡し済み'
+    handedOff: '台湾の荷受け拠点へ引き渡し済み',
+    completed: '台湾の購入者への配達完了'
   };
   const roles = { hub: 'Seller Hub', broker: '通関業者' };
   const campaign = {
@@ -42,7 +43,8 @@
     hold: { role: 'broker', from: ['filed', 'sampling'], to: 'held', label: '保留・問題を記録', note: true, log: '通関業者が保留理由を記録' },
     resume: { role: 'broker', from: ['held'], label: '保留の解消を記録', note: true, log: '通関業者が保留の解消を記録' },
     clear: { role: 'broker', from: ['filed', 'sampling'], to: 'cleared', label: '食品報驗・輸入通関の完了を記録', log: '食品報驗の適合と輸入通関の完了を記録（模擬）' },
-    deliver: { role: 'hub', from: ['cleared'], to: 'handedOff', label: '荷受け拠点への引き渡しを記録', log: '台湾の荷受け拠点への引き渡しを記録（模擬）' }
+    deliver: { role: 'hub', from: ['cleared'], to: 'handedOff', label: '荷受け拠点への引き渡しを記録', log: '台湾の荷受け拠点への引き渡しを記録（模擬）' },
+    complete: { role: 'hub', from: ['handedOff'], to: 'completed', label: '全購入者への配達完了を記録', log: '台湾国内配送の配達結果を確認し、團購の配送サービスを完了（模擬）' }
   };
   const count = campaign.organizerTotals.reduce((total, group) => total + group.units, 0);
   const escape = value => String(value).replace(/[&<>"']/g, character =>
@@ -199,7 +201,7 @@
           `<button type="button" class="button ${i === 0 ? 'primary' : ''}" data-broker-action="${key}">${action.label}</button>`).join('')}
           ${handoffComplete ? '<button type="button" class="button" data-broker-action="download">出荷書類案（JSON）</button>' : ''}</div>
         ${available.length ? '' : '<p class="sub">担当者の更新待ち、またはこの工程は完了しています。</p>'}
-        ${state.stage === 'handedOff' ? '<p class="sub">台湾国内の個別配送は荷受け拠点が手配する想定です。</p>' : ''}
+        ${state.stage === 'handedOff' ? '<p class="sub">台湾の販売パートナーが個別配送を手配します。購入者への配達を確認してから完了を記録します。</p>' : ''}
       </div></section>
       <section class="panel"><div class="panel-head"><h2>案件の履歴</h2></div><div class="panel-inner">
         ${state.events.length ? `<ol class="broker-events">${[...state.events].reverse().map(event =>
