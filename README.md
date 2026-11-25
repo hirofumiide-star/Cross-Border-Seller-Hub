@@ -12,6 +12,19 @@
 | [制作サービスと補助金](docs/website-service-and-subsidies.md) | 制作パッケージの見積もり、制度の対象条件、交付決定前後の進め方 |
 | [市場フィードバックのMVP](docs/market-feedback-mvp.md) | 繁体字VOC、併買、価格テスト、参照元計測、次回の施策と判定指標 |
 
+## 日本茶マルチストア分析 MVP
+
+[分析ダッシュボード](mvp/index.html)と[お茶の販売サンプル](mvp/index.html#store)を追加。操作できる販売サイトは架空の「宇治 月野茶房」1店。分析では、この1店を含む架空のShopify想定36店の注文・配送・レビューを、店舗IDと注文IDで照合する。
+
+ソースをダウンロードして `mvp/index.html` をブラウザーで開くか、リポジトリのルートで `python3 -m http.server 8000` を実行して `http://localhost:8000/mvp/` を開く。
+
+1. **販売分析**で台湾などの市場、期間、店舗を切り替え、売上・配送費・台湾團購の注文を比較する。
+2. **お茶の販売サンプル**で商品をカートに追加し、テスト注文を確定する。台湾向けは注文経路に「台湾團購」を選べる。続けて模擬配送とレビューを登録する。
+3. **分析で確認する**から、テスト注文を含む店舗・市場の集計を見る。**取り込みデータ**で注文・送料・レビューを確認し、選択範囲のCSVを出力できる。
+4. **AIインサイト**で繁体字VOC、併買の分母、価格と配送費、流入経路の根拠を見て、次回の施策を登録する。
+
+初期データは固定シードで生成する7,696件の架空注文。初回表示の直近30日には2,462件の有効注文が含まれる。返金・取消は純商品売上から除外し、配送費率と商品原価・配送費控除後の額は実績配送費を持つ配送完了注文を対象にする。分析と提案は入力に応じてルールで再計算する。決済・Shopify・OPENLOGI・LLMの実接続は必要としない。テスト注文と施策はブラウザーのローカルストレージに保存する。
+
 ## D2C fulfillment sandbox
 
 The existing Shopify × OPENLOGI demo illustrates parcel-level order consolidation and a U.S. test scenario. The Taiwan business pilot uses campaign-level demand aggregation with a local importer and seller.
