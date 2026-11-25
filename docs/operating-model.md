@@ -1,65 +1,65 @@
-# ビジネスモデルとパートナーの役割
+# Operating Model and Partner Roles
 
-初回は日本茶のセット1種類を、台湾の團購主2人の既存コミュニティで募集する。Seller HubはShopify等での商品紹介ページ制作から、現地でのテスト販売の調整、結果の報告までを担う。
+The first campaign offers one Japanese tea set to the existing communities of two Taiwanese group-buy organizers. Seller Hub builds the product page on Shopify or a similar platform, coordinates the local sales pilot, and reports results.
 
-## 注文と荷物の流れ
+## Order and shipping flow
 
-![台湾の團購主による募集から日本側の倉庫・出荷、台湾での個別配送まで](diagrams/order-and-shipping.png)
+![Order and shipping flow from Taiwanese group-buy organizers through fulfillment in Japan to individual delivery in Taiwan](diagrams/order-and-shipping.png)
 
 <details>
-<summary>編集用のMermaidコード</summary>
+<summary>Editable Mermaid source</summary>
 
 ```text
 flowchart TD
-  subgraph A["募集と発注"]
-    L["台湾の團購主"] -->|"商品を紹介"| C["台湾の購入者"]
-    C -->|"注文"| T["台湾の輸入・販売パートナー"]
-    T -->|"注文数を共有"| H["Seller Hub"]
-    H -->|"最小ロットと採算を確認"| T
+  subgraph A["Recruitment and ordering"]
+    L["Taiwanese group-buy organizer"] -->|"Promotes the set"| C["Buyers in Taiwan"]
+    C -->|"Place orders"| T["Taiwanese import and retail partner"]
+    T -->|"Shares order totals"| H["Seller Hub"]
+    H -->|"Checks minimum quantity and margin"| T
   end
-  T -->|"成立後に一括発注"| P["日本の生産者"]
-  subgraph B["輸送と個別配送"]
-    P -->|"まとめて出荷"| J["日本側の倉庫・出荷"]
-    J -->|"国際一括輸送"| W["台湾の荷受け拠点"]
-    W -->|"注文別に梱包・引き渡し"| D["台湾国内の配送会社"]
-    D -->|"個別配送"| R["台湾の購入者"]
+  T -->|"Places a bulk order once the campaign qualifies"| P["Japanese producer"]
+  subgraph B["Shipping and last-mile delivery"]
+    P -->|"Ships the batch"| J["Warehousing and dispatch in Japan"]
+    J -->|"Consolidated international shipment"| W["Receiving hub in Taiwan"]
+    W -->|"Packs individual orders and hands them over"| D["Taiwanese delivery carrier"]
+    D -->|"Delivers each parcel"| R["Buyers in Taiwan"]
   end
 ```
 
 </details>
 
-- 台湾の輸入・販売パートナーが注文と決済を受け付ける。グループごとの注文を合算し、最小ロット・採算条件を照合してから発注する。募集が成立しない場合の返金も台湾の販売パートナーが担当する。
-- **台湾の荷受け拠点で物流を引き継ぐ。** OPENLOGIは日本側の倉庫・出荷の候補。国際輸送は担当事業者を決め、台湾の販売パートナーが輸入手続きと荷受けを主導する。個別配送は台湾側が注文ごとに手配する。
-- 国際一括輸送と台湾国内配送は、費用・納期・追跡番号を分けて管理する。
+- The Taiwanese import and retail partner accepts orders and payments. It pools orders across groups, checks the minimum quantity and margin, and places a bulk order when the campaign qualifies. It also handles refunds if the campaign falls short.
+- **The receiving hub in Taiwan is the handoff to local delivery.** OPENLOGI is a candidate for warehousing and dispatch in Japan. Assign an international carrier for the shipment. The Taiwanese retail partner leads import and receiving and arranges local delivery for each order.
+- Track costs, schedules, and tracking numbers separately for the consolidated international shipment and local deliveries in Taiwan.
 
-## 決済と報酬の流れ
+## Payments and fees
 
-![購入者の支払いから卸代金、團購主の報酬、物流費、Seller Hubの収益まで](diagrams/payments-and-fees.png)
+![Payments from buyers and the settlement of wholesale costs, organizer compensation, shipping costs, and Seller Hub fees](diagrams/payments-and-fees.png)
 
 <details>
-<summary>編集用のMermaidコード</summary>
+<summary>Editable Mermaid source</summary>
 
 ```text
 flowchart TD
-  C["台湾の購入者"] -->|"商品代・配送代"| T["台湾の輸入・販売パートナー"]
-  T -->|"卸代金"| P["日本の生産者"]
-  T -->|"募集に応じた報酬"| L["台湾の團購主"]
-  T -->|"配送完了分の運営料"| H["Seller Hub"]
-  T -->|"輸送・配送の実費"| F["物流・配送事業者"]
-  P -->|"Shopify・サイト制作費"| H
+  C["Buyers in Taiwan"] -->|"Product and delivery charges"| T["Taiwanese import and retail partner"]
+  T -->|"Wholesale payment"| P["Japanese producer"]
+  T -->|"Campaign compensation"| L["Taiwanese group-buy organizer"]
+  T -->|"Operating fee for completed deliveries"| H["Seller Hub"]
+  T -->|"Actual shipping and delivery costs"| F["Shipping and delivery providers"]
+  P -->|"Shopify and website development fee"| H
 ```
 
 </details>
 
-台湾での取引精算の想定を示す。物流の区間ごとの契約先と支払主体は発注前に確認する。台湾の販売パートナーが現地購入者の決済と返金を担当する。Seller Hubの開催運営料は配送完了かつ返金のないセットが対象。販売改善の継続支援は、第2回の有料開催と施策の結果を確認してから、別途月額プランを検証する。
+This is the proposed settlement flow for Taiwan. Confirm the contracting party and payer for each shipping leg before ordering. The Taiwanese retail partner handles customer payments and refunds. Seller Hub earns the campaign operating fee on sets that are delivered and never refunded. Test a separate monthly plan for ongoing sales improvements after the second paid campaign and a review of the results.
 
-| 担当 | 提供・担当すること |
+| Partner | Role |
 | --- | --- |
-| **Seller Hub** | Shopify・海外向け商品ページの制作、成立条件・納期の調整、精算データの照合、次回の改善提案 |
-| **日本の生産者** | 商品情報、卸価格、最低ロット、在庫・製造枠の提示、成立後の出荷 |
-| **台湾の團購主** | 商品の紹介と募集。配送まで担当する案件では作業範囲と責任を募集前に合意する。 |
-| **日本側の倉庫・国際輸送事業者** | 集荷・保管・梱包、一括輸送。事業者ごとに担当区間を決める。 |
-| **台湾の輸入・販売パートナー** | 輸入手続きと荷受け、注文・決済、配送手配、購入者の問い合わせ・返品・返金 |
-| **台湾国内の配送会社** | 購入者への個別配送、追跡と配送事故の一次情報 |
+| **Seller Hub** | Build Shopify or other international product pages, coordinate thresholds and delivery dates, reconcile settlement data, and propose improvements for the next campaign. |
+| **Japanese producer** | Provide product information, wholesale pricing, minimum order quantities, and stock or production capacity. Ship the agreed quantity once the campaign qualifies. |
+| **Taiwanese group-buy organizer** | Introduce the product and recruit buyers. If an organizer also handles delivery, agree on the scope and responsibilities before launch. |
+| **Warehouse and international shipping providers** | Collect, store, and pack products and ship the consolidated batch. Assign each provider a leg. |
+| **Taiwanese import and retail partner** | Manage imports and receiving, orders and payments, local delivery arrangements, inquiries, returns, and refunds. |
+| **Taiwanese delivery carrier** | Deliver individual parcels and provide tracking and initial incident reports. |
 
-開催後は、台湾側から注文・配送の実績と許諾済みの顧客の声を受け取り、Seller Hubが商品別の採算と次回試す施策を日本の生産者へ返す。 [事業計画と採算の仮試算](business-plan.md) · [販売結果のMVP仕様](market-feedback-mvp.md)
+After each campaign, Seller Hub receives order and delivery results and authorized customer feedback from Taiwan. It reports product-level profitability and the next proposed action to the Japanese producer. [Business plan and unit economics](business-plan.md) · [Market feedback MVP](market-feedback-mvp.md)

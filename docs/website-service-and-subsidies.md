@@ -1,39 +1,39 @@
-# ホームページ制作サービスと補助金
+# Website Development and Subsidies
 
-2026年11月25日時点の制度確認。案件ごとに所在地、申請資格、対象経費、最新の公募要領を確認する。
+Program information checked on November 25, 2026. Confirm the location, applicant eligibility, eligible costs, and current application guidelines for each project.
 
-## 生産者に提供する制作パッケージ
+## Website development package for producers
 
-| 項目 | 標準範囲 |
+| Item | Standard scope |
 | --- | --- |
-| 価格仮説 | 24万円（税別）。ページ数、素材、言語、EC機能、商品点数に応じて追加分を見積もる。 |
-| 制作物 | 日・繁体字のブランド紹介、商品ページ2〜3点、鮮度・保存方法等の商品情報、問い合わせ導線、モバイル表示、基本計測。 |
-| 引き継ぎ | ドメインと更新権限の確認、商品情報台帳、画像等の利用条件、サイトの更新手順。 |
-| 追加サービス | 撮影、多数SKUの翻訳、注文・決済、台湾團購の販売施策、定期レポート。各サービスの範囲と価格を個別に示す。 |
+| Indicative price | JPY 240,000 before tax. Quote additional work based on page count, materials, languages, e-commerce features, and product count. |
+| Deliverables | Brand introduction in Japanese and Traditional Chinese, two or three product pages, product details such as freshness and storage, an inquiry channel, mobile layouts, and basic analytics. |
+| Handover | Confirm domain ownership and editing access. Provide a product information register, terms for using imagery, and instructions for site updates. |
+| Optional services | Photography, translation for additional SKUs, ordering and payments, Taiwan group-buy campaigns, and recurring reports. Specify scope and pricing for each. |
 
-販路開拓の目的、対象顧客、公開後に測る成果を最初に確認する。初期売上は制作会社が生産者へ請求する制作対価。補助金を申請する場合は生産者が申請・負担し、制度の条件に沿って支払った後に、確定した補助額を受け取る。
+Clarify the market development goal, target audience, and post-launch metrics up front. Initial revenue comes from the development fee the agency invoices to the producer. For a subsidized project, the producer applies, pays the expenses in accordance with the program, and receives the confirmed subsidy after the required process.
 
-## 制度の例
+## Program examples
 
-### 小規模事業者持続化補助金 一般型・通常枠 第20回
+### Small Business Sustainability Subsidy, General Type, Standard Track, Round 20
 
-販路開拓等に使うホームページやECサイトの構築・更新は、**ウェブサイト関連費の対象候補**。第20回公募要領（第9版）では、ウェブサイト関連費に係る**補助金交付申請額の上限は30万円**で、ウェブサイト関連費のみの申請はできない。原則の補助率は2/3、通常枠の全体上限は50万円。個別の支出は申請者の資格、販路開拓計画、費目、時期等で審査される。 [第20回公募要領 第9版](https://official.jizokukanb.com/wp-content/uploads/2026/11/20_通常枠_公募要領_第9版.pdf) · [申請窓口・日程](https://official.jizokukanb.com/shinsei) · [中小企業庁の受付案内](https://mirasapo-plus.go.jp/infomation/34154/)
+Building or updating a website or e-commerce site for market development may qualify as a website-related expense. Under version 9 of the round 20 guidelines, **the grant request for website-related expenses is capped at JPY 300,000**, and an application cannot consist only of those expenses. The standard subsidy rate is two-thirds, and the overall standard-track cap is JPY 500,000. Eligibility depends on the applicant, market development plan, expense category, and timing. [Round 20 guidelines, version 9](https://official.jizokukanb.com/wp-content/uploads/2026/11/20_通常枠_公募要領_第9版.pdf) · [Application portal and schedule](https://official.jizokukanb.com/shinsei) · [Small and Medium Enterprise Agency notice](https://mirasapo-plus.go.jp/infomation/34154/)
 
-2026年11月25日時点の第20回の日程は、事業支援計画書（様式4）の発行受付締切が**12月4日**、申請締切が**12月15日17時**。補助対象の発注・契約・支払は交付決定日以降に行い、実績報告・確定後に受領する。採択発表は2027年3月頃の予定で、交付決定には採択後も概ね1〜2か月かかる場合がある。通常受注と補助金を使う案件は異なる時期の売上として見込む。 [公募要領](https://official.jizokukanb.com/wp-content/uploads/2026/11/20_通常枠_公募要領_第9版.pdf) · [事務局の申請日程](https://official.jizokukanb.com/shinsei)
+As of November 25, 2026, the deadline to request the business support plan (Form 4) was **December 4**, and the application deadline was **December 15 at 17:00**. Place orders, sign contracts, and pay eligible expenses after the formal grant decision. The subsidy is paid after completion reporting and confirmation. Selection was expected around March 2027, with the formal grant decision potentially following one to two months later. Forecast regular and subsidized projects on separate timelines. [Program guidelines](https://official.jizokukanb.com/wp-content/uploads/2026/11/20_通常枠_公募要領_第9版.pdf) · [Application schedule](https://official.jizokukanb.com/shinsei)
 
-茶の生産者については、系統出荷のみで収入を得る個人農業者や農事組合法人など、事業者区分による除外を確認する。加工や販路開拓を行う事業者も、事業実態と対象経費で判定する。 [公募要領の補助対象者](https://official.jizokukanb.com/wp-content/uploads/2026/11/20_通常枠_公募要領_第9版.pdf#page=5)
+For tea producers, check exclusions by business type, including individual farmers whose income comes exclusively from cooperative distribution and agricultural producers' cooperatives. Assess businesses that also process products or develop new sales channels against the actual operations and eligible expenses. [Applicant eligibility in the program guidelines](https://official.jizokukanb.com/wp-content/uploads/2026/11/20_通常枠_公募要領_第9版.pdf#page=5)
 
-### デジタル化・AI導入補助金2026 通常枠
+### Digitalization and AI Adoption Subsidy 2026, Standard Track
 
-公式FAQでは、**ホームページ制作（ECサイト制作を含む）は通常枠の補助対象外**。対象は登録されたITツール等の導入費用で、今回の受託制作の見積もりには同制度からの補助を織り込まない。 [通常枠 公式FAQ 問5](https://it-shien.smrj.go.jp/pdf/it2026_faq_tsujyo.pdf)
+The official FAQ excludes **website development, including e-commerce sites**, from the standard track. That track covers eligible costs for adopting registered IT tools. Exclude this subsidy from quotes for the website development package. [Official standard-track FAQ, question 5](https://it-shien.smrj.go.jp/pdf/it2026_faq_tsujyo.pdf)
 
-### 自治体の制作費助成
+### Local government website grants
 
-生産者の所在地に応じて、ウェブサイト制作を対象とする制度を探す。例として葛飾区は、要件を満たす区内中小企業の新規制作等を助成し、新規外国語対応は補助率1/2・上限8万円と案内している。対象地域、申請・着手の順序、他制度との併用条件は制度ごとに確認する。 [葛飾区 ホームページ作成費補助](https://www.city.katsushika.lg.jp/business/1000011/1034399/1004957.html)
+Check programs where the producer is based. For example, Katsushika Ward offers support for qualifying local small and medium-sized businesses building new websites. The rate for a new foreign-language site is one-half, capped at JPY 80,000. Confirm the eligible area, application and start dates, and rules on combining support with other programs. [Katsushika Ward website development grant](https://www.city.katsushika.lg.jp/business/1000011/1034399/1004957.html)
 
-## 見積もりと受注
+## Quoting and contracting
 
-1. 制作目的、対象市場、事業者所在地・規模、スケジュールを聞き、補助金に関係なく必要な制作物と価格を見積もる。
-2. 制作、外注翻訳・撮影、ECツール、運用、團購開催を実際の内容で明細化する。持続化補助金の第20回では、販売数量に応じた費用や申請書作成費などは対象外とされている。申請を検討する場合は、生産者が事務局や管轄の商工会・商工会議所等と対象経費、申込期限、発注時期を確認する。
-3. 補助対象として発注する場合は交付決定を確認してから、対象業務を発注・契約し着手する。納品物、見積書、請求書、支払証憑など必要書類を揃える。
-4. 通常受注では制作費・納期・検収条件を合意して進める。台湾團購と分析は初回の制作と切り離して提案し、希望と商品条件がそろった案件に進める。
+1. Ask about the purpose, target market, business location and size, and timing. Quote the scope and price based on the work required.
+2. Itemize development, outsourced translation and photography, e-commerce tools, ongoing operation, and group-buy campaign work. Round 20 excludes expenses based on sales volumes and application preparation fees, among others. The producer should confirm eligible costs, deadlines, and when orders may be placed with the program office or the local chamber or business association.
+3. For grant-funded work, confirm the formal grant decision before ordering, signing, or starting eligible work. Retain deliverables, estimates, invoices, and proof of payment.
+4. For regular projects, agree on the development fee, delivery date, and acceptance criteria. Offer Taiwan group-buy operations and analytics separately. Proceed when the producer wants to participate and the product qualifies.

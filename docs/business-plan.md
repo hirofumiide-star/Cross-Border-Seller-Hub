@@ -1,110 +1,109 @@
-# Cross-Border Seller Hub 事業計画
+# Cross-Border Seller Hub Business Plan
 
-更新日 2026年11月26日
+Updated November 26, 2026
 
-## UVP（独自の価値提案）
+## Unique value proposition
 
-> **日本のいい商品を、海外のお客様へ。**
+> **Bring standout Japanese products to overseas customers.**
 >
-> 日本茶・地域食品メーカー向けに、Shopifyで海外向け通販サイトを制作し、台湾の共同購入（團購）を通じて現地のお客様とつなぎます。物流・輸入販売パートナーと集荷からお届けまでを手配し、売れ行きとお客様の声を次の商品改善に活かせるよう、作り手へ返します。
+> We build Shopify storefronts for Japanese tea and regional food producers and connect them with consumers through group buys in Taiwan. We work with logistics, import, and retail partners from pickup through delivery and return sales results and customer feedback so producers can improve their products.
 
-| 提供する価値 | メーカーができるようになること |
+| Service | What producers can do |
 | --- | --- |
-| 海外向けホームページ・Shopify制作 | 日・繁体字の商品ページと購入導線を用意する。既存の国内サイトを持つメーカーは、海外向けの商品ページから始められる。 |
-| 台湾の消費者との接点 | 現地の團購主（共同購入の主催者）と協力し、商品セット1種類から、募集期間と数量を決めてテスト販売する。 |
-| パートナーを通じた海外配送 | 日本から台湾の受け渡し拠点までの一括輸送と、台湾で購入者ごとに届ける配送を手配する。出荷前に区間ごとの費用、日程、事故・返品の窓口を確認できる。 |
-| 販売結果を使った商品改善 | 売れ行き、注文別の採算、繁体字のお客様の声を日本語で受け取り、次回試す商品、価格、説明の改善を決める。 |
+| International storefront development on Shopify | Set up product pages and a path to purchase in Japanese and Traditional Chinese. Producers with an existing domestic site can start with product pages for overseas customers. |
+| Access to Taiwanese consumers | Partner with local group-buy organizers and test one product set with a defined campaign period and target quantity. |
+| International shipping through partners | Arrange consolidated transport to a receiving hub in Taiwan and individual deliveries to buyers. Confirm the costs, schedules, and points of contact for incidents and returns before dispatch. |
+| Product improvements based on sales results | Receive sales results, order-level profitability, and a Japanese summary of feedback collected in Traditional Chinese. Decide what to change about the product, price, or copy for the next campaign. |
 
-会社サイトでは「海外販売について相談する」を主なボタンにし、「サンプルショップを見る」から制作例の「宇治 月野茶房」へ案内する。制作の相談から始められ、商品と供給の条件が合えば台湾でのテスト販売へ進める。
+Use “Discuss selling overseas” as the primary call to action on the company website. A “View sample store” link leads to Uji Tsukino Tea House. Producers can start with a website consultation and move on to a Taiwan sales pilot when the product and supply meet the requirements.
 
-### 会社サイトの「海外配送とパートナー」
+### International shipping and partners on the company website
 
-> 商品の種類や数量に合わせて、物流会社と台湾の輸入・販売パートナーを組み合わせ、日本での集荷から台湾のお客様へのお届けまでを手配します。海外向けサイトの制作、販売、配送をSeller Hubにまとめて相談できます。
+> We coordinate logistics providers and Taiwanese import and retail partners based on the product and volume, from pickup in Japan to delivery to customers in Taiwan. Seller Hub is the point of contact for storefront development, sales, and shipping.
 
-| 担当 | サイトで紹介する役割 |
+| Partner | Role shown on the website |
 | --- | --- |
-| Seller Hub | 初回相談、Shopify制作、現地パートナーとの手配、スケジュールと費用の整理、販売結果の報告 |
-| 現地の團購主 | 商品の紹介、募集、お客様の反応の共有 |
-| 日本側の倉庫・出荷／国際輸送パートナー | 日本側で集荷・保管・梱包し、商業貨物として台湾の輸入・販売パートナーの指定拠点へまとめて運ぶ。 |
-| 台湾の輸入・販売パートナー | 輸入手続き、荷受け、現地販売と決済、購入者ごとの配送手配、顧客対応・返金 |
-| 台湾国内の配送事業者 | 台湾の拠点から各購入者への個別配送と追跡。團購主側が配送を担う場合は、手配主体と責任範囲を募集前に合意する。 |
+| Seller Hub | Initial consultation, Shopify development, local partner coordination, scheduling and cost estimates, and reporting |
+| Local group-buy organizer | Product promotion, recruitment, and sharing customer reactions |
+| Warehouse, dispatch, and international shipping providers | Collect, store, and pack goods in Japan and ship a consolidated commercial consignment to the Taiwanese import and retail partner's designated location. |
+| Taiwanese import and retail partner | Handle imports, receiving, local sales and payments, delivery arrangements for each buyer, customer service, and refunds. |
+| Taiwanese delivery carrier | Deliver and track individual orders from the Taiwan hub to each buyer. If an organizer handles delivery, agree on who arranges it and what they are responsible for before launch. |
 
-「日本の生産者 → 日本側の集荷・一括輸送 → 台湾の指定拠点で荷受け → 注文別の梱包・台湾国内配送 → お客様」の流れを載せる。台湾側の荷受け拠点を区切りとし、対応地域、品目条件、各区間の費用と納期、追跡、返品窓口を案内する。社名・ロゴは協力範囲と掲載許諾が確定した事業者を掲載する。相談窓口はSeller Hubとする。
+Show the flow from the Japanese producer through collection and consolidated shipping in Japan to the designated receiving hub in Taiwan, where orders are packed for individual domestic delivery. Use the receiving hub to mark the handoff. Explain service areas, product eligibility, cost and timing by leg, tracking, and how to request a return. Display provider names and logos once the parties agree on the scope and grant permission. Seller Hub is the primary contact.
 
+#### Proposed logistics provider profile
 
-#### 物流会社の紹介案
+**OPENLOGI | Candidate logistics provider**
 
-**OPENLOGI（オープンロジ）｜物流の連携候補**
+OPENLOGI integrates with Shopify and provides inventory storage, packing, and dispatch for e-commerce. Seller Hub is assessing its scope for warehousing and dispatch in Japan. [OPENLOGI fulfillment for Shopify](https://service.openlogi.com/shopify_logistics/)
 
-Shopifyと連携し、ECの在庫保管、梱包、出荷を支援する物流サービス。Seller Hubでは、日本側の倉庫・出荷の連携先として対応範囲を確認する。 [OPENLOGIのShopify物流代行サービス](https://service.openlogi.com/shopify_logistics/)
+Before launch, confirm whether the warehouse accepts Japanese tea, how it handles expiry dates and lots, whether it can dispatch consolidated Taiwan group-buy orders, what it costs, and how it can hand over shipments to the Taiwanese import and retail partner. Use the logistics partner label and logo once the scope and publishing permission are agreed.
 
-日本茶の受け入れ条件と賞味期限・ロットの扱い、台湾團購の一括出荷、費用、台湾の輸入・販売パートナーへの引き渡しを事前に確認する。サイト上の「物流パートナー」表示とロゴ掲載は、協力範囲と掲載許諾が確定した段階で行う。
+## Initial market
 
-## 事業の入口
+The long-term target is Greater China. Start with **shelf-stable, single-ingredient Japanese tea for Taiwan**. Look for producers with outdated sites or few pages for international buyers who can fulfill small batches and act on sales feedback. Select SKUs whose import, labeling, and supply requirements the team can verify. Evaluate Hong Kong and other markets after the Taiwan workflow is repeatable.
 
-長期の対象は中華圏。最初は**日本の常温・単一原材料の茶 → 台湾**に絞る。既存サイトが古い、または海外向けの商品ページが不足しており、小ロットの出荷と商品改善を担当できる生産者を探す。團購の候補は、輸入・表示と供給の条件を確認できるSKUから選ぶ。台湾で同じ運用を繰り返せた段階で香港などを評価する。
+Taiwan has examples of Japanese food preorders through social media group buys, followed by wider distribution as interest becomes clear. Existing group-buy tools offer sales pages, payouts by organizer, and performance tracking. WorldShopping consolidates purchases across stores and handles some shelf-stable foods subject to conditions. Seller Hub charges for coordinating the work that **turns demand from multiple organizers into a single purchase decision and uses the results to improve the next order and product**. [JETRO and JFOODO Taiwan market report](https://www.jetro.go.jp/ext_images/jfoodo/archive/fm_report/202503-5_tw.pdf) · [SHOPLINE Taiwan group-buy tools](https://shopline.tw/group-buying) · [WorldShopping consolidation](https://help.worldshopping.global/hc/ja/articles/4830476732958) · [WorldShopping food requirements](https://help.worldshopping.global/hc/zh-tw/articles/4830481618206)
 
-台湾には、日本食品をSNSで共同予約販売し、反応を見て販路を広げる事例がある。既存の團購ツールも、販売ページ、團購主ごとの分配、実績管理を提供する。WorldShoppingには購入済み商品の複数店舗同梱があり、常温食品も条件付きで取り扱う。Seller Hubは、**複数の團購主が集めた需要を一つの仕入れ判断につなぎ、販売結果を次の発注・商品改善まで追う運用**に対して料金を得る。 [JETRO／JFOODO 台湾市場レポート](https://www.jetro.go.jp/ext_images/jfoodo/archive/fm_report/202503-5_tw.pdf) · [SHOPLINE 台湾の團購機能](https://shopline.tw/group-buying) · [WorldShoppingの同梱](https://help.worldshopping.global/hc/ja/articles/4830476732958) · [WorldShoppingの食品条件](https://help.worldshopping.global/hc/zh-tw/articles/4830481618206)
+## Revenue model
 
-## 収益モデル
-
-| 段階 | 支払う人 | 提供するサービス | 収益と次の判断 |
+| Stage | Payer | Service | Revenue and decision |
 | --- | --- | --- | --- |
-| 1. ホームページ制作 | 日本の生産者 | 日・繁体字のブランドページ、2〜3 SKUの商品ページ、商品情報台帳、問い合わせ・計測設定、運用引き継ぎ | 制作費は1件24万円（税別）の仮説。検収で制作を完了し、納期・原価・粗利を確認する。補助金を利用できる場合は生産者の導入費負担を軽くする。 |
-| 2. 台湾團購の開催 | 台湾の輸入・販売パートナー | 商品選定と価格設計、團購主別の募集実績、成立判定、仕入れ・納品調整、売上精算、販売レビュー | 配送完了かつ返金のないセット当たり55台湾ドルの運営料を仮置きする。通関・配送等の実費、團購主報酬、Hub運営料を見積もりに分ける。 |
-| 3. 販売改善の伴走 | 日本の生産者 | 商品別採算、繁体字VOC、次回の価格・セット・表示のテスト設計と効果確認 | 同一生産者の2回目の有料開催と改善施策の採用を確認して、月額プランの支払意思を検証する。開催運営と月額の追加業務は契約上区別する。 |
+| 1. Website development | Japanese producer | Brand pages in Japanese and Traditional Chinese, product pages for two or three SKUs, a product register, inquiry and analytics setup, and operational handover | Test a development fee of JPY 240,000 before tax. Close the project at acceptance and review schedule, direct cost, and gross margin. Eligible grants can reduce the producer's upfront cost. |
+| 2. Taiwan group-buy operations | Taiwanese import and retail partner | Product selection and pricing, results by organizer, campaign qualification, purchasing and delivery coordination, settlement, and sales review | Initially model an operating fee of TWD 55 per delivered, non-refunded set. Itemize actual costs for customs and delivery, organizer compensation, and Seller Hub's fee. |
+| 3. Ongoing sales improvement | Japanese producer | Product-level margins, Traditional Chinese customer feedback, and design and evaluation of tests for price, bundle, and listing changes | Test willingness to pay for a monthly plan after the same producer pays for a second campaign and adopts an improvement. Specify campaign operations and additional monthly work separately in the contract. |
 
-制作サービスは補助金を利用しない場合でも購入できる。既存の店舗・ドメインを使い、必要な場合にEC機能や翻訳範囲を追加見積もりする。納品時はドメイン、写真等の権利、更新権限、データ出力方法を生産者に明示する。 [制作サービスと補助金の扱い](website-service-and-subsidies.md)
+Producers can buy website development independently of any grant. Use the existing store and domain where applicable and quote additional e-commerce features or translation when needed. At handover, explain rights to the domain and images, editing permissions, and how to export data. [Website development and subsidies](website-service-and-subsidies.md)
 
-**制作1件の仮試算。** 売上24万円に対し、制作工数20時間×6,000円で12万円、翻訳・QAが3万円、直接ツール費が1万円。直接原価16万円を引いた案件貢献利益は8万円（売上の約33%）。営業費・管理費・再作業は別。予算を超えるページやカスタム機能は追加見積もりで扱う。
+**Illustrative economics for one website project.** Revenue is JPY 240,000. Twenty hours of development at JPY 6,000 per hour cost JPY 120,000, translation and QA cost JPY 30,000, and direct tool costs total JPY 10,000. Direct costs of JPY 160,000 leave JPY 80,000 in project contribution, about 33% of revenue. Sales, overhead, and rework are separate. Quote additional pages and custom features separately.
 
-## 台湾の初回團購
+## First Taiwan group-buy campaign
 
-[注文・物流・決済と役割分担のブロック図](operating-model.md)
+[Flowcharts for ordering, logistics, payments, and partner roles](operating-model.md)
 
-**生産者1社、台湾の輸入・販売パートナー1社、團購主2人、飲み比べセット1種。** 團購主は既存のLINEなどのコミュニティで募集する。台湾の販売パートナーが確定注文を管理し、期限時点で有効な数量を合計する。仕入先の最小ロットと採算を満たしたら一括発注し、台湾で商業輸入・国内配送する。成立しない場合は、販売パートナーが募集時に示した条件に従い、決済済みの注文を返金する。
+**One producer, one Taiwanese import and retail partner, two organizers, and one tea tasting set.** Organizers recruit buyers through communities they already run, such as LINE groups. The Taiwanese retail partner manages confirmed orders and totals the eligible quantity at the deadline. If the total satisfies the supplier's minimum and the margin requirement, the partner places a bulk order, imports the goods commercially, and arranges domestic delivery. If the campaign falls short, the retail partner refunds paid orders under the published campaign terms.
 
-| 参加者 | 主な責任 |
+| Participant | Main responsibilities |
 | --- | --- |
-| 生産者 | 卸条件、供給可能数、SKUの原材料・原産地・ロット・賞味期限等の情報、契約数量の出荷 |
-| 團購主 | 既存コミュニティでの商品紹介、募集リンクの運用、販促の反応の共有 |
-| 日本側の倉庫・出荷／国際輸送パートナー | 日本側での集荷・梱包と台湾の指定拠点までの一括輸送、区間内の追跡・事故情報 |
-| 台湾の輸入・販売パートナー | 募集表示、決済、輸入手続き、荷受け、注文別配送の手配と確認、問い合わせ・返金。募集前に輸入可否・表示・検査要否をSKU単位で確認 |
-| 台湾国内の配送事業者 | 台湾の拠点から購入者ごとの個別配送と配達状況の共有 |
-| Seller Hub | 商品選定、繁体字コンテンツ、募集条件・数量・成立判定の調整、キャンペーン精算、販売結果と次回施策の報告 |
+| Producer | Provide wholesale terms, supply capacity, SKU ingredients, origin, lot and expiry details, and ship the contracted quantity. |
+| Group-buy organizer | Promote products in an existing community, manage recruitment links, and share responses to the campaign. |
+| Warehouse, dispatch, and international shipping providers | Collect and pack goods in Japan, deliver the consolidated shipment to the designated Taiwan hub, and provide tracking and incident reports for each provider's leg. |
+| Taiwanese import and retail partner | Publish the offer, take payments, handle imports and receiving, arrange and confirm delivery by order, and handle inquiries and refunds. Verify import eligibility, labeling, and inspection requirements by SKU before launch. |
+| Taiwanese delivery carrier | Deliver individual orders from the hub and share tracking and delivery status. |
+| Seller Hub | Select products, prepare Traditional Chinese content, coordinate campaign terms, quantities, and qualification, reconcile settlement, and report results and next actions. |
 
-台湾向け茶の輸入手続きと繁体字表示を、現地パートナーと対象SKUごとに確認する。複数SKUの一括輸送と、税関・検査上の品目別手続きはそれぞれの見積もりに反映する。 [JETRO 台湾向け茶の輸入手続き](https://www.jetro.go.jp/world/asia/tw/foods/exportguide/greentea.html) · [台湾食品薬物管理署 輸入食品検査規則](https://www.fda.gov.tw/ENG/lawContent.aspx?cid=5094&id=3068)
+Confirm import and Traditional Chinese labeling requirements with the Taiwanese partner for each tea SKU. Quote consolidated shipping for multiple SKUs and item-level customs and inspection procedures separately. [JETRO tea import procedures for Taiwan](https://www.jetro.go.jp/world/asia/tw/foods/exportguide/greentea.html) · [Taiwan Food and Drug Administration rules for imported food inspections](https://www.fda.gov.tw/ENG/lawContent.aspx?cid=5094&id=3068)
 
-### キャンペーンの採算例
+### Illustrative campaign economics
 
-以下は台湾の販売パートナー側の試算で、金額は見積もり前の仮説。
+These figures illustrate the Taiwanese retail partner's economics before supplier quotes.
 
-| 項目 | 1セット当たりの台湾ドル |
+| Item | TWD per set |
 | --- | ---: |
-| 税抜売上 | 690 |
-| 仕入れ | 250 |
-| 輸入・国際一括輸送・台湾国内の個別配送等 | 100 |
-| 決済・現地対応・返品引当 | 75 |
-| 團購主報酬 | 90 |
-| Hub運営料 | 55 |
-| 変動費合計 | 570 |
-| 固定費配賦前の貢献利益 | 120 |
+| Sales before tax | 690 |
+| Wholesale cost | 250 |
+| Import, consolidated international shipping, and individual deliveries in Taiwan | 100 |
+| Payment processing, local support, and returns reserve | 75 |
+| Organizer compensation | 90 |
+| Seller Hub operating fee | 55 |
+| Total variable costs | 570 |
+| Contribution before fixed costs | 120 |
 
-この試算では物流費を合算している。実際の見積もりと精算では、国際一括輸送のロット単位の費用と、台湾国内配送の注文単位の費用を別々に記録する。国際貨物の追跡番号と個別配送の追跡番号も区別する。
+The example combines logistics costs. For quotes and settlements, record the lot-level international shipping cost separately from the order-level delivery costs in Taiwan. Record the international tracking number separately from the individual delivery tracking numbers.
 
-固定費9,600台湾ドルなら損益分岐点は80セット。最小ロットが80セット以下なら、初回の目標を100セットと置くと費用控除後2,400台湾ドルが残る。1セット当たり変動費が30台湾ドル増えると分岐点は107セットになり、100セットでは600台湾ドルの赤字に転じる。成立数量は**最小ロットと損益分岐数量の大きい方に、取消等の余裕を加えた数量**を見積もりから決める。Hub側は55台湾ドルの運営単価から同社の工数・ツール費等を別途引いて、事業としての利益を測る。
+At TWD 9,600 in fixed costs, break-even is 80 sets. If the supplier's minimum order is 80 sets or less, a target of 100 sets yields TWD 2,400 after those costs. If variable costs rise by TWD 30 per set, break-even rises to 107 sets and 100 sets produce a TWD 600 loss. Set the campaign threshold from quotes using **the greater of the supplier's minimum order or break-even volume, plus an allowance for cancellations and similar changes**. Seller Hub measures its own profitability by subtracting labor, tools, and other costs from the TWD 55 operating fee.
 
-## 90日間の検証
+## 90-day pilot
 
-1. **制作の有料受注**。生産者に聞き取りを行い、自己資金で発注できる制作案件を1件以上受注する。補助金を使う案件は交付決定までの期間を別の受注計画に反映する。実作業時間と粗利、次の販路支援に進む意向を確認する。
-2. **第1回の有料團購**。台湾パートナーと團購主に条件を明示し、募集から成立・配送・返金・精算まで通す。配送完了分の原価と、対応時間を集計する。
-3. **第2回の有料團購**。同一生産者・團購主ともう一度開催し、前回のVOCを起点とする施策を1件試す。採算、配送品質、施策の結果、継続契約の意向から月額サービスへの移行を判断する。 [商品オーナー向けフィードバックのMVP](market-feedback-mvp.md)
+1. **Win one paid website project.** Interview producers and secure at least one paid website project the producer can fund. Plan separately for grant-funded work to account for the decision timeline. Track actual work hours, gross margin, and interest in sales support.
+2. **Run the first paid group buy.** Agree on terms with the Taiwan partner and organizers and run the campaign through qualification, delivery, refunds, and settlement. Measure the cost of completed deliveries and time spent on support.
+3. **Run the second paid group buy.** Repeat with the same producer and organizers and test one action based on feedback from the first campaign. Use profitability, delivery quality, test results, and willingness to renew to assess a monthly service. [Market feedback MVP for producers](market-feedback-mvp.md)
 
-## 授業の考え方を事業に落とす
+## Applying course frameworks
 
-| 考え方 | 意思決定 |
+| Framework | Business decision |
 | --- | --- |
-| Corporate Management の集中戦略・VRIO・提携 | 台湾の茶に集中。生産者、團購主、現地販売パートナーが再利用できる商品台帳、仕入れ判断、採算精算、改善履歴を蓄積する。提携先ごとに責任、締切、データ利用条件を決める。 |
-| Business Model Innovation の顧客価値提案・Activity System | 制作で使う商品情報を團購に再利用し、團購で得る販売結果を次の商品改良へ戻す。制作、開催、分析の費用と提供価値をそれぞれ見積もる。 |
-| Platform Economics のコールドスタート・二面市場 | 既存の團購主と販売システムで第1回を動かす。生産者と團購主が繰り返し参加し、供給と募集の両側に追加価値が出た段階でマッチングを製品化する。 |
-| Finance III の感応度・リスク | 最小ロット、成立数量、為替、輸入配送費、取消・返品を織り込み、生産者・台湾の販売者・Hubの採算を別に見る。 |
+| Corporate Management focus strategy, VRIO, and alliances | Focus on tea in Taiwan. Build reusable product records, purchasing decisions, margin reconciliations, and improvement histories. Agree on roles, deadlines, and data-use terms with each partner. |
+| Business Model Innovation customer value proposition and activity system | Reuse storefront product data in group buys and use campaign results for the next product improvement. Estimate the costs and customer value of development, operations, and analysis separately. |
+| Platform Economics cold start and two-sided markets | Run the first campaign with existing organizers and sales tools. Build a matching product once producers and organizers participate repeatedly and both sides see additional value. |
+| Finance III sensitivity and risk | Model minimum order quantities, campaign thresholds, exchange rates, import and delivery costs, cancellations, and returns. Assess producer, Taiwanese retailer, and Seller Hub margins separately. |
