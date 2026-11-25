@@ -1,0 +1,56 @@
+{
+  "store": "tea-fulfillment-fixture.myshopify.com",
+  "order": {
+    "id": "gid://shopify/Order/900001",
+    "name": "#DEMO-1001",
+    "test": true,
+    "updatedAt": "2026-11-26T00:00:00.000Z",
+    "cancelledAt": null,
+    "displayFinancialStatus": "PAID",
+    "displayFulfillmentStatus": "UNFULFILLED",
+    "currentSubtotalPriceSet": { "shopMoney": { "amount": "1980", "currencyCode": "JPY" } },
+    "currentShippingPriceSet": { "shopMoney": { "amount": "870", "currencyCode": "JPY" } },
+    "shippingAddress": {
+      "firstName": "購入者",
+      "lastName": "テスト",
+      "countryCodeV2": "JP",
+      "zip": "100-0001",
+      "province": "東京都",
+      "provinceCode": "JP-13",
+      "city": "千代田区",
+      "address1": "架空テスト町1-1-1",
+      "address2": null,
+      "phone": null
+    }
+  },
+  "lines": [
+    {
+      "id": "gid://shopify/LineItem/900002",
+      "sku": "TSU-SENCHA-80",
+      "title": "宇治 煎茶 80g",
+      "currentQuantity": 1,
+      "unfulfilledQuantity": 1,
+      "requiresShipping": true
+    }
+  ],
+  "fulfillmentOrders": [
+    {
+      "id": "gid://shopify/FulfillmentOrder/900003",
+      "status": "OPEN",
+      "requestStatus": "UNSUBMITTED",
+      "assignedLocation": {
+        "location": { "id": "gid://shopify/Location/900004", "isFulfillmentService": false }
+      },
+      "lines": [
+        {
+          "id": "gid://shopify/FulfillmentOrderLineItem/900005",
+          "sku": "TSU-SENCHA-80",
+          "productTitle": "宇治 煎茶 80g",
+          "remainingQuantity": 1,
+          "requiresShipping": true,
+          "lineItem": { "id": "gid://shopify/LineItem/900002" }
+        }
+      ]
+    }
+  ]
+}

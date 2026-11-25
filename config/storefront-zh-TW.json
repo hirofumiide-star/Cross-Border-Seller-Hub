@@ -1,0 +1,248 @@
+{
+  "schemaVersion": 1,
+  "status": "prepared-not-applied",
+  "preparedDate": "2026-11-26",
+  "store": "uji-tsukino-sabo-demo.myshopify.com",
+  "apiVersion": "2026-10",
+  "sourceLocale": "ja",
+  "targetLocale": "zh-TW",
+  "targetLocaleName": "繁體中文（台灣）",
+  "sourceEvidence": {
+    "catalog": "Tsukino_Tea_Shopify_Starter.zip / tsukino-tea-products.csv",
+    "storefrontText": "Japanese text saved to the Shopify demo store in this conversation",
+    "liveTranslatableContentRead": false,
+    "digestsFetched": false
+  },
+  "preserve": {
+    "shopName": "宇治 月野茶房",
+    "currency": "JPY",
+    "prices": true,
+    "skus": true,
+    "productHandles": true,
+    "productQuantities": true,
+    "demoNotices": true,
+    "japaneseSourceContent": true
+  },
+  "localePlan": {
+    "enableLocale": "zh-TW",
+    "publishAfterContentVerification": true,
+    "shopPrimaryLocale": "ja",
+    "changeShopPrimaryLocale": false,
+    "preferredDisplayLocale": "zh-TW",
+    "displayMethod": "Publish zh-TW translations, then set the relevant domain web presence's defaultLocale to zh-TW if supported. Preserve Japanese as an alternate locale. Otherwise use the verified localized storefront URL.",
+    "webPresenceId": null,
+    "localizedUrl": null,
+    "note": "Changing the shop's primary language is a different operation. Shopify states that switching the shop default language deletes translations for the newly selected language without replacing source content. Do not perform that switch after registering these translations."
+  },
+  "products": [
+    {
+      "productId": "15532011421949",
+      "resourceId": "gid://shopify/Product/15532011421949",
+      "sku": "TSU-SENCHA-80",
+      "handle": "uji-sencha-80g",
+      "price": { "amount": "1980", "currency": "JPY" },
+      "title": {
+        "translationKey": "title",
+        "source": "宇治 煎茶 80g",
+        "translated": "宇治煎茶 80g"
+      },
+      "bodyHtml": {
+        "translationKey": "body_html",
+        "source": "<p>爽やかな香りとすっきりとした甘み。急須で楽しむ毎日のお茶です。</p><p>内容量 80g。デモ商品です。</p>",
+        "translated": "<p>香氣清新，甘甜爽口。適合用茶壺沖泡、每天享用的日本茶。</p><p>淨重 80g。此為示範商品。</p>"
+      },
+      "metaDescription": {
+        "translationKey": "meta_description",
+        "source": null,
+        "sourceStatus": "not-observed",
+        "translated": "宇治 月野茶房的宇治煎茶，清新茶香與爽口甘甜，適合每日用茶壺沖泡。淨重 80g。此為示範商品，售價以日圓（JPY）標示。",
+        "applyRule": "Read the current translatableContent entry and digest before applying. If meta_description is not exposed, leave this as prepared SEO copy and report it as unapplied."
+      }
+    },
+    {
+      "productId": "15532014698749",
+      "resourceId": "gid://shopify/Product/15532014698749",
+      "sku": "TSU-MATCHA-30",
+      "handle": "uji-matcha-30g",
+      "price": { "amount": "2800", "currency": "JPY" },
+      "title": {
+        "translationKey": "title",
+        "source": "宇治 抹茶 30g",
+        "translated": "宇治抹茶 30g"
+      },
+      "bodyHtml": {
+        "translationKey": "body_html",
+        "source": "<p>きめ細かな宇治のお茶の粉末。お点前や抹茶ラテに。</p><p>内容量 30g。デモ商品です。</p>",
+        "translated": "<p>質地細緻的宇治抹茶粉，適合茶道沖泡或製作抹茶拿鐵。</p><p>淨重 30g。此為示範商品。</p>"
+      },
+      "metaDescription": {
+        "translationKey": "meta_description",
+        "source": null,
+        "sourceStatus": "not-observed",
+        "translated": "宇治 月野茶房的宇治抹茶，質地細緻，適合茶道沖泡或製作抹茶拿鐵。淨重 30g。此為示範商品，售價以日圓（JPY）標示。",
+        "applyRule": "Read the current translatableContent entry and digest before applying. If meta_description is not exposed, leave this as prepared SEO copy and report it as unapplied."
+      }
+    },
+    {
+      "productId": "15532017746173",
+      "resourceId": "gid://shopify/Product/15532017746173",
+      "sku": "TSU-HOJICHA-60",
+      "handle": "uji-hojicha-60g",
+      "price": { "amount": "1680", "currency": "JPY" },
+      "title": {
+        "translationKey": "title",
+        "source": "宇治 ほうじ茶 60g",
+        "translated": "宇治焙茶 60g"
+      },
+      "bodyHtml": {
+        "translationKey": "body_html",
+        "source": "<p>茶葉を焙じた香ばしさと軽やかな後味。食事のあとにも。</p><p>内容量 60g。デモ商品です。</p>",
+        "translated": "<p>茶葉經烘焙後散發焙香，餘韻清爽，餐後也適合來一杯。</p><p>淨重 60g。此為示範商品。</p>"
+      },
+      "metaDescription": {
+        "translationKey": "meta_description",
+        "source": null,
+        "sourceStatus": "not-observed",
+        "translated": "宇治 月野茶房的宇治焙茶，帶有茶葉烘焙的香氣與清爽餘韻，餐後也適合享用。淨重 60g。此為示範商品，售價以日圓（JPY）標示。",
+        "applyRule": "Read the current translatableContent entry and digest before applying. If meta_description is not exposed, leave this as prepared SEO copy and report it as unapplied."
+      }
+    },
+    {
+      "productId": "15532019089661",
+      "resourceId": "gid://shopify/Product/15532019089661",
+      "sku": "TSU-TASTING-3",
+      "handle": "uji-tea-tasting-set",
+      "price": { "amount": "3800", "currency": "JPY" },
+      "title": {
+        "translationKey": "title",
+        "source": "宇治のお茶 飲み比べセット",
+        "translated": "宇治茶三款品飲組"
+      },
+      "bodyHtml": {
+        "translationKey": "body_html",
+        "source": "<p>煎茶・抹茶・ほうじ茶の少量セット。香りと味わいを飲み比べられます。</p><p>3種セット。デモ商品です。</p>",
+        "translated": "<p>煎茶、抹茶與焙茶的小份量組合，讓您比較三款茶的香氣與風味。</p><p>三款茶組合。此為示範商品。</p>"
+      },
+      "metaDescription": {
+        "translationKey": "meta_description",
+        "source": null,
+        "sourceStatus": "not-observed",
+        "translated": "宇治 月野茶房的三款品飲組，內含煎茶、抹茶與焙茶的小份量組合，一次比較不同茶香與風味。此為示範商品，售價以日圓（JPY）標示。",
+        "applyRule": "Read the current translatableContent entry and digest before applying. If meta_description is not exposed, leave this as prepared SEO copy and report it as unapplied."
+      }
+    }
+  ],
+  "theme": {
+    "themeId": "216122097917",
+    "themeName": "Rise",
+    "resourceIdHint": "gid://shopify/OnlineStoreTheme/216122097917",
+    "discovery": "Read the active ONLINE_STORE_THEME resource and its nested theme resources. Match the current source value and location, then use the returned resourceId, key and digest. The keys below are semantic labels, not Shopify translation keys.",
+    "translationMatches": [
+      {
+        "label": "announcement",
+        "location": "announcement bar",
+        "translationKey": null,
+        "source": "宇治 月野茶房 ｜ 体験用デモストア",
+        "translated": "宇治 月野茶房｜體驗用示範商店"
+      },
+      {
+        "label": "heroHeading",
+        "location": "home page slideshow heading",
+        "translationKey": null,
+        "source": "毎日を彩る、宇治のお茶。",
+        "translated": "用宇治茶香，點綴每一天。"
+      },
+      {
+        "label": "heroDescription",
+        "location": "home page slideshow subheading",
+        "translationKey": null,
+        "source": "煎茶、抹茶、ほうじ茶。香りと味わいを楽しむ、月野茶房の日本茶。",
+        "translated": "煎茶、抹茶、焙茶。品味月野茶房日本茶的香氣與滋味。"
+      },
+      {
+        "label": "heroButton",
+        "location": "home page slideshow button label",
+        "translationKey": null,
+        "source": "お茶を選ぶ",
+        "translated": "選購茶品",
+        "preserveDestination": "/collections/all"
+      },
+      {
+        "label": "featuredCollectionHeading",
+        "location": "home page featured collection heading",
+        "translationKey": null,
+        "source": "お茶を選ぶ",
+        "translated": "選購茶品"
+      },
+      {
+        "label": "featuredCollectionDescription",
+        "location": "home page featured collection description",
+        "translationKey": null,
+        "source": "毎日の一杯から、贈りものまで。香りで選ぶ4つのお茶。",
+        "translated": "從日常的一杯茶到送禮心意，依照喜愛的香氣，探索四款茶品。"
+      }
+    ]
+  },
+  "navigation": {
+    "menuId": "277404287229",
+    "menuHandle": "main-menu",
+    "resourceIdHint": "gid://shopify/Menu/277404287229",
+    "discovery": "Fetch the menu and nested LINK translatable resources. Translate each link title on its returned resourceId. Translating MENU.title alone does not translate the visible link labels.",
+    "links": [
+      { "resourceId": null, "translationKey": "title", "source": "ホーム", "translated": "首頁", "preserveDestination": "/" },
+      { "resourceId": null, "translationKey": "title", "source": "お茶一覧", "translated": "所有茶品", "preserveDestination": "/collections/all" },
+      { "resourceId": null, "translationKey": "title", "source": "お問い合わせ", "translated": "聯絡我們", "preserveDestination": "/pages/contact" }
+    ]
+  },
+  "collection": {
+    "collectionId": "515462201597",
+    "resourceId": "gid://shopify/Collection/515462201597",
+    "title": {
+      "translationKey": "title",
+      "source": "Home page",
+      "sourceTextLanguage": "en",
+      "sourceStatus": "observed-admin-title; verify API value and locale",
+      "translated": "精選茶品"
+    },
+    "note": "The visible home-page collection heading and description are theme section settings and are translated separately."
+  },
+  "systemLabelChecks": {
+    "purpose": "QA reference for the enabled zh-TW theme and checkout locale. Discover actual theme locale keys before registering overrides; these are not API payloads.",
+    "labels": [
+      { "source": "カートに追加する", "translated": "加入購物車" },
+      { "source": "カート", "translated": "購物車" },
+      { "source": "購入手続きに進む", "translated": "前往結帳" },
+      { "source": "買い物を続ける", "translated": "繼續購物" },
+      { "source": "検索", "translated": "搜尋" },
+      { "source": "通常価格", "translated": "售價" },
+      { "source": "数量", "translated": "數量" },
+      { "source": "メールアドレス", "translated": "電子郵件地址" },
+      { "source": "お届け先", "translated": "收件地址" },
+      { "source": "送料", "translated": "運費" },
+      { "source": "合計", "translated": "總計" }
+    ]
+  },
+  "applicationRules": [
+    "Verify the exact myshopify.com host and the active theme before any write.",
+    "Fetch current source values, locale, resource IDs and translatableContent digests. Do not invent or reuse stale digests.",
+    "Use translationsRegister with locale zh-TW. Leave marketId unset for ordinary locale-wide translations.",
+    "If a supplied source value differs from current store content, report the mismatch instead of overwriting an unrelated translation.",
+    "The same Japanese text appears in both hero and featured collection settings; identify both actual theme entries.",
+    "Do not translate product handles, SKU codes, prices or currency. Do not change shipping destinations or activate Taiwan shipping as part of this language update.",
+    "Do not guess missing menu-link IDs, theme keys, web-presence IDs, meta-description source text or per-item quantities for the tasting set.",
+    "Publish the locale after registering and reading back translations; verify the resulting localized storefront, product pages, cart and checkout.",
+    "Keep applied status false until API or browser evidence confirms actual changes."
+  ],
+  "applied": false,
+  "officialReferences": [
+    "https://shopify.dev/docs/apps/build/markets/manage-translated-content",
+    "https://shopify.dev/docs/api/admin-graphql/2026-10/queries/availableLocales",
+    "https://shopify.dev/docs/api/admin-graphql/2026-10/mutations/shopLocaleEnable",
+    "https://shopify.dev/docs/api/admin-graphql/2026-10/mutations/shopLocaleUpdate",
+    "https://shopify.dev/docs/api/admin-graphql/2026-10/queries/translatableResource",
+    "https://shopify.dev/docs/api/admin-graphql/2026-10/mutations/translationsRegister",
+    "https://shopify.dev/docs/api/admin-graphql/2026-10/enums/TranslatableResourceType",
+    "https://shopify.dev/docs/api/admin-graphql/2026-10/mutations/webPresenceUpdate",
+    "https://help.shopify.com/en/manual/international/languages/manage-languages"
+  ]
+}

@@ -168,6 +168,35 @@ dialog::backdrop { background:#102b22a1 }
 .cart-totals strong { color:var(--ink); font-size:1.12rem }
 .receipt { border:1px solid #cedac9; padding:15px 17px; border-radius:10px; margin-top:18px; background:#edf3e8 }
 .receipt .row-actions { justify-content:flex-start; margin-top:9px }
+.fulfillment-summary h2 { margin-top:9px; overflow-wrap:anywhere }
+.fulfillment-upload input { width:min(335px,100%); font-size:.82rem }
+.fulfillment-error { color:var(--rose); font-size:.85rem; margin-top:9px }
+.fulfillment-error:empty { display:none }
+.fulfillment-connections { display:flex; flex-wrap:wrap; gap:10px 25px; margin:5px 0 16px }
+.fulfillment-connections p { display:flex; align-items:center; gap:9px; font-size:.85rem }
+.fulfillment-counts { margin-top:9px }
+.fulfillment-counts .tile { background:#f5f7f0 }
+.fulfillment-counts .tile dd { font-size:1.7rem }
+.fulfillment-section-head { margin:22px 0 12px }
+.fulfillment-orders { display:grid; gap:13px }
+.fulfillment-order .panel-head { gap:8px 15px }
+.fulfillment-order h3 { display:flex; flex-wrap:wrap; align-items:center; gap:9px; font-size:1.05rem }
+.fulfillment-progress { list-style:none; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; padding:0; margin:8px 0 15px }
+.fulfillment-progress li { min-width:0; border:1px solid var(--border); border-top:3px solid #b9c7b6; border-radius:7px; background:#f5f6f0; padding:10px 12px }
+.fulfillment-progress li.complete { border-top-color:#50815e; background:#edf4e5 }
+.fulfillment-progress strong { display:block; font-size:.84rem }
+.fulfillment-progress span { display:block; font-size:.78rem; color:var(--quiet); margin-top:3px }
+.fulfillment-alert,.fulfillment-note { font-size:.83rem; margin:8px 0 14px; padding:9px 12px; border-radius:6px; background:#faedd5; color:#714712 }
+.fulfillment-alert { background:#f8e9e4; color:var(--rose) }
+.fulfillment-details { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px 18px; margin:10px 0 15px }
+.fulfillment-details dt { font-size:.75rem; color:var(--quiet) }
+.fulfillment-details dd { margin:3px 0 0; font-size:.9rem; font-weight:650; overflow-wrap:anywhere }
+.fulfillment-details small { display:block; font-size:.74rem; font-weight:400; color:var(--quiet) }
+.fulfillment-tracking { display:block; overflow-wrap:anywhere }
+.fulfillment-identifiers { font-size:.76rem; color:var(--quiet); padding-top:10px; border-top:1px solid var(--border) }
+.fulfillment-identifiers summary { cursor:pointer }
+.fulfillment-identifiers p { margin-top:8px; overflow-wrap:anywhere }
+.fulfillment-identifiers ul { margin-block:8px 0; padding-left:20px }
 @media (max-width:1100px) {
   .shell { grid-template-columns:178px minmax(0,1fr) }
   .sidebar { padding-inline:11px }
@@ -199,6 +228,11 @@ dialog::backdrop { background:#102b22a1 }
   .hero-visual { min-height:clamp(180px,54vw,250px) }
   .store-links .button { padding-inline:8px }
   .chart-labels { font-size:.64rem }
+  .fulfillment-details { grid-template-columns:repeat(2,minmax(0,1fr)); gap:11px }
+  .fulfillment-progress { gap:5px }
+  .fulfillment-progress li { padding:8px }
+  .fulfillment-progress strong { font-size:.75rem }
+  .fulfillment-progress span { font-size:.72rem }
 }
 @media (max-width:335px) {
   .product-grid { grid-template-columns:1fr }

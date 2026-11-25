@@ -1,0 +1,9 @@
+# Local credentials and generated provider data
+.env
+.env.*
+!.env.example
+.runtime/
+reports/
+*.log
+node_modules/
+.DS_Store

@@ -1,6 +1,12 @@
 # Sandbox setup and access checks
 
-Use a Shopify Dev store for storefront, checkout and test orders, and OPENLOGI's demo environment for warehouse API verification. Keep credentials in a local secret store or a restricted environment file outside the repository. Use fictional customer data throughout.
+Use a Shopify Dev store for storefront, checkout and test orders, and OPENLOGI's demo environment for warehouse API verification. Keep credentials in a local secret store or a restricted environment file excluded from version control. Use fictional customer data throughout.
+
+## Current implementation
+
+The Shopify development store `uji-tsukino-sabo-demo.myshopify.com` and its first paid test checkout are available. The new [one-order fulfillment demo](fulfillment-demo.md) implements a fixture run and a separate demo-API path with suspended shipment creation and read-back. It does not implement Shopify fulfillment writeback or simulate warehouse inventory through an undocumented API. Provider credentials and live API verification are still pending.
+
+Use `node scripts/run-fulfillment-demo.mjs --mode fixture --output .runtime/fulfillment-report.json` to exercise the local path. Open the MVP's **物流連携** view to inspect the generated report. The commands below for the original sandbox access checker remain read-only.
 
 ## Shopify Dev store
 
@@ -15,7 +21,7 @@ References: [Dev stores](https://shopify.dev/docs/apps/build/stores/development-
 
 1. Open [demo token management](https://app-demo.openlogi.com/portal/tokens). A demo portal account with token management permissions is required. If access or demo-account registration is unavailable, ask [OPENLOGI support](https://page.openlogi.com/contact) for demo account provisioning.
 2. Issue a demo token once access is available. Use API v1.6 with `https://api-demo.openlogi.com/api`.
-3. Check whether the official Shopify app can select the OPENLOGI demo environment before installing or connecting it. If the app cannot select that environment, use the Seller Hub adapter for the demo and leave native automatic dispatch disabled.
+3. Check the official Shopify app's current availability and whether it supports the OPENLOGI demo environment before installing or connecting it. On 2026-11-26 its Shopify App Store listing displayed that it was not currently available, while OPENLOGI's site continued to describe Shopify integration. The new CLI uses the demo API directly; it does not require this app. Keep a single writer for shipment requests.
 4. Confirm US food-lane and dispatch simulation support independently from token access. A successful item read verifies account access only.
 
 References: [OPENLOGI API v1.6](https://api.openlogi.com/doc/api.html) · [Official Shopify app](https://apps.shopify.com/openlogi?locale=ja)
