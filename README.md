@@ -9,6 +9,7 @@ The first pilot takes **Japanese tea to Taiwan**. It tests paid website developm
 | Document | What it covers |
 | --- | --- |
 | [Business plan](docs/business-plan.md) | Target customers, three revenue streams, Taiwan group-buy operations, unit economics, and the 90-day pilot |
+| [Broker portal MVP and operating-model review](docs/broker-portal-mvp.md) | Importer mandate, document handoff, broker actions, and prerequisites for a live Taiwan pilot |
 | [Operating model and partner roles](docs/operating-model.md) | Recruitment and ordering, consolidated international shipping, individual delivery in Taiwan, and payments |
 | [Website development and subsidies](docs/website-service-and-subsidies.md) | Package pricing, program eligibility, and work before and after a grant award |
 | [Market feedback MVP](docs/market-feedback-mvp.md) | Traditional Chinese customer feedback, co-purchases, pricing tests, referral tracking, and success measures |
@@ -27,6 +28,10 @@ Download the source and open `mvp/index.html` in a browser, or run `python3 -m h
 The demo uses a fixed seed to generate 7,696 fictional orders. The initial 30-day view contains 2,462 valid orders. Net merchandise sales exclude canceled and refunded orders. Freight ratios and the amount remaining after product and shipping costs use completed orders with actual freight costs. Rules recalculate the metrics and suggestions when inputs change. The storefront simulates checkout in the browser and saves test orders and actions in local storage.
 
 The **Shopify import** screen can load test orders read from one Shopify development store by following the [read-only import guide](docs/shopify-test-import.md). Use the fictional sample option to try the screen without a store.
+
+### Taiwan broker portal MVP
+
+Open [the broker portal](mvp/index.html#broker) or select the broker portal in the sidebar. Switch between Seller Hub and the Taiwanese broker to try the importer mandate check, document handoff, information requests, filing, optional sampling, and release to the Taiwan receiving hub. The workflow uses a fictional campaign and produces no external submissions. See the [workflow and operating-model review](docs/broker-portal-mvp.md).
 
 ## D2C fulfillment sandbox
 

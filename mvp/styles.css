@@ -203,3 +203,21 @@ dialog::backdrop { background:#102b22a1 }
 @media (max-width:335px) {
   .product-grid { grid-template-columns:1fr }
 }
+
+.broker-details,.broker-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:15px }
+.broker-details dl { display:grid; gap:8px; padding:12px; background:var(--pale); border-radius:8px }
+.broker-details dl div { display:grid; gap:2px }
+.broker-details dt { font-size:.74rem; color:var(--quiet) }
+.broker-details dd { margin:0; font-size:.9rem; font-weight:630; overflow-wrap:anywhere }
+.broker-note { display:grid; gap:6px; font-size:.85rem; font-weight:650; margin-block:0 10px }
+.broker-note textarea { width:100%; resize:vertical; padding:8px; border:1px solid var(--border); border-radius:8px; font:inherit }
+.broker-note textarea:focus-visible { outline:3px solid #407e50; outline-offset:2px }
+.broker-actions { justify-content:flex-start }
+.broker-error { color:var(--rose) }
+.broker-error:empty { display:none }
+.broker-events { list-style:none; margin:0; padding:0; font-size:.82rem }
+.broker-events li { padding:8px 0; border-bottom:1px solid var(--border); overflow-wrap:anywhere }
+.broker-events li:last-child { border:0 }
+.broker-events span { display:block; color:var(--quiet); font-size:.73rem }
+.broker-events p { margin-block:4px 0 }
+@media(max-width:680px) { .broker-details,.broker-grid { grid-template-columns:1fr } }

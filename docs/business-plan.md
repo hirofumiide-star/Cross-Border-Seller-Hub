@@ -76,6 +76,8 @@ Producers can buy website development independently of any grant. Use the existi
 
 ### Food import preparation and coordination
 
+[Broker portal MVP and operating-model review](broker-portal-mvp.md)
+
 1. **Before the first campaign for each SKU.** Seller Hub gathers the ingredient list, manufacturer and origin details, and packaging label. The Taiwanese importer and its broker confirm whether they can handle the product, its local commodity code and labeling, the required documents, and the costs and time for standard clearance or sampling.
 2. **For each shipment.** Seller Hub coordinates the document handoff and tracks progress. The Taiwanese retail partner acts as the registered food importer and authorizes the broker or carrier's brokerage team to file the customs declaration and food inspection application. Taiwan FDA or its authorized inspection body decides whether to inspect or sample the shipment. Consolidated shipping can still require separate inspection applications for different products.
 3. **For repeat campaigns.** Reuse verified product information and reconfirm changes to ingredients, labeling, manufacturer, or origin. Make the required filings for each shipment. Include product preparation and coordination in the group-buy operating service. Quote third-party charges separately. [JETRO tea import procedures for Taiwan](https://www.jetro.go.jp/world/asia/tw/foods/exportguide/greentea.html) · [Taiwan Food and Drug Administration rules for imported food inspections](https://www.fda.gov.tw/ENG/lawContent.aspx?cid=5094&id=3068)

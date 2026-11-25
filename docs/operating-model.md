@@ -2,6 +2,8 @@
 
 The first campaign offers one Japanese tea set to the existing communities of two Taiwanese group-buy organizers. Seller Hub builds the product page on Shopify or a similar platform, coordinates the local sales pilot, and reports results.
 
+[Test the broker portal and review the production prerequisites](broker-portal-mvp.md).
+
 ## Before recruitment and at shipment
 
 - **Before the first campaign for a SKU:** Seller Hub gathers ingredients, manufacturer and origin details, and packaging labels. The Taiwanese importer and broker confirm acceptance, labeling and document requirements, cost, and timing before recruitment.
