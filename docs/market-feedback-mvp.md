@@ -1,36 +1,36 @@
-# 商品オーナー向け市場フィードバックのMVP
+# Market Feedback MVP for Producers
 
-台湾團購を1回実施するたびに、生産者が「何が売れ、何で利益が変わり、次回どの施策を試すか」を判断する。初期の提供物は締め後の日本語レポートと次回施策の合意。運用が定着したら既存ダッシュボードから見られるようにする。
+After each Taiwan group-buy campaign, producers review what sold, what affected the margin, and what to try next. Start with a post-campaign report in Japanese and agreement on one action for the next campaign. Make the report available in the existing dashboard once the workflow is established.
 
-## 最初の1画面
+## First dashboard view
 
-| 表示 | 必要な入力 | 表示する結果 |
+| Section | Required inputs | What it shows |
 | --- | --- | --- |
-| 募集と出荷実績 | キャンペーンID、團購主ID、SKU、開始・締切、成立数量、決済・取消・返金・配送の各状態 | 成立／不成立、成立数量との差、有効注文数、配送完了数、返金数。團購主別の報酬は対象注文に基づき精算する。 |
-| SKU別採算 | 税抜売上、仕入れ・輸入配送・決済・現地対応・報酬等、固定費、換算日とレート | 見積もりと実績の差、注文・セット・キャンペーン単位の利益。見積額と確定額を区別する。 |
-| 繁体字VOC | 同意・許諾を得た回答、問い合わせ、返品理由と取得元、集計対象期間 | 対象者と分母、テーマ別件数、匿名化した原文と日本語訳、反対の意見。回答者の割合は回答件数を分母にする。 |
-| 次回施策 | 上記データと販促条件、施策原価、生産者の判断 | 提案1件、根拠、担当、費用、実施可否、次回の評価指標。承認した施策と次回の実績を同じレコードで追う。 |
+| Campaign and delivery results | Campaign ID, organizer ID, SKU, start and close dates, minimum quantity, and payment, cancellation, refund, and delivery status | Whether the campaign met its threshold, the gap to that threshold, valid orders, deliveries, and refunds. Settle organizer fees using eligible orders. |
+| Profitability by SKU | Net sales before tax, product, import, delivery, payment, support and commission costs, fixed costs, and currency conversion date and rate | Estimated versus actual figures and profitability per order, set, and campaign. Label estimates and final figures separately. |
+| Traditional Chinese customer feedback (VOC) | Survey responses with consent or permission, inquiries, return reasons, source, and reporting period | Who responded, the denominator, counts by theme, anonymized original text and Japanese translations, and differing views. Use the number of respondents as the denominator for respondent percentages. |
+| Next campaign action | Results above, promotion terms, cost of the proposed action, and producer decision | One proposed action, evidence, owner, cost, approval decision, and success measures. Track the approved action and next campaign results in the same record. |
 
-**架空の表示例。** 配送100件のうちアンケート回答が24件あり、そのうち7件が「水出しの方法が分からない」と回答。次回は、繁体字の淹れ方カードを試す。配送完了件数を分母にした淹れ方の問い合わせ率と、カード費控除後の利益を比較する。条件差と回答数を明示し、可能なら同じ回の中で条件をそろえて比較する。
+**Illustrative example.** Of 100 completed deliveries, 24 customers responded to a survey and seven said they did not know how to cold-brew the tea. Test a brewing card in Traditional Chinese next time. Compare brewing inquiries per completed delivery and contribution after card costs. Document differences in conditions and the number of responses. Compare equivalent groups in the same campaign when possible.
 
-## Geminiの4つの提案をどう使うか
+## Applying four suggestions from Gemini
 
-| 提案 | MVPでの適用 |
+| Suggestion | MVP treatment |
 | --- | --- |
-| 1. 購買×VOC | キャンペーン別に回答、問い合わせ、返品理由を翻訳・分類する。商品改良案に、確認できる匿名の根拠と分母を付ける。 |
-| 2. 併買・バンドル発見 | 複数SKUを実際に選べる開催で、両SKUが購入可能だった注文を分母に、同時購入を計算する。募集のための需要集約と、梱包実績、顧客の併買はそれぞれ記録する。 |
-| 3. 価格・コスト | 公開価格、為替、取引先見積もりは日時と条件を付けて記録する。自社の利益を再計算し、価格は条件をそろえた販売テストで判断する。 |
-| 4. AI検索・GEO | 初期は團購主別の募集流入を優先する。ブランドサイトでは取得可能な参照元・UTMを記録し、繁体字の商品情報の見直しに使う。訪問者のAIプロンプトの取得や推定を要件に含めない。 [OpenAIの参照元計測に関する案内](https://help.openai.com/en/articles/12627856-publishers-and-developers-faq) |
+| 1. Purchase data and customer feedback | Translate and categorize survey responses, inquiries, and return reasons by campaign. Show verifiable anonymized evidence and the denominator alongside each product improvement proposal. |
+| 2. Co-purchases and bundles | Calculate co-purchases in campaigns where buyers could choose multiple SKUs. Use orders where both SKUs were available as the denominator. Record pooled demand, actual packing, and customer co-purchases separately. |
+| 3. Prices and costs | Timestamp public prices, exchange rates, and supplier quotes and record the terms. Recalculate margins and use comparable sales tests to assess prices. |
+| 4. AI search and GEO | Start with incoming traffic by group-buy organizer. On the brand site, use available referrer and UTM data to review product information in Traditional Chinese. Visitor prompts to AI services are outside the scope. [OpenAI FAQ on referral tracking](https://help.openai.com/en/articles/12627856-publishers-and-developers-faq) |
 
-## データと判断
+## Data and decision-making
 
-1. 初回は台湾パートナーの許諾を得た注文・精算データ、團購主経由のアンケート、輸入配送の費用明細を取り込む。CSVで回し、受注・取消・配送・返金を注文IDで照合する。
-2. 件数、利益、比率はルールで計算し、AIは翻訳、分類、提案文に使う。許諾された情報から個人を特定する情報を除き、入力を必要な範囲に絞る。生産者へのレポートは人が数値、匿名化、表現を確認してから提供する。
-3. 生産者が次回の施策を1件選び、指標と比較条件を決める。再開催後に実施費と結果を記録し、再契約の意思を確認する。
-4. 事業者横断の比較やAI学習は、データ取得元の規約、利用目的、権限等を確認できた場合に再評価する。Shopify API由来データの競合ベンチマークとAI学習には規約上の制約がある。 [Shopify API利用規約](https://www.shopify.com/legal/api-terms)
+1. Use order and settlement data authorized by the Taiwan partner, surveys collected through organizers, and itemized import and delivery costs. Start with CSV files and reconcile orders, cancellations, deliveries, and refunds by order ID.
+2. Calculate counts, margins, and ratios with rules. Use AI for translation, categorization, and drafting suggestions. Remove identifying information from authorized data and limit inputs to what the analysis requires. Have a person review the numbers, anonymization, and wording before sharing reports with producers.
+3. The producer selects one action and agrees on the metric and conditions for comparison. Record implementation cost and results after the repeat campaign and ask whether the producer wants to renew.
+4. Revisit cross-seller comparisons and AI training once source terms, permitted purposes, and permissions are clear. Shopify's API terms restrict competitive benchmarking and AI training with API-derived data. [Shopify API terms](https://www.shopify.com/legal/api-terms)
 
-## MVPの受け入れ基準
+## MVP acceptance criteria
 
-- 成立・不成立、返金、配送完了を架空データで再現し、二重計上なしで報酬・採算が照合できる。
-- 日本語レポートから各数値の対象期間・分母・出所が分かり、繁体字の根拠を確認できる。
-- 提案の承認、実施、次回結果を追える。生産者が有料で第2回を開催し、施策を1件実施して結果をレビューすることを事業検証の基準とする。
+- Reproduce a successful campaign, an unsuccessful campaign, refunds, and completed deliveries with fictional data. Reconcile fees and margins without double counting.
+- The Japanese-language report identifies each measure's period, denominator, and source, and readers can check the underlying evidence in Traditional Chinese.
+- Track action approval, implementation, and the next campaign's results. For business validation, the producer pays for a second campaign, implements one action, and reviews its outcome.

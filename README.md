@@ -1,32 +1,37 @@
 # Cross-Border Seller Hub
 
-**日本のいい商品を、海外のお客様へ。**
+**Bring standout Japanese products to overseas customers.**
 
-日本茶・地域食品メーカー向けに、Shopifyで海外向け通販サイトを制作し、台湾の共同購入（團購）を通じて現地のお客様とつなぎます。物流・輸入販売パートナーと集荷からお届けまでを手配し、売れ行きとお客様の声を次の商品改善に活かせるよう、作り手へ返します。
+We build Shopify storefronts for Japanese tea and regional food producers and connect them with consumers through group-buy campaigns in Taiwan. We prepare product information for food imports and coordinate customs and delivery with Taiwanese importers, brokers, and carriers. After delivery, we share sales results and customer feedback with producers so they can improve their products.
 
-最初の事業実証は**日本茶 → 台湾**。制作は受託費、團購は開催運営料、販売改善は継続契約を検証する。
+The first pilot takes **Japanese tea to Taiwan**. It tests paid website development, a fee for running group buys, and a recurring service for improving sales.
 
-| ドキュメント | 内容 |
+| Document | What it covers |
 | --- | --- |
-| [事業計画](docs/business-plan.md) | 対象顧客、3段階の収益、台湾團購の商流、採算、90日間の検証 |
-| [ビジネスモデルと役割分担のブロック図](docs/operating-model.md) | 募集・発注、国際一括輸送と台湾の個別配送、決済と報酬 |
-| [制作サービスと補助金](docs/website-service-and-subsidies.md) | 制作パッケージの見積もり、制度の対象条件、交付決定前後の進め方 |
-| [市場フィードバックのMVP](docs/market-feedback-mvp.md) | 繁体字VOC、併買、価格テスト、参照元計測、次回の施策と判定指標 |
+| [Business plan](docs/business-plan.md) | Target customers, three revenue streams, Taiwan group-buy operations, unit economics, and the 90-day pilot |
+| [Broker portal MVP and operating-model review](docs/broker-portal-mvp.md) | Importer mandate, document handoff, broker actions, and prerequisites for a live Taiwan pilot |
+| [Operating model and partner roles](docs/operating-model.md) | Recruitment and ordering, consolidated international shipping, individual delivery in Taiwan, and payments |
+| [Website development and subsidies](docs/website-service-and-subsidies.md) | Package pricing, program eligibility, and work before and after a grant award |
+| [Market feedback MVP](docs/market-feedback-mvp.md) | Traditional Chinese customer feedback, co-purchases, pricing tests, referral tracking, and success measures |
 
-## 日本茶マルチストア分析 MVP
+## Japanese tea multi-store analytics MVP
 
-[分析ダッシュボード](mvp/index.html)と[お茶の販売サンプル](mvp/index.html#store)を追加。操作できる販売サイトは架空の「宇治 月野茶房」1店。分析では、この1店を含む架空のShopify想定36店の注文・配送・レビューを、店舗IDと注文IDで照合する。
+The [analytics dashboard](mvp/index.html) and [sample tea storefront](mvp/index.html#store) share a dataset. The interactive storefront represents one fictional shop, Uji Tsukino Tea House. Analytics match orders, shipments, and reviews by store and order ID across 36 fictional Shopify-style stores, including the sample shop.
 
-ソースをダウンロードして `mvp/index.html` をブラウザーで開くか、リポジトリのルートで `python3 -m http.server 8000` を実行して `http://localhost:8000/mvp/` を開く。
+Download the source and open `mvp/index.html` in a browser, or run `python3 -m http.server 8000` at the repository root and open `http://localhost:8000/mvp/`.
 
-1. **販売分析**で台湾などの市場、期間、店舗を切り替え、売上・配送費・台湾團購の注文を比較する。
-2. **お茶の販売サンプル**で商品をカートに追加し、テスト注文を確定する。台湾向けは注文経路に「台湾團購」を選べる。続けて模擬配送とレビューを登録する。
-3. **分析で確認する**から、テスト注文を含む店舗・市場の集計を見る。**取り込みデータ**で注文・送料・レビューを確認し、選択範囲のCSVを出力できる。
-4. **AIインサイト**で繁体字VOC、併買の分母、価格と配送費、流入経路の根拠を見て、次回の施策を登録する。
+1. In **Sales analytics**, switch the market, period, and store to compare sales, delivery costs, and Taiwan group-buy orders.
+2. In the **sample tea storefront**, add products to the cart and place a test order. For Taiwan, select the Taiwan group-buy sales channel. Then record a simulated delivery and review.
+3. Use the link back to analytics to see the test order in store and market totals. In **Imported data**, inspect orders, shipping charges, and reviews and export the selected range as CSV.
+4. In **AI insights**, review Traditional Chinese customer feedback, co-purchase denominators, price and shipping costs, and referral evidence. Record an action for the next campaign.
 
-初期データは固定シードで生成する7,696件の架空注文。初回表示の直近30日には2,462件の有効注文が含まれる。返金・取消は純商品売上から除外し、配送費率と商品原価・配送費控除後の額は実績配送費を持つ配送完了注文を対象にする。分析と提案は入力に応じてルールで再計算する。販売サンプルはブラウザー内の模擬決済で、テスト注文と施策はローカルストレージに保存する。
+The demo uses a fixed seed to generate 7,696 fictional orders. The initial 30-day view contains 2,462 valid orders. Net merchandise sales exclude canceled and refunded orders. Freight ratios and the amount remaining after product and shipping costs use completed orders with actual freight costs. Rules recalculate the metrics and suggestions when inputs change. The storefront simulates checkout in the browser and saves test orders and actions in local storage.
 
-**Shopify取込**では、別途用意したShopify開発ストア1店のテスト注文を、[手順](docs/shopify-test-import.md)に沿って読み取り専用で取り込める。「架空サンプルを読み込む」で画面だけ試すこともできる。
+The **Shopify import** screen can load test orders read from one Shopify development store by following the [read-only import guide](docs/shopify-test-import.md). Use the fictional sample option to try the screen without a store.
+
+### Taiwan broker portal MVP
+
+Open [the broker portal](mvp/index.html#broker) or select the broker portal in the sidebar. Switch between Seller Hub and the Taiwanese broker to try the importer mandate check, document handoff, information requests, filing, optional sampling, and release to the Taiwan receiving hub. The workflow uses a fictional campaign and produces no external submissions. See the [workflow and operating-model review](docs/broker-portal-mvp.md).
 
 ## Shopify storefront and fulfillment verification
 
@@ -86,7 +91,7 @@ flowchart TD
 
 ### Sandbox metrics
 
-The benchmark screen uses fictional cohorts. Any production use of cross-seller comparisons or AI training requires a review of permitted data sources and purposes. See the [market feedback specification](docs/market-feedback-mvp.md#データと判断).
+The benchmark screen uses fictional cohorts. Any production use of cross-seller comparisons or AI training requires a review of permitted data sources and purposes. See the [market feedback specification](docs/market-feedback-mvp.md#data-and-decision-making).
 
 | Metric | Proposed definition |
 | --- | --- |

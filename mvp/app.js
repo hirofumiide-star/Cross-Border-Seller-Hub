@@ -83,7 +83,7 @@
 
   function activeRoute() {
     const value = location.hash.slice(1);
-    return ['overview', 'insights', 'shops', 'sources', 'shopify', 'fulfillment', 'store'].includes(value) ? value : 'overview';
+    return ['overview', 'insights', 'shops', 'sources', 'shopify', 'fulfillment', 'broker', 'store'].includes(value) ? value : 'overview';
   }
 
   function toast(message) {
@@ -350,6 +350,12 @@
       return;
     }
     document.title = 'Seller Hub | 日本茶の販売分析';
+    if (route === 'broker') {
+      document.title = 'Seller Hub | 通関業者ポータル';
+      content.innerHTML = page('台湾團購', '通関業者ポータル', '日本茶の一括出荷を想定し、輸入者の委任確認から食品報驗・通関後の引き渡しまでを試せます。', BrokerDemo.render(), '模擬案件');
+      BrokerDemo.bind(content, render, toast);
+      return;
+    }
     if (route === 'shopify') {
       content.innerHTML = page('Shopify取込', 'Shopifyテスト注文', '開発ストア1店の注文を読み取り、商品別・入金状態別に確認。ページを再読み込みすると取り込み結果はクリアされます。', ShopifyTestImport.render(), '開発ストア');
       ShopifyTestImport.bind(content, render);
