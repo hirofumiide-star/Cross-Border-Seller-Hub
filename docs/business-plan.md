@@ -41,6 +41,20 @@ OPENLOGI integrates with Shopify and provides inventory storage, packing, and di
 
 Before launch, confirm whether the warehouse accepts Japanese tea, how it handles expiry dates and lots, whether it can dispatch consolidated Taiwan group-buy orders, what it costs, and how it can hand over shipments to the Taiwanese import and retail partner. Obtain written confirmation from OPENLOGI for the first SKU and shipment profile. Ask whether its carrier can arrange Taiwan FDA food inspection filing and sampling support, or transfer the shipment and documents to the importer's nominated broker. Use the logistics partner label and logo once the scope and publishing permission are agreed.
 
+
+#### Logistics decision for the first Taiwan group-buy campaign
+
+The first campaign ships one shelf-stable Japanese tea SKU in a consolidated commercial shipment to a registered Taiwanese food importer. For this volume, the main value of a logistics partner is coordinating the international shipment, Taiwan FDA food inspection filing, customs clearance, and any sampling or hold response through one point of contact. The Taiwanese business remains the importer, and Taiwan FDA or its authorized inspection body carries out any official inspection.
+
+| Provider scope | Decision |
+| --- | --- |
+| OPENLOGI coordinates the route through its carrier or broker, with one contact for documents, quotes, status, and inspection exceptions | Shortlist OPENLOGI for the first campaign, subject to written confirmation for the SKU and a competitive quote. |
+| OPENLOGI stops at warehousing and dispatch in Japan, and Seller Hub must coordinate separately with the Taiwanese broker | Give priority to a carrier, forwarder, or broker-led service that can coordinate both international shipping and Taiwan-side filing and clearance. Reassess OPENLOGI when more producers, Shopify stores, or repeated shipments make inventory and dispatch automation more valuable. |
+
+Obtain written quotes for the same SKU, shipment size, and handoff at the Taiwanese receiving hub. Compare the total cost, documents and contacts required, normal and sampling-case lead times, and who handles holds, storage, and additional inspection charges. Confirm who updates shipment status and who arranges any nominated-broker handoff. OPENLOGI's coverage for this specific shipment remains pending written confirmation.
+
+Use the [broker portal](broker-portal-mvp.md) to record the importer mandate, document handoff, and release status regardless of provider. The receiving hub marks the handoff to Taiwan's local carrier. The campaign delivery service closes for each order when the buyer receives it.
+
 ## Initial market
 
 The long-term target is Greater China. Start with **shelf-stable, single-ingredient Japanese tea for Taiwan**. Look for producers with outdated sites or few pages for international buyers who can fulfill small batches and act on sales feedback. Select SKUs whose import, labeling, and supply requirements the team can verify. Evaluate Hong Kong and other markets after the Taiwan workflow is repeatable.
