@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "purpose": "openlogi-demo-domestic-items",
+  "currency": "JPY",
+  "items": [
+    { "code": "TSU-SENCHA-80", "name": "宇治 煎茶 80g", "price": 1980 },
+    { "code": "TSU-MATCHA-30", "name": "宇治 抹茶 30g", "price": 2800 },
+    { "code": "TSU-HOJICHA-60", "name": "宇治 ほうじ茶 60g", "price": 1680 },
+    { "code": "TSU-TASTING-3", "name": "宇治のお茶 飲み比べセット", "price": 3800 }
+  ]
+}

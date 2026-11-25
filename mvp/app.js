@@ -83,7 +83,7 @@
 
   function activeRoute() {
     const value = location.hash.slice(1);
-    return ['overview', 'insights', 'shops', 'sources', 'shopify', 'broker', 'store'].includes(value) ? value : 'overview';
+    return ['overview', 'insights', 'shops', 'sources', 'shopify', 'fulfillment', 'broker', 'store'].includes(value) ? value : 'overview';
   }
 
   function toast(message) {
@@ -359,6 +359,11 @@
     if (route === 'shopify') {
       content.innerHTML = page('Shopify取込', 'Shopifyテスト注文', '開発ストア1店の注文を読み取り、商品別・入金状態別に確認。ページを再読み込みすると取り込み結果はクリアされます。', ShopifyTestImport.render(), '開発ストア');
       ShopifyTestImport.bind(content, render);
+      return;
+    }
+    if (route === 'fulfillment') {
+      content.innerHTML = page('物流連携', 'テスト注文の物流連携', '注文・出荷依頼・発送結果を確認。サンプルとデモAPIの結果を区別して表示します。', FulfillmentDemoImport.render(), '物流の検証');
+      FulfillmentDemoImport.bind(content, render);
       return;
     }
     if (route === 'shops') {

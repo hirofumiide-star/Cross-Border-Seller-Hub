@@ -33,6 +33,18 @@ The **Shopify import** screen can load test orders read from one Shopify develop
 
 Open [the broker portal](mvp/index.html#broker) or select the broker portal in the sidebar. Switch between Seller Hub and the Taiwanese broker to try the importer mandate check, document handoff, information requests, filing, optional sampling, handoff to the Taiwan receiving hub, and confirmation of final delivery to Taiwan buyers. The workflow uses a fictional campaign and produces no external submissions. See the [workflow and operating-model review](docs/broker-portal-mvp.md).
 
+## Shopify storefront and fulfillment verification
+
+[The 宇治 月野茶房 Shopify dev store](https://uji-tsukino-sabo-demo.myshopify.com/) contains four Japanese tea products and a test checkout. Test order #1001 was completed on November 26, 2026 (JST). Traditional Chinese (`zh-TW`) is now the domain's default display language, with [Japanese available at `/ja`](https://uji-tsukino-sabo-demo.myshopify.com/ja). Product copy, the homepage, navigation and contact page have been translated. The cart, checkout, privacy policy and language switch were verified in the live storefront. The dev store remains password protected; the store owner can also use the admin preview.
+
+The MVP's **物流連携** view imports the CLI's redacted test-order and shipment-request reports. It distinguishes fixture data from OPENLOGI demo API results and separates customer-paid shipping from actual freight costs.
+
+```sh
+node scripts/run-fulfillment-demo.mjs --mode fixture --output .runtime/fulfillment-report.json
+```
+
+The code supports an offline fixture, Shopify dev-store order reads, suspended OPENLOGI demo shipment requests and reconciliation by request identifier. All 27 local tests pass. On November 26, 2026 (JST), the OPENLOGI demo token portal displayed its HTTP 503 maintenance page, so credentialed provider calls remain unverified. Warehouse release and fulfillment write-back to Shopify are not implemented. See the [fulfillment runbook and verification status](docs/fulfillment-demo.md).
+
 ## D2C fulfillment sandbox
 
 The existing Shopify × OPENLOGI demo illustrates parcel-level order consolidation and a U.S. test scenario. The Taiwan business pilot uses campaign-level demand aggregation with a local importer and seller.
