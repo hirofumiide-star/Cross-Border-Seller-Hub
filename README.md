@@ -2,7 +2,7 @@
 
 **Bring standout Japanese products to overseas customers.**
 
-We build Shopify storefronts for Japanese tea and regional food producers and connect them with consumers through group-buy campaigns in Taiwan. We coordinate pickup and delivery with logistics and local import and retail partners, then share sales results and customer feedback with producers so they can improve their products.
+We build Shopify storefronts for Japanese tea and regional food producers and connect them with consumers through group-buy campaigns in Taiwan. We prepare product information for food imports and coordinate customs and delivery with Taiwanese importers, brokers, and carriers. After delivery, we share sales results and customer feedback with producers so they can improve their products.
 
 The first pilot takes **Japanese tea to Taiwan**. It tests paid website development, a fee for running group buys, and a recurring service for improving sales.
 

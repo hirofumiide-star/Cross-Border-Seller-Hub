@@ -2,6 +2,12 @@
 
 The first campaign offers one Japanese tea set to the existing communities of two Taiwanese group-buy organizers. Seller Hub builds the product page on Shopify or a similar platform, coordinates the local sales pilot, and reports results.
 
+## Before recruitment and at shipment
+
+- **Before the first campaign for a SKU:** Seller Hub gathers ingredients, manufacturer and origin details, and packaging labels. The Taiwanese importer and broker confirm acceptance, labeling and document requirements, cost, and timing before recruitment.
+- **For each shipment:** Seller Hub coordinates the handoff and tracks status. The registered Taiwanese food importer authorizes the broker or carrier's brokerage team to file the import declaration and food inspection application. The authority determines whether sampling is needed. [Taiwan FDA import inspection rules](https://www.fda.gov.tw/ENG/lawContent.aspx?cid=5094&id=3068)
+- **For repeat campaigns:** Reuse the product file, reconfirm changes, and make the required shipment filings. Seller Hub includes preparation and coordination in its operating fee. Brokerage, inspection filing, any testing and storage, and delivery costs are quoted separately.
+
 ## Order and shipping flow
 
 ![Order and shipping flow from Taiwanese group-buy organizers through fulfillment in Japan to individual delivery in Taiwan](diagrams/order-and-shipping.png)
@@ -55,11 +61,12 @@ This is the proposed settlement flow for Taiwan. Confirm the contracting party a
 
 | Partner | Role |
 | --- | --- |
-| **Seller Hub** | Build Shopify or other international product pages, coordinate thresholds and delivery dates, reconcile settlement data, and propose improvements for the next campaign. |
+| **Seller Hub** | Build Shopify or other international product pages, prepare product files, coordinate food import filings, campaign thresholds, and delivery dates, reconcile settlement data, and propose improvements for the next campaign. |
 | **Japanese producer** | Provide product information, wholesale pricing, minimum order quantities, and stock or production capacity. Ship the agreed quantity once the campaign qualifies. |
 | **Taiwanese group-buy organizer** | Introduce the product and recruit buyers. If an organizer also handles delivery, agree on the scope and responsibilities before launch. |
 | **Warehouse and international shipping providers** | Collect, store, and pack products and ship the consolidated batch. Assign each provider a leg. |
 | **Taiwanese import and retail partner** | Manage imports and receiving, orders and payments, local delivery arrangements, inquiries, returns, and refunds. |
+| **Customs broker or carrier's brokerage team** | File the import declaration and food inspection application under the importer's authorization and coordinate official sampling if required. |
 | **Taiwanese delivery carrier** | Deliver individual parcels and provide tracking and initial incident reports. |
 
 After each campaign, Seller Hub receives order and delivery results and authorized customer feedback from Taiwan. It reports product-level profitability and the next proposed action to the Japanese producer. [Business plan and unit economics](business-plan.md) · [Market feedback MVP](market-feedback-mvp.md)

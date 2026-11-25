@@ -13,6 +13,7 @@ Updated November 26, 2026
 | International storefront development on Shopify | Set up product pages and a path to purchase in Japanese and Traditional Chinese. Producers with an existing domestic site can start with product pages for overseas customers. |
 | Access to Taiwanese consumers | Partner with local group-buy organizers and test one product set with a defined campaign period and target quantity. |
 | International shipping through partners | Arrange consolidated transport to a receiving hub in Taiwan and individual deliveries to buyers. Confirm the costs, schedules, and points of contact for incidents and returns before dispatch. |
+| Food import preparation and coordination | Seller Hub organizes SKU specifications and Traditional Chinese label drafts, confirms the shipment with the Taiwanese importer and broker, and coordinates the handoff for food inspection filing and customs clearance. |
 | Product improvements based on sales results | Receive sales results, order-level profitability, and a Japanese summary of feedback collected in Traditional Chinese. Decide what to change about the product, price, or copy for the next campaign. |
 
 Use “Discuss selling overseas” as the primary call to action on the company website. A “View sample store” link leads to Uji Tsukino Tea House. Producers can start with a website consultation and move on to a Taiwan sales pilot when the product and supply meet the requirements.
@@ -27,6 +28,7 @@ Use “Discuss selling overseas” as the primary call to action on the company 
 | Local group-buy organizer | Product promotion, recruitment, and sharing customer reactions |
 | Warehouse, dispatch, and international shipping providers | Collect, store, and pack goods in Japan and ship a consolidated commercial consignment to the Taiwanese import and retail partner's designated location. |
 | Taiwanese import and retail partner | Handle imports, receiving, local sales and payments, delivery arrangements for each buyer, customer service, and refunds. |
+| Taiwanese customs broker or carrier's brokerage team | File customs and Taiwan FDA food inspection applications when authorized by the importer. Coordinate official sampling when required. |
 | Taiwanese delivery carrier | Deliver and track individual orders from the Taiwan hub to each buyer. If an organizer handles delivery, agree on who arranges it and what they are responsible for before launch. |
 
 Show the flow from the Japanese producer through collection and consolidated shipping in Japan to the designated receiving hub in Taiwan, where orders are packed for individual domestic delivery. Use the receiving hub to mark the handoff. Explain service areas, product eligibility, cost and timing by leg, tracking, and how to request a return. Display provider names and logos once the parties agree on the scope and grant permission. Seller Hub is the primary contact.
@@ -50,7 +52,7 @@ Taiwan has examples of Japanese food preorders through social media group buys, 
 | Stage | Payer | Service | Revenue and decision |
 | --- | --- | --- | --- |
 | 1. Website development | Japanese producer | Brand pages in Japanese and Traditional Chinese, product pages for two or three SKUs, a product register, inquiry and analytics setup, and operational handover | Test a development fee of JPY 240,000 before tax. Close the project at acceptance and review schedule, direct cost, and gross margin. Eligible grants can reduce the producer's upfront cost. |
-| 2. Taiwan group-buy operations | Taiwanese import and retail partner | Product selection and pricing, results by organizer, campaign qualification, purchasing and delivery coordination, settlement, and sales review | Initially model an operating fee of TWD 55 per delivered, non-refunded set. Itemize actual costs for customs and delivery, organizer compensation, and Seller Hub's fee. |
+| 2. Taiwan group-buy operations | Taiwanese import and retail partner | Product selection and pricing, food import preparation and coordination, results by organizer, campaign qualification, purchasing, delivery, settlement, and sales review | Initially model an operating fee of TWD 55 per delivered, non-refunded set. Include first-time product information preparation and routine coordination in Seller Hub's fee. Quote brokerage, food inspection filing, any testing and storage charges, shipping, and organizer compensation separately. |
 | 3. Ongoing sales improvement | Japanese producer | Product-level margins, Traditional Chinese customer feedback, and design and evaluation of tests for price, bundle, and listing changes | Test willingness to pay for a monthly plan after the same producer pays for a second campaign and adopts an improvement. Specify campaign operations and additional monthly work separately in the contract. |
 
 Producers can buy website development independently of any grant. Use the existing store and domain where applicable and quote additional e-commerce features or translation when needed. At handover, explain rights to the domain and images, editing permissions, and how to export data. [Website development and subsidies](website-service-and-subsidies.md)
@@ -72,7 +74,11 @@ Producers can buy website development independently of any grant. Use the existi
 | Taiwanese delivery carrier | Deliver individual orders from the hub and share tracking and delivery status. |
 | Seller Hub | Select products, prepare Traditional Chinese content, coordinate campaign terms, quantities, and qualification, reconcile settlement, and report results and next actions. |
 
-Confirm import and Traditional Chinese labeling requirements with the Taiwanese partner for each tea SKU. Quote consolidated shipping for multiple SKUs and item-level customs and inspection procedures separately. [JETRO tea import procedures for Taiwan](https://www.jetro.go.jp/world/asia/tw/foods/exportguide/greentea.html) · [Taiwan Food and Drug Administration rules for imported food inspections](https://www.fda.gov.tw/ENG/lawContent.aspx?cid=5094&id=3068)
+### Food import preparation and coordination
+
+1. **Before the first campaign for each SKU.** Seller Hub gathers the ingredient list, manufacturer and origin details, and packaging label. The Taiwanese importer and its broker confirm whether they can handle the product, its local commodity code and labeling, the required documents, and the costs and time for standard clearance or sampling.
+2. **For each shipment.** Seller Hub coordinates the document handoff and tracks progress. The Taiwanese retail partner acts as the registered food importer and authorizes the broker or carrier's brokerage team to file the customs declaration and food inspection application. Taiwan FDA or its authorized inspection body decides whether to inspect or sample the shipment. Consolidated shipping can still require separate inspection applications for different products.
+3. **For repeat campaigns.** Reuse verified product information and reconfirm changes to ingredients, labeling, manufacturer, or origin. Make the required filings for each shipment. Include product preparation and coordination in the group-buy operating service. Quote third-party charges separately. [JETRO tea import procedures for Taiwan](https://www.jetro.go.jp/world/asia/tw/foods/exportguide/greentea.html) · [Taiwan Food and Drug Administration rules for imported food inspections](https://www.fda.gov.tw/ENG/lawContent.aspx?cid=5094&id=3068)
 
 ### Illustrative campaign economics
 
