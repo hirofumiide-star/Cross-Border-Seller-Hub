@@ -16,18 +16,16 @@ The first pilot takes **Japanese tea to Taiwan**. It tests paid website developm
 
 ## Japanese tea multi-store analytics MVP
 
-The [analytics dashboard](mvp/index.html) and [sample tea storefront](mvp/index.html#store) share a dataset. The interactive storefront represents one fictional shop, Uji Tsukino Tea House. Analytics match orders, shipments, and reviews by store and order ID across 36 fictional Shopify-style stores, including the sample shop.
+The [analytics dashboard](mvp/index.html) matches orders, shipments, and reviews across 36 fictional Shopify-style stores. The dashboard's demo store link opens the [宇治 月野茶房 Shopify development storefront](https://uji-tsukino-sabo-demo.myshopify.com/), where Shopify handles browsing, the cart, and test checkout. The old `#store` URL redirects to Shopify.
 
 Download the source and open `mvp/index.html` in a browser, or run `python3 -m http.server 8000` at the repository root and open `http://localhost:8000/mvp/`.
 
 1. In **Sales analytics**, switch the market, period, and store to compare sales, delivery costs, and Taiwan group-buy orders.
-2. In the **sample tea storefront**, add products to the cart and place a test order. For Taiwan, select the Taiwan group-buy sales channel. Then record a simulated delivery and review.
-3. Use the link back to analytics to see the test order in store and market totals. In **Imported data**, inspect orders, shipping charges, and reviews and export the selected range as CSV.
-4. In **AI insights**, review Traditional Chinese customer feedback, co-purchase denominators, price and shipping costs, and referral evidence. Record an action for the next campaign.
+2. Use **Open Shopify demo store** to see the products and try Shopify test checkout if you have access to the password-protected development store.
+3. In **Shopify import**, follow the [read-only import guide](docs/shopify-test-import.md) to review orders exported from the development store. Use the fictional sample option to explore this screen without store access. Shopify orders are reviewed separately from the fictional analytics.
+4. In **Imported data**, inspect fictional orders, shipping charges, and reviews and export the selected range as CSV. In **AI insights**, review the supporting evidence and record a next action.
 
-The demo uses a fixed seed to generate 7,696 fictional orders. The initial 30-day view contains 2,462 valid orders. Net merchandise sales exclude canceled and refunded orders. Freight ratios and the amount remaining after product and shipping costs use completed orders with actual freight costs. Rules recalculate the metrics and suggestions when inputs change. The storefront simulates checkout in the browser and saves test orders and actions in local storage.
-
-The **Shopify import** screen can load test orders read from one Shopify development store by following the [read-only import guide](docs/shopify-test-import.md). Use the fictional sample option to try the screen without a store.
+The demo uses a fixed seed to generate 7,696 fictional orders. The initial 30-day view contains 2,462 valid orders. Net merchandise sales exclude canceled and refunded orders. Freight ratios and the amount remaining after product and shipping costs use completed orders with recorded freight costs. Rules recalculate the metrics and suggestions when inputs change. Previously saved mock orders remain available in demo analytics, and saved actions remain in local storage.
 
 ### Taiwan broker portal MVP
 

@@ -4,9 +4,7 @@
   const { stores, markets, channels, categories, themes, statusLabels, exports, summarize, dateAt } = TeaMarket;
   const sample = stores[0];
   const storeById = new Map(stores.map(store => [store.id, store]));
-  const imageIndex = { sencha: 0, matcha: 1, hojicha: 2, bundle: 3 };
-  const imageFiles = ['images/tea-0.webp', 'images/tea-1.webp', 'images/tea-2.webp', 'images/tea-3.webp'];
-  const imageFor = type => imageFiles[imageIndex[type]];
+  const shopifyStorefront = 'https://uji-tsukino-sabo-demo.myshopify.com/';
   const keys = { orders: 'tea-market-test-orders-v1', actions: 'tea-market-actions-v1' };
   const filters = { days: 30, market: 'all', store: 'all' };
   const $ = id => document.getElementById(id);
@@ -16,12 +14,8 @@
   const money = value => `NT$${n(value)}`;
   const rate = value => `${(value * 100).toFixed(1)}%`;
   const shortDate = value => `${Number(value.slice(5, 7))}/${Number(value.slice(8, 10))}`;
-  const latest = () => testOrders.at(-1);
   const describeOrder = row => row.lines.map(line => `${categories[line.type].name} ×${line.quantity}`).join('、');
 
-  let cart = {};
-  let cartMarket = 'TW';
-  let cartChannel = 'DIRECT';
   let shopSearch = '';
   let shopsPage = 0;
   let toastTimer;
@@ -100,14 +94,14 @@
     ).join('');
   }
 
-  function marketOptions(selected, withAll = true) {
+  function marketOptions(selected) {
     const items = Object.entries(markets).map(([key, market]) => [key, market.name]);
-    return options(withAll ? [['all', 'すべての市場'], ...items] : items, selected);
+    return options([['all', 'すべての市場'], ...items], selected);
   }
 
   function page(crumb, title, note, body, label = '架空データ') {
     return `<div class="content-wrap">
-      <div class="topbar"><span>Seller Hub / ${crumb}</span><div><span class="tag gray">${label}</span><a class="button" href="#store">お茶の販売サンプル</a></div></div>
+      <div class="topbar"><span>Seller Hub / ${crumb}</span><div><span class="tag gray">${label}</span><a class="button" href="${shopifyStorefront}">Shopifyデモ店舗を開く</a></div></div>
       <header class="page-head"><div><h1>${title}</h1><p class="sub">${note}</p></div></header>
       ${body}
     </div>`;
@@ -171,7 +165,7 @@
     const evidence = lead.count ? themes[lead.key] : null;
     const metrics = [
       ['純商品売上', money(data.sales), '全額返金・キャンセルを除外'],
-      ['有効注文', `${n(data.orders)}件`, data.testOrders ? `今回のテスト注文 ${n(data.testOrders)}件を含む` : '入金済み＋配送完了'],
+      ['有効注文', `${n(data.orders)}件`, data.testOrders ? `保存済みの模擬注文 ${n(data.testOrders)}件を含む` : '入金済み＋配送完了'],
       ['台湾團購からの注文', `${n(data.groupOrders)}件`, data.orders ? `有効注文の ${rate(data.groupOrders / data.orders)}` : '有効注文なし'],
       ['配送費率', data.freightRate === null ? '—' : rate(data.freightRate), '配送費 ÷ 対応する配送完了注文の商品売上']
     ];
@@ -258,7 +252,7 @@
     const source = joinedSources();
     target.innerHTML = `
       <div class="table-scroll"><table><thead><tr><th scope="col">店舗</th><th scope="col">産地</th><th scope="col" class="num">掲載商品</th><th scope="col" class="num">取込注文</th><th scope="col">操作</th></tr></thead><tbody>
-      ${results.slice(start, start + pageSize).map(store => `<tr><td><strong>${store.name}</strong>${store.id === sample.id ? '<small>操作できる販売サンプル</small>' : ''}</td><td>${store.region}</td><td class="num">${store.products.length}</td>
+      ${results.slice(start, start + pageSize).map(store => `<tr><td><strong>${store.name}</strong>${store.id === sample.id ? '<small>Shopifyデモ店舗の架空分析データ</small>' : ''}</td><td>${store.region}</td><td class="num">${store.products.length}</td>
         <td class="num">${n(source.find(item => item.storeId === store.id).orders.length)}件</td><td><button class="table-button" data-action="filter-shop" data-store="${store.id}">店舗を分析</button></td></tr>`).join('')
         || '<tr><td colspan="5">一致する店舗がありません。</td></tr>'}
       </tbody></table></div>
@@ -270,9 +264,9 @@
   }
 
   function shops() {
-    return page('取り込み店舗', '取り込み店舗', `${stores.length}店舗の独立した架空データ。宇治 月野茶房でテスト注文を試せます。`, `
+    return page('取り込み店舗', '取り込み店舗', `${stores.length}店舗の独立した架空データ。宇治 月野茶房の販売画面はShopifyで開けます。`, `
       <section class="panel section-gap">
-        <div class="panel-head"><div class="store-controls"><label for="shop-search" class="sr-only">店舗名・産地で検索</label><input id="shop-search" class="search" type="search" placeholder="店舗名・産地で検索"></div><a class="button primary" href="#store">販売サンプルを開く</a></div>
+        <div class="panel-head"><div class="store-controls"><label for="shop-search" class="sr-only">店舗名・産地で検索</label><input id="shop-search" class="search" type="search" placeholder="店舗名・産地で検索"></div><a class="button primary" href="${shopifyStorefront}">Shopifyデモ店舗を開く</a></div>
         <div id="shop-results"></div>
       </section>`);
   }
@@ -299,54 +293,16 @@
       </section>`);
   }
 
-  function cartLines() {
-    return sample.products.filter(product => cart[product.id]).map(product => ({ ...product, quantity: cart[product.id] }));
-  }
-
-  function storefront() {
-    const count = cartLines().reduce((sum, line) => sum + line.quantity, 0);
-    const order = latest();
-    return `<div class="store-app">
-      <header class="store-head"><div class="store-brand"><span class="brand-mark" aria-hidden="true">月</span>${sample.name}</div>
-        <div class="store-links"><span class="tag gray">架空ショップ</span><a class="button" href="#overview">販売分析へ</a><button class="button primary" data-action="cart" id="cart-button">カート（${count}）</button></div></header>
-      <section class="store-hero">
-        <div class="hero-copy"><small>京都・宇治の日本茶</small><h1>毎日を彩る、<br>宇治のお茶。</h1><p>煎茶、抹茶、ほうじ茶。香りと味わいを楽しむ日本茶の販売サンプルです。</p>
-          <button class="button primary" data-action="show-products">商品を見る</button></div>
-        <figure class="hero-visual"><img class="hero-photo" src="${imageFor('sencha')}" alt="急須と、湯のみの煎茶"></figure>
-      </section>
-      <section aria-labelledby="products-title" id="products">
-        <div class="panel-head"><div><h2 id="products-title" tabindex="-1">お茶を選ぶ</h2><p class="sub">デモ価格 · 台湾ドル</p></div></div>
-        <div class="product-grid">
-          ${sample.products.map(product => `<article class="product">
-            <img src="${imageFor(product.type)}" alt="" loading="lazy" width="560" height="390">
-            <div class="product-info"><h3>${product.name}</h3><p class="sub">${product.size} · ${product.description}</p><p class="price">${money(product.price)}</p>
-              <button class="button" data-action="add-to-cart" data-product="${product.id}" aria-label="${product.name}をカートに入れる">カートに入れる</button></div>
-          </article>`).join('')}
-        </div>
-      </section>
-      ${order ? `<section class="receipt" aria-labelledby="receipt-title" id="receipt">
-        <h2 id="receipt-title" tabindex="-1">直近のテスト注文</h2><p class="sub">${order.id} · ${markets[order.market].name} · ${channels[order.channel]} · ${statusLabels[order.status]}</p>
-        <p>${describeOrder(order)}</p>
-        ${order.topic ? `<p class="sub">模擬レビューを登録済み｜${themes[order.topic].name}</p>` : ''}
-        <div class="row-actions">
-          ${order.status === 'paid' ? '<button class="button" data-action="deliver">模擬配送とレビューを登録</button>' : ''}
-          <button class="button primary" data-action="show-test-order">分析で確認する</button>
-        </div>
-      </section>` : ''}
-    </div>`;
-  }
-
   function render() {
     const route = activeRoute();
-    $('shell').classList.toggle('commerce', route === 'store');
     for (const link of document.querySelectorAll('[data-nav]')) {
       if (link.dataset.nav === route) link.setAttribute('aria-current', 'page');
       else link.removeAttribute('aria-current');
     }
 
     if (route === 'store') {
-      content.innerHTML = storefront();
-      document.title = `${sample.name} | 日本茶の販売サンプル`;
+      content.innerHTML = page('Shopify', '宇治 月野茶房', 'Shopifyの開発ストアへ移動します。', '');
+      location.replace(shopifyStorefront);
       return;
     }
     document.title = 'Seller Hub | 日本茶の販売分析';
@@ -381,22 +337,6 @@
     if (!dialog.open) dialog.showModal();
   }
 
-  function drawCart() {
-    const lines = cartLines();
-    const total = lines.reduce((sum, line) => sum + line.quantity * line.price, 0);
-    const channelControl = cartMarket === 'TW'
-      ? `<label>注文経路 <select id="cart-channel">${options([['DIRECT', channels.DIRECT], ['GROUP', channels.GROUP]], cartChannel)}</select></label>` : '';
-    openDialog('お茶のカート', lines.length ? `
-      ${lines.map(line => `<div class="cart-line"><strong>${line.name}</strong><div class="qty">
-        <button class="button" data-action="cart-change" data-product="${line.id}" data-change="-1" aria-label="${line.name}を1点減らす">−</button><span>${line.quantity}</span>
-        <button class="button" data-action="cart-change" data-product="${line.id}" data-change="1" aria-label="${line.name}を1点増やす" ${line.quantity >= 8 ? 'disabled' : ''}>+</button></div>
-        <span>${money(line.price * line.quantity)}</span></div>`).join('')}
-      <div class="filter-bar"><label>配送先 <select id="cart-market">${marketOptions(cartMarket, false)}</select></label>${channelControl}</div>
-      <p class="cart-totals">商品小計 <strong>${money(total)}</strong></p>
-      <div class="cart-actions"><p class="meta">模擬決済。個人情報や支払いは不要です。</p><button class="button primary" data-action="checkout">テスト注文を確定</button></div>`
-      : '<p class="status-copy">カートは空です。商品を選んで追加してください。</p>');
-  }
-
   function showEvidence(title, rows, extra = '') {
     openDialog(title, `<p class="sub">対象 ${n(rows.length)}件から、最近の ${Math.min(8, rows.length)}件を表示。</p>
       <div class="table-scroll"><table><thead><tr><th scope="col">注文</th><th scope="col">店舗</th><th scope="col">市場</th><th scope="col">商品</th></tr></thead><tbody>
@@ -423,23 +363,6 @@
     window.setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
 
-  function recordOrder() {
-    const lines = cartLines();
-    if (!lines.length) return;
-    const key = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(36).slice(2)}`;
-    testOrders.push({
-      id: 'test-' + key.slice(0, 10), storeId: sample.id, date: dateAt(0), market: cartMarket,
-      channel: cartMarket === 'TW' ? cartChannel : 'DIRECT', status: 'paid', test: true, topic: null,
-      lines: lines.map(line => ({ productId: line.id, type: line.type, quantity: line.quantity, unitPrice: line.price, unitCost: line.cost }))
-    });
-    save(keys.orders, testOrders);
-    cart = {};
-    dialog.close();
-    render();
-    $('receipt-title').focus();
-    toast('テスト注文を記録しました。');
-  }
-
   function viewStoreAnalytics(id) {
     if (!storeById.has(id)) return;
     filters.store = id;
@@ -455,16 +378,7 @@
     if (id === 'filter-days') filters.days = Number(value);
     else if (id === 'filter-market') filters.market = value;
     else if (id === 'filter-store') filters.store = value;
-    else if (id === 'cart-market') {
-      cartMarket = value;
-      if (value !== 'TW') cartChannel = 'DIRECT';
-      drawCart();
-      $(id).focus();
-      return;
-    } else if (id === 'cart-channel') {
-      cartChannel = value;
-      return;
-    } else return;
+    else return;
     render();
     $(id).focus();
   });
@@ -479,7 +393,7 @@
   document.addEventListener('click', event => {
     const button = event.target.closest('button[data-action]');
     if (!button || button.disabled) return;
-    const { action, product, topic, store, pair } = button.dataset;
+    const { action, topic, store, pair } = button.dataset;
 
     switch (action) {
       case 'filter-shop':
@@ -493,54 +407,6 @@
         (sameDirection ?? $('shop-search')).focus();
         break;
       }
-      case 'show-products':
-        $('products-title').focus();
-        break;
-      case 'add-to-cart': {
-        const quantity = cart[product] || 0;
-        if (quantity >= 8) {
-          toast('1商品の注文上限は8点です。');
-          break;
-        }
-        cart[product] = quantity + 1;
-        $('cart-button').textContent = `カート（${cartLines().reduce((sum, line) => sum + line.quantity, 0)}）`;
-        toast(`${sample.products.find(item => item.id === product).name}を追加しました。`);
-        break;
-      }
-      case 'cart':
-        drawCart();
-        break;
-      case 'cart-change': {
-        cart[product] = Math.max(0, Math.min(8, cart[product] + Number(button.dataset.change)));
-        $('cart-button').textContent = `カート（${cartLines().reduce((sum, line) => sum + line.quantity, 0)}）`;
-        drawCart();
-        (dialog.querySelector(`[data-product="${product}"][data-change="${button.dataset.change}"]:not([disabled])`) ?? dialog.querySelector('form button')).focus();
-        break;
-      }
-      case 'checkout':
-        recordOrder();
-        break;
-      case 'deliver':
-        openDialog('模擬配送とレビュー', `<p class="sub">配送完了と実績配送費を記録し、選択した架空レビューを取り込みます。</p>
-          <div class="filter-bar"><label>レビューのテーマ <select id="delivery-topic">${options(Object.entries(themes).map(([key, item]) => [key, item.name]), 'brewing')}</select></label></div>
-          <button class="button primary" data-action="confirm-delivery">配送完了とレビューを登録</button>`);
-        break;
-      case 'confirm-delivery': {
-        const order = latest();
-        if (!order || order.status !== 'paid') break;
-        order.status = 'delivered';
-        order.topic = $('delivery-topic').value;
-        save(keys.orders, testOrders);
-        dialog.close();
-        render();
-        $('receipt-title').focus();
-        toast('配送費とレビューを分析データに反映しました。');
-        break;
-      }
-      case 'show-test-order':
-        filters.market = latest().market;
-        viewStoreAnalytics(sample.id);
-        break;
       case 'review-evidence': {
         const target = themes[topic];
         showEvidence(`${target.name}の根拠`, allScoped().records.filter(row => row.order.status === 'delivered' && row.review?.topic === topic),
