@@ -10,8 +10,9 @@ const storePattern = /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.myshopify\.com$/;
 const moneyPattern = /^\d{1,12}(?:\.\d{1,6})?$/;
 const stockStates = ['on_hand', 'available', 'committed', 'incoming'];
 
-const scopeQuery = `query SellerHubDevStore {
+const scopeQuery = `query SellerHubDevStore($includeScopes: Boolean!) {
   shop { myshopifyDomain plan { partnerDevelopment } }
+  currentAppInstallation @include(if: $includeScopes) { accessScopes { handle } }
 }`;
 
 const ordersQuery = `query SellerHubTestOrders($search: String!, $after: String, $includeSku: Boolean!) {
@@ -41,16 +42,21 @@ const moreLinesQuery = `query SellerHubMoreTestOrderLines($id: ID!, $after: Stri
 const levelFields = `pageInfo { hasNextPage endCursor }
   nodes {
     isActive
-    location { id name isActive fulfillsOnlineOrders }
+    location {
+      id
+      name @include(if: $readLocations)
+      isActive @include(if: $readLocations)
+      fulfillsOnlineOrders @include(if: $readLocations)
+    }
     quantities(names: ["on_hand", "available", "committed", "incoming"]) { name quantity }
   }`;
-const inventoryQuery = `query SellerHubInventory($after: String) {
+const inventoryQuery = `query SellerHubInventory($after: String, $readLocations: Boolean!) {
   inventoryItems(first: 12, after: $after) {
     pageInfo { hasNextPage endCursor }
     nodes { id sku tracked inventoryLevels(first: 10) { ${levelFields} } }
   }
 }`;
-const moreLevelsQuery = `query SellerHubMoreInventoryLevels($id: ID!, $after: String!) {
+const moreLevelsQuery = `query SellerHubMoreInventoryLevels($id: ID!, $after: String!, $readLocations: Boolean!) {
   inventoryItem(id: $id) { id inventoryLevels(first: 50, after: $after) { ${levelFields} } }
 }`;
 const reference = (prefix, host, id) => prefix + '-' + createHash('sha256').update(host + '|' + id).digest('hex').slice(0, 14);
@@ -98,7 +104,7 @@ function nextPage(connection, after) {
   return cursor;
 }
 
-async function openDevelopmentStore(env) {
+async function openDevelopmentStore(env, includeScopes) {
   const host = env.SHOPIFY_DEV_STORE?.trim().toLowerCase();
   if (!host || !storePattern.test(host)) throw new Error('SHOPIFY_DEV_STOREに開発ストアの .myshopify.com ホスト名を指定してください。');
   const token = await accessToken(env, host);
@@ -112,11 +118,12 @@ async function openDevelopmentStore(env) {
     return result.data;
   };
 
-  const access = await graphql(scopeQuery);
+  const access = await graphql(scopeQuery, { includeScopes });
   if (access.shop?.myshopifyDomain?.toLowerCase() !== host || access.shop?.plan?.partnerDevelopment !== true) {
     throw new Error('The requested shop could not be verified as a Shopify development store.');
   }
-  return { host, graphql };
+  const readLocations = includeScopes && access.currentAppInstallation?.accessScopes?.some(scope => scope.handle === 'read_locations') === true;
+  return { host, graphql, readLocations };
 }
 
 async function readOrders({ host, graphql }, current, includeSku = false) {
@@ -174,29 +181,30 @@ async function readOrders({ host, graphql }, current, includeSku = false) {
     exportedAt: current.toISOString(), from: fromTime.toISOString().slice(0, 10), orders };
 }
 
-function parseLevel(level, host) {
+function parseLevel(level, host, readLocations) {
   const location = level?.location;
   if (!/^gid:\/\/shopify\/Location\/\d+$/.test(location?.id) || typeof level.isActive !== 'boolean'
-    || typeof location.isActive !== 'boolean' || typeof location.fulfillsOnlineOrders !== 'boolean'
+    || (readLocations && (typeof location.isActive !== 'boolean' || typeof location.fulfillsOnlineOrders !== 'boolean'))
     || !Array.isArray(level.quantities)) throw new Error('Shopify returned an invalid inventory location or quantity list.');
   const quantities = Object.fromEntries(level.quantities.map(entry => [entry.name, entry.quantity]));
   if (!stockStates.every(name => Number.isSafeInteger(quantities[name]))) {
     throw new Error('Shopify did not return all requested inventory quantities.');
   }
+  const id = reference('LOC', host, location.id);
   return {
-    id: reference('LOC', host, location.id), name: displayName(location.name, 'Unnamed location'),
-    online: level.isActive && location.isActive && location.fulfillsOnlineOrders,
+    id, name: displayName(location.name, 'Shopify location ' + id.slice(-6).toUpperCase()),
+    online: level.isActive && (readLocations ? location.isActive && location.fulfillsOnlineOrders : null),
     onHand: quantities.on_hand, available: quantities.available, committed: quantities.committed, incoming: quantities.incoming
   };
 }
 
-async function readInventory({ host, graphql }) {
+async function readInventory({ host, graphql, readLocations }) {
   const items = [];
   const seen = new Set();
   const inventoryCursors = new Set();
   let after = null;
   do {
-    const { inventoryItems: page } = await graphql(inventoryQuery, { after });
+    const { inventoryItems: page } = await graphql(inventoryQuery, { after, readLocations });
     if (!Array.isArray(page?.nodes)) throw new Error('Shopify did not return inventory items.');
     for (const item of page.nodes) {
       if (!/^gid:\/\/shopify\/InventoryItem\/\d+$/.test(item?.id) || typeof item.tracked !== 'boolean' || seen.has(item.id)) {
@@ -213,7 +221,7 @@ async function readInventory({ host, graphql }) {
       do {
         if (!Array.isArray(connection?.nodes)) throw new Error('Shopify did not return inventory levels.');
         for (const raw of connection.nodes) {
-          const level = parseLevel(raw, host);
+          const level = parseLevel(raw, host, readLocations);
           if (locations.has(level.id) || levels.length >= 100) throw new Error('Invalid or excessive inventory locations for one item.');
           locations.add(level.id);
           levels.push(level);
@@ -222,7 +230,7 @@ async function readInventory({ host, graphql }) {
         if (cursor) {
           if (levelCursors.has(cursor)) throw new Error('Shopify repeated an inventory location cursor.');
           levelCursors.add(cursor);
-          const { inventoryItem } = await graphql(moreLevelsQuery, { id: item.id, after: cursor });
+          const { inventoryItem } = await graphql(moreLevelsQuery, { id: item.id, after: cursor, readLocations });
           if (inventoryItem?.id !== item.id) throw new Error('The inventory item changed while reading its locations.');
           connection = inventoryItem.inventoryLevels;
         }
@@ -255,7 +263,7 @@ function demandHistory(orders, current) {
 }
 
 export async function exportShopifyReport(env, { inventory = false, current = new Date() } = {}) {
-  const store = await openDevelopmentStore(env);
+  const store = await openDevelopmentStore(env, inventory);
   if (!inventory) return readOrders(store, current);
   const [orders, items] = await Promise.all([readOrders(store, current, true), readInventory(store)]);
   const demand = demandHistory(orders.orders, current);

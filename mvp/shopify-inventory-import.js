@@ -35,7 +35,8 @@
       const locationIds = new Set();
       for (const level of item.levels) {
         if (!/^LOC-[a-f0-9]{14}$/.test(level?.id) || locationIds.has(level.id) || !validText(level.name)
-          || typeof level.online !== 'boolean' || !['onHand', 'available', 'committed', 'incoming'].every(key => quantity(level[key]))) {
+          || !(level.online === null || typeof level.online === 'boolean')
+          || !['onHand', 'available', 'committed', 'incoming'].every(key => quantity(level[key]))) {
           throw new Error('A Shopify inventory location or quantity is invalid.');
         }
         locationIds.add(level.id);
@@ -62,6 +63,9 @@
   function projection(item) {
     if (!item.sku || report.items.some(other => other.id !== item.id && other.sku === item.sku)) {
       return '<p class="sub">A unique SKU is required to match test orders to inventory.</p>';
+    }
+    if (item.levels.some(level => level.online === null)) {
+      return '<p class="sub">Forecast unavailable. This snapshot includes inventory quantities. Online fulfillment eligibility requires Shopify location access.</p>';
     }
     const locations = item.levels.filter(level => level.online);
     if (locations.length !== 1) return '<p class="sub">Stockout estimates require one active online fulfillment location. Review the location quantities below.</p>';
@@ -95,7 +99,7 @@
         ${projection(item)}` : '<p class="sub">The snapshot contains no tracked inventory items. Check inventory tracking in the development store.</p>'}</div>
       ${item ? `<div class="table-scroll"><table><thead><tr><th scope="col">Shopify location</th><th scope="col">Online fulfillment</th>
         <th scope="col" class="num">On hand</th><th scope="col" class="num">Available</th><th scope="col" class="num">Committed</th><th scope="col" class="num">Incoming</th></tr></thead><tbody>
-        ${item.levels.map(level => `<tr><td>${escape(level.name)}</td><td>${level.online ? 'Active' : 'Outside online supply'}</td>
+        ${item.levels.map(level => `<tr><td>${escape(level.name)}</td><td>${level.online === null ? 'Unverified' : level.online ? 'Active' : 'Outside online supply'}</td>
           ${['onHand', 'available', 'committed', 'incoming'].map(key => '<td class="num">' + format(level[key]) + '</td>').join('')}</tr>`).join('')
           || '<tr><td colspan="6">No inventory locations were returned for this item.</td></tr>'}</tbody></table></div>` : ''}
     </section>`;
