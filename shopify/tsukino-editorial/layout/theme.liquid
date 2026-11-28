@@ -20,12 +20,26 @@
       .tsg-store-footer { border-top: 1px solid #d4d8cb; padding: 22px 0; font-size: 13px; }
     </style>
     {{ 'tsukino-editorial.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'tsukino-demo-cart.js' | asset_url }}" defer></script>
     {{ content_for_header }}
   </head>
   <body>
     <header class="tsukino-editorial tsg-store-header">
       <div class="tsg-shell">
         <a href="{{ routes.root_url | escape }}">{{ shop.name | escape }}</a>
+        <div class="tsg-store-controls">
+          {%- liquid
+            assign header_language = request.locale.iso_code | downcase | split: '-' | first
+            case header_language
+              when 'ja'
+                assign cart_label = 'カート'
+              when 'en'
+                assign cart_label = 'Cart'
+              else
+                assign cart_label = '購物車'
+            endcase
+          -%}
+          <a class="tsg-store-cart-link" href="{{ routes.cart_url | escape }}">{{ cart_label | escape }} ({{ cart.item_count }})</a>
         {%- if localization.available_languages.size > 1 -%}
           {%- liquid
             assign current_code = localization.language.iso_code
@@ -60,6 +74,7 @@
             </div>
           {%- endform -%}
         {%- endif -%}
+        </div>
       </div>
     </header>
     <main id="MainContent">{{ content_for_layout }}</main>

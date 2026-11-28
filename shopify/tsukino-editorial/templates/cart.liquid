@@ -1,58 +1,109 @@
 {%- liquid
   assign language = request.locale.iso_code | downcase | split: '-' | first
+  assign demo_item = nil
+  for item in cart.items
+    if item.product.handle == 'uji-tea-bag-tasting-set-demo'
+      assign demo_item = item
+      break
+    endif
+  endfor
   case language
     when 'ja'
-      assign heading = '團購デモのカート'
-      assign notice = 'カート追加のデモです。ここでの注文確定や支払いはありません。'
+      assign heading = 'ショッピングカート'
+      assign notice = '団体購入のデモです。実際の注文や支払いは発生しません。'
       assign empty_message = 'カートに商品が入っていません。'
-      assign featured = '宇治茶 ティーバッグ3種セット（デモ）'
+      assign featured = '宇治茶 ティーバッグ3種セット'
+      assign details = '宇治玉露・宇治煎茶・碾茶'
       assign quantity = '数量'
       assign remove = '削除'
+      assign order_summary = '注文内容'
       assign total = '小計'
       assign back = '團購ページに戻る'
+      assign complete = 'デモ購入を確定する'
+      assign processing = 'デモ購入を処理しています…'
+      assign success = 'デモ購入が完了しました'
+      assign fault = 'デモ購入を記録できませんでした。カートを更新してからやり直してください。'
+      assign image_note = 'AI生成のイメージ'
     when 'en'
-      assign heading = 'Group buy demo cart'
-      assign notice = 'This demo shows how items are added to the cart. It does not place an order or collect payment.'
-      assign empty_message = 'Your cart is empty.'
-      assign featured = 'Three Uji Tea Bag Varieties (Demo)'
+      assign heading = 'Shopping cart'
+      assign notice = 'This group-buy demo does not place a real order or collect payment.'
+      assign empty_message = 'Your shopping cart is empty.'
+      assign featured = 'Three Uji Tea Bag Varieties'
+      assign details = 'Uji gyokuro, Uji sencha, and tencha'
       assign quantity = 'Quantity'
       assign remove = 'Remove'
+      assign order_summary = 'Order summary'
       assign total = 'Subtotal'
       assign back = 'Back to the group buy'
+      assign complete = 'Complete demo purchase'
+      assign processing = 'Recording your demo purchase…'
+      assign success = 'Demo purchase complete'
+      assign fault = 'We could not record this demo purchase. Refresh the cart and try again.'
+      assign image_note = 'AI-generated illustration'
     else
-      assign heading = '團購示範購物車'
-      assign notice = '此為加入購物車的示範，不會成立訂單或收款。'
+      assign heading = '購物車'
+      assign notice = '此為團購示範，不會成立實際訂單或收款。'
       assign empty_message = '你的購物車目前沒有商品。'
-      assign featured = '宇治茶包三款組（示範）'
+      assign featured = '宇治茶包三款組'
+      assign details = '宇治玉露、宇治煎茶、碾茶'
       assign quantity = '數量'
       assign remove = '移除'
+      assign order_summary = '訂單摘要'
       assign total = '小計'
       assign back = '返回團購頁面'
+      assign complete = '確認示範購買'
+      assign processing = '正在記錄示範購買…'
+      assign success = '示範購買已完成'
+      assign fault = '無法記錄示範購買。請重新整理購物車後再試一次。'
+      assign image_note = 'AI 生成示意圖'
   endcase
 -%}
 <div class="tsukino-editorial">
-  <section class="tsg-shell tsg-notes" aria-labelledby="TsukinoCartTitle">
-    <p class="tsg-kicker">{{ shop.name | escape }}</p>
+  <section class="tsg-shell tsg-notes" aria-labelledby="TsukinoCartTitle" data-tsg-demo-cart data-cart-url="{{ routes.cart_url | escape }}" data-cart-change-url="{{ routes.cart_change_url | escape }}">
     <h1 id="TsukinoCartTitle">{{ heading | escape }}</h1>
     <p class="tsg-lead">{{ notice | escape }}</p>
+    <p class="tsg-cart-success" data-tsg-order-success role="status" hidden>{{ success | escape }}</p>
     {%- if cart.item_count == 0 -%}
-      <p class="tsg-pending">{{ empty_message | escape }}</p>
+      <p class="tsg-pending" data-tsg-empty-cart>{{ empty_message | escape }}</p>
     {%- else -%}
-      <ul style="list-style:none;padding:0;margin:24px 0 15px;">
-        {%- for item in cart.items -%}
-          {%- assign item_name = item.product.title -%}
-          {%- if item.product.handle == 'uji-tea-bag-tasting-set-demo' -%}
-            {%- assign item_name = featured -%}
+      <div class="tsg-cart-grid">
+        <ul class="tsg-cart-items">
+          {%- for item in cart.items -%}
+            {%- assign item_name = item.product.title -%}
+            {%- if item.product.handle == 'uji-tea-bag-tasting-set-demo' -%}
+              {%- assign item_name = featured -%}
+            {%- endif -%}
+            <li class="tsg-cart-line">
+              {%- if item.product.handle == 'uji-tea-bag-tasting-set-demo' -%}
+                <figure>
+                  <img src="{{ 'tsukino-ja-hero.jpg' | asset_url }}" alt="" width="1200" height="800">
+                  <figcaption>{{ image_note | escape }}</figcaption>
+                </figure>
+              {%- elsif item.image != blank -%}
+                <figure>{{ item.image | image_url: width: 300 | image_tag: alt: '', loading: 'lazy' }}</figure>
+              {%- endif -%}
+              <div>
+                <h2>{{ item_name | escape }}</h2>
+                {%- if item.product.handle == 'uji-tea-bag-tasting-set-demo' -%}
+                  <p class="tsg-cart-detail">{{ details | escape }}</p>
+                {%- endif -%}
+                <p class="tsg-cart-quantity">{{ quantity | escape }} {{ item.quantity }}</p>
+                <a class="tsg-link" href="{{ item.url_to_remove | escape }}" aria-label="{{ remove | escape }} {{ item_name | escape }}">{{ remove | escape }}</a>
+              </div>
+              <strong class="tsg-cart-price">{{ item.final_line_price | money_with_currency }}</strong>
+            </li>
+          {%- endfor -%}
+        </ul>
+        <aside class="tsg-cart-summary" aria-label="{{ order_summary | escape }}">
+          <h2>{{ order_summary | escape }}</h2>
+          <p class="tsg-cart-subtotal"><span>{{ total | escape }}</span><strong>{{ cart.total_price | money_with_currency }}</strong></p>
+          {%- if demo_item -%}
+            <button class="tsg-button" type="button" data-tsg-confirm-demo data-line-key="{{ demo_item.key | escape }}" data-quantity="{{ demo_item.quantity }}" data-demo-id="{{ demo_item.properties._tsukino_demo_id | escape }}" data-processing="{{ processing | escape }}" hidden>{{ complete | escape }}</button>
+            <p class="tsg-cart-error" data-tsg-demo-error role="alert" hidden>{{ fault | escape }}</p>
           {%- endif -%}
-          <li style="border-block-start:1px solid var(--line);padding:14px 0;">
-            <h2 style="font-size:clamp(21px,3vw,30px);">{{ item_name | escape }}</h2>
-            <p>{{ quantity | escape }} {{ item.quantity }} · {{ item.final_line_price | money_with_currency }}</p>
-            <a class="tsg-link" href="{{ item.url_to_remove | escape }}" aria-label="{{ remove | escape }} {{ item_name | escape }}">{{ remove | escape }}</a>
-          </li>
-        {%- endfor -%}
-      </ul>
-      <p style="border-block-start:1px solid var(--line);padding-top:12px;"><strong>{{ total | escape }} · {{ cart.total_price | money_with_currency }}</strong></p>
+        </aside>
+      </div>
     {%- endif -%}
-    <a class="tsg-button" href="{{ routes.root_url | escape }}">{{ back | escape }}</a>
+    <a class="tsg-link tsg-cart-back" href="{{ routes.root_url | escape }}"><span aria-hidden="true">←</span> {{ back | escape }}</a>
   </section>
 </div>

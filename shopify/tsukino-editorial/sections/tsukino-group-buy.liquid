@@ -188,10 +188,10 @@
           <div><dt>{{ deadline_name | escape }} · {{ zone_label | escape }}</dt><dd>{% if demo %}{{ deadline_label | escape }}{% else %}<time datetime="{{ deadline | escape }}">{{ deadline_label | escape }}</time>{% endif %}</dd></div>
           <div><dt>{{ pickup_label | escape }}</dt><dd>{{ campaign_pickup | escape }}</dd></div>
         </dl>
-        <div class="tsg-progress">
+        <div class="tsg-progress"{% if demo %} data-tsg-demo-progress data-registered="{{ registered }}" data-target="{{ target }}" data-progress-label="{{ progress_label | escape }}" data-remaining-label="{{ remaining_label | escape }}" data-goal-met="{{ goal_met | escape }}"{% endif %}>
           <div class="tsg-progress-copy">
-            <strong id="{{ section_key | escape }}-progress">{{ progress_text | escape }}</strong>
-            {%- if remaining == 0 -%}<span>{{ goal_met | escape }}</span>{%- elsif accepting or demo -%}<span data-campaign-open-only>{{ remaining_text | escape }}</span>{%- endif -%}
+            <strong id="{{ section_key | escape }}-progress" data-tsg-progress-count>{{ progress_text | escape }}</strong>
+            {%- if remaining == 0 -%}<span data-tsg-progress-remaining>{{ goal_met | escape }}</span>{%- elsif accepting or demo -%}<span data-tsg-progress-remaining data-campaign-open-only>{{ remaining_text | escape }}</span>{%- endif -%}
           </div>
           <progress aria-label="{{ progress_name | escape }}" aria-describedby="{{ section_key | escape }}-progress" value="{{ progress_value }}" max="{{ target }}">{{ progress_text | escape }}</progress>
         </div>
@@ -204,6 +204,7 @@
                 {%- form 'product', demo_product, return_to: routes.cart_url -%}
                   <input type="hidden" name="id" value="{{ demo_variant.id }}">
                   <input type="hidden" name="quantity" value="1">
+                  <input type="hidden" name="properties[_tsukino_demo_id]" data-tsg-new-demo-item disabled>
                   <button class="tsg-button" type="submit">{{ join | escape }} <span aria-hidden="true">↗</span></button>
                 {%- endform -%}
               {%- endif -%}

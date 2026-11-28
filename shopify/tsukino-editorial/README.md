@@ -22,7 +22,7 @@ The deployed demo layout is available in `layout/theme.liquid`. Its Shopify loca
 
 ## Demo cart
 
-The sample campaign loads the unlisted Online Store item with handle `uji-tea-bag-tasting-set-demo`. **Join the group buy** submits Shopify's product form to add one set, then opens the localized cart. If the set is already present, the action opens the existing cart. The displayed price reads the Shopify variant price in the storefront's currency. The demo cart lists real cart lines and lets visitors remove them, and does not offer a checkout action. The static preview uses a mock CTA.
+The sample campaign loads the unlisted Online Store item with handle `uji-tea-bag-tasting-set-demo`. **Join the group buy** submits Shopify's product form to add one set, then opens the localized cart. If the set is already present, the action opens the existing cart. The displayed price reads the Shopify variant price in the storefront's currency. The Shopify demo shows the cart count, item photo, quantity, price, and subtotal. **Complete demo purchase** removes the sample cart line and records the simulated set count in browser storage. Returning to the homepage updates its progress number, remaining sets, and bar. Reopening a completion URL does not count another purchase. The demo does not create Shopify orders or accept payment. A different browser starts at the configured demo baseline. The static preview uses a mock CTA.
 
 ## Stage the design in Shopify
 
