@@ -150,3 +150,39 @@
   position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden;
   clip-path:inset(50%); white-space:nowrap; border:0;
 }
+
+.tsukino-editorial .tsg-hero-media figcaption,
+.tsukino-editorial .tsg-catalog-card figcaption {
+  position:absolute; inset:auto 8px 8px auto; padding:2px 6px; background:var(--white);
+  color:var(--muted); font-size:10px; line-height:1.4;
+}
+.tsukino-editorial .tsg-catalog-heading { display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:6px 24px; }
+.tsukino-editorial .tsg-catalog-heading .tsg-link { margin-top:0; }
+.tsukino-editorial .tsg-catalog-controls {
+  display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px 20px;
+  margin-top:24px; padding-block:14px; border-block:1px solid var(--line);
+}
+.tsukino-editorial .tsg-catalog-controls .tsg-filter-list { margin:0; }
+.tsukino-editorial .tsg-search {
+  min-height:42px; min-width:0; width:min(100%,260px); padding:8px 12px; border:1px solid var(--line);
+  border-radius:0; color:var(--ink); background:var(--white); font:inherit; font-size:14px;
+}
+.tsukino-editorial .tsg-catalog-count { color:var(--muted); margin-top:10px; font-size:13px; }
+.tsukino-editorial .tsg-catalog-grid { grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px; margin-top:14px; }
+.tsukino-editorial .tsg-catalog-card { border:1px solid var(--line); background:var(--white); }
+.tsukino-editorial .tsg-catalog-card figure { position:relative; }
+.tsukino-editorial .tsg-catalog-card img { aspect-ratio:3/2; }
+.tsukino-editorial .tsg-catalog-card-body { padding:14px; }
+.tsukino-editorial .tsg-catalog-card h3 { font-size:clamp(16px,1.7vw,23px); margin:0; overflow-wrap:anywhere; }
+.tsukino-editorial .tsg-catalog-card .tsg-catalog-featured {
+  color:var(--green); font-size:11px; font-weight:700; letter-spacing:.08em; margin:0 0 7px;
+}
+.tsukino-editorial .tsg-original-name { color:var(--muted); margin-top:9px; font-size:12px; overflow-wrap:anywhere; }
+@media(max-width:990px) {
+  .tsukino-editorial .tsg-catalog-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+}
+@media(max-width:749px) {
+  .tsukino-editorial .tsg-catalog-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+  .tsukino-editorial .tsg-catalog-card-body { padding:10px; }
+  .tsukino-editorial .tsg-search { width:100%; }
+}

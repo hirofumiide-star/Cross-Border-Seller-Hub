@@ -36,18 +36,12 @@
   if share_url_prefix == '/'
     assign public_share_url = request.origin | append: public_share_url
   endif
-  assign tea_keys = 'matcha,sencha,hojicha' | split: ','
-  assign shop_root = routes.root_url | append: '/' | replace: '//', '/'
-  assign product_base = shop_root | append: 'products/'
-  assign tea_matcha = section.settings.tea_matcha | default: all_products['uji-matcha-30g']
-  assign tea_sencha = section.settings.tea_sencha | default: all_products['uji-sencha-80g']
-  assign tea_hojicha = section.settings.tea_hojicha | default: all_products['uji-hojicha-60g']
   case language
     when 'ja'
       assign group = '台湾・今期の團購'
-      assign title = '宇治茶 三種飲み比べセット'
-      assign desc = '抹茶、煎茶、ほうじ茶。台湾の團主と一緒に取り寄せる、月野茶房の飲み比べセット。'
-      assign heroAlt = '黒い急須からお茶を注ぐ様子'
+      assign title = 'ティーバッグ3種セット'
+      assign desc = '宇治玉露、宇治煎茶、碾茶。台湾の團主と一緒に取り寄せる、JA全農京都の宇治茶3種セット。'
+      assign heroAlt = '宇治茶のティーバッグと三つの茶碗'
       assign pre = '募集準備中'
       assign open = '受付中'
       assign closed = '受付終了'
@@ -72,18 +66,15 @@
       assign demo_date = '12月6日（日）22:00'
       assign demo_host = '台北の林さん（デモ團主）'
       assign demo_pickup = '台北・対面受取'
-      assign demo_note = 'まずは煎茶をゆっくり味わってみてください。抹茶はラテに、ほうじ茶は食後に。三つの香りを一箱で楽しめます。'
+      assign demo_note = 'まずは宇治煎茶から。宇治玉露と碾茶も淹れて、三種類を飲み比べてみてください。'
       assign demo_terms = '成團後に支払いのご案内を受け取ります。不成立の場合、支払いはありません。'
       assign share_intro = '台湾で宇治茶を一緒に取り寄せませんか？'
-      assign compare = '気分で選ぶ、三つの味わい。'
-      assign view = 'お茶の詳細を見る'
-      assign tea_names = '抹茶|煎茶|ほうじ茶' | split: '|'
-      assign tea_notes = 'まろやかなうま味 · お点前、ラテ|清々しい香り · 急須で淹れる日々の一杯|香ばしい焙煎香 · 食事のあとにも' | split: '|'
+      assign image_label = 'AI生成のイメージ'
     when 'en'
       assign group = 'Taiwan · current group buy'
-      assign title = 'Uji Tea Tasting Set'
-      assign desc = 'Matcha, sencha, and hojicha. Bring three Japanese teas to Taiwan with a local group organizer.'
-      assign heroAlt = 'Tea pouring from a dark teapot'
+      assign title = 'Three Uji Tea Bag Varieties'
+      assign desc = 'Uji gyokuro, Uji sencha, and tencha. Explore three Japanese teas from JA Zen-Noh Kyoto through our Taiwan group buy.'
+      assign heroAlt = 'Three cups of Uji tea with tea bags'
       assign pre = 'In preparation'
       assign open = 'Open for signups'
       assign closed = 'Signups closed'
@@ -108,18 +99,15 @@
       assign demo_date = 'Sunday, Dec 6 at 22:00'
       assign demo_host = 'Lin in Taipei (demo organizer)'
       assign demo_pickup = 'Taipei · in-person pickup'
-      assign demo_note = 'Start with the sencha, whisk the matcha into a latte, and save the hojicha for after dinner. There are three ways to enjoy the same box.'
+      assign demo_note = 'Start with Uji sencha, then brew the gyokuro and tencha side by side.'
       assign demo_terms = 'We send payment instructions if the group buy goes ahead. No payment is due if it falls short.'
       assign share_intro = 'Let’s order a Japanese tea tasting set together.'
-      assign compare = 'Find a tea for your taste.'
-      assign view = 'View tea details'
-      assign tea_names = 'Matcha|Sencha|Hojicha' | split: '|'
-      assign tea_notes = 'Mellow umami · Whisked or in a latte|Fresh and lightly sweet · Everyday brewing|Toasty and light · After a meal' | split: '|'
+      assign image_label = 'AI-generated illustration'
     else
       assign group = '台灣・本期開團'
-      assign title = '宇治三款茶體驗組'
-      assign desc = '抹茶、煎茶、焙茶。跟著台灣團主，一起把月野茶房的三款日本茶帶回家。'
-      assign heroAlt = '從深色茶壺倒出茶湯'
+      assign title = '宇治茶包三款組'
+      assign desc = '宇治玉露、宇治煎茶與碾茶。跟著台灣團主，一起認識 JA 全農京都的三款宇治茶。'
+      assign heroAlt = '三杯宇治茶與茶包'
       assign pre = '籌備中'
       assign open = '開團中'
       assign closed = '已截止'
@@ -144,13 +132,10 @@
       assign demo_date = '12/06（日）22:00'
       assign demo_host = '台北小林（示範團主）'
       assign demo_pickup = '台北面交'
-      assign demo_note = '第一次喝，可以先從煎茶開始。抹茶做成拿鐵，焙茶留到飯後慢慢喝，一盒就能比較三種茶香。'
+      assign demo_note = '想試試三種宇治茶，可以先泡煎茶，再比較玉露與碾茶。'
       assign demo_terms = '成團後通知付款。若未成團，無須付款。'
       assign share_intro = '一起團購宇治茶！'
-      assign compare = '選一杯，合你口味的茶。'
-      assign view = '查看茶品'
-      assign tea_names = '抹茶|煎茶|焙茶' | split: '|'
-      assign tea_notes = '醇厚鮮味 · 點茶、拿鐵|清香回甘 · 日常茶壺沖泡|溫潤焙香 · 餐後飲用' | split: '|'
+      assign image_label = 'AI 生成示意圖'
   endcase
   if demo
     assign campaign_price = 'NT$980'
@@ -167,36 +152,6 @@
   assign progress_text = progress_label | replace: '{registered}', registered | replace: '{target}', target
   assign remaining_text = remaining_label | replace: '{remaining}', remaining
   assign share_message = share_intro | append: ' ' | append: title
-  case language
-    when 'ja'
-      assign choose_label = '飲み方で選ぶ'
-      assign filter_labels = 'すべて|初めての一杯|ラテ|茶筅で点てる|急須で淹れる|食後' | split: '|'
-      assign filter_result = '{count}種類を表示'
-      assign usage_tags = 'ラテ / 茶筅で点てる|初めての一杯 / 急須で淹れる|急須で淹れる / 食後' | split: '|'
-      assign brew_label = 'それぞれのお茶の淹れ方'
-      assign brew_instructions = '抹茶をふるい、少量の湯を注いで茶筅で手早く点てます。ラテなら、点てた後にミルクを加えます。|急須に茶葉と湯を入れて蒸らし、最後まで注ぎ切ります。柔らかな味にしたいときは、少し冷ました湯を使います。|急須で熱めの湯を使い、短めに抽出します。すっきりした後味を目安に、時間を調整します。' | split: '|'
-      assign per_kg_label = '1 kgあたり'
-      assign review_label = '件の評価'
-    when 'en'
-      assign choose_label = 'Choose by how you drink it'
-      assign filter_labels = 'All teas|First cup|Latte|Whisked|Teapot|After a meal' | split: '|'
-      assign filter_result = '{count} teas shown'
-      assign usage_tags = 'Latte / Whisked|First cup / Teapot|Teapot / After a meal' | split: '|'
-      assign brew_label = 'How to prepare each tea'
-      assign brew_instructions = 'Sift the matcha, add a little warm water, and whisk briskly with a chasen. For a latte, add milk or plant milk after whisking.|Steep the leaves in a teapot and pour out all the tea. Use slightly cooler water for a softer taste.|Steep briefly in a teapot with hot water. Start with a short steep for a clean finish, then adjust to taste.' | split: '|'
-      assign per_kg_label = 'per kg'
-      assign review_label = 'ratings'
-    else
-      assign choose_label = '依飲用方式選茶'
-      assign filter_labels = '全部|第一次嘗試|拿鐵|茶筅點茶|茶壺沖泡|餐後' | split: '|'
-      assign filter_result = '顯示 {count} 款茶'
-      assign usage_tags = '拿鐵 / 茶筅點茶|第一次嘗試 / 茶壺沖泡|茶壺沖泡 / 餐後' | split: '|'
-      assign brew_label = '第一次泡這款茶？'
-      assign brew_instructions = '將抹茶過篩，加少量溫水，用茶筅快速攪打。做拿鐵時，點好後再倒入牛奶或植物奶。|把茶葉放入茶壺，倒入熱水沖泡，再將茶湯倒盡。用較溫的水可以讓滋味更柔和。|用茶壺以熱水短時間沖泡。想保留清爽尾韻，可以先少浸泡一會兒，再依口味調整。' | split: '|'
-      assign per_kg_label = '每公斤'
-      assign review_label = '則評分'
-  endcase
-  assign filter_keys = 'all,first,latte,whisk,pot,meal' | split: ','
 -%}
 
 <div class="tsukino-editorial">
@@ -244,11 +199,8 @@
       {%- endif -%}
     </div>
     <figure class="tsg-hero-media">
-      {%- if campaign.hero_image != blank -%}
-        {{ campaign.hero_image | image_url: width: 1760 | image_tag: widths: '480, 768, 1120, 1440, 1760', sizes: '(max-width: 749px) 100vw, 53vw', loading: 'eager', fetchpriority: 'high', alt: heroAlt }}
-      {%- else -%}
-        <img src="{{ 'tsukino-pour.png' | asset_url }}" width="1536" height="1024" fetchpriority="high" alt="{{ heroAlt | escape }}">
-      {%- endif -%}
+      <img src="{{ 'tsukino-ja-hero.jpg' | asset_url }}" width="1200" height="800" fetchpriority="high" alt="{{ heroAlt | escape }}">
+      <figcaption>{{ image_label | escape }}</figcaption>
     </figure>
   </section>
   {%- if demo or campaign_ready -%}
@@ -263,77 +215,7 @@
       </div>
     </section>
   {%- endif -%}
-  <section class="tsg-compare tsg-shell" aria-labelledby="{{ section_key | escape }}-teas" data-tsg-filter data-result-label="{{ filter_result | escape }}">
-    <h2 id="{{ section_key | escape }}-teas">{{ compare | escape }}</h2>
-    <fieldset class="tsg-filter-list" data-tea-filters hidden>
-      <legend>{{ choose_label | escape }}</legend>
-      {%- for filter in filter_keys -%}
-        <button class="tsg-filter" type="button" data-tea-filter="{{ filter }}" aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}">{{ filter_labels[forloop.index0] | escape }}</button>
-      {%- endfor -%}
-    </fieldset>
-    <span class="tsg-screen-reader" data-tea-filter-status aria-live="polite"></span>
-    <div class="tsg-grid">
-      {%- for tea_key in tea_keys -%}
-        {%- liquid
-          case tea_key
-            when 'matcha'
-              assign tea = tea_matcha
-            when 'sencha'
-              assign tea = tea_sencha
-            else
-              assign tea = tea_hojicha
-          endcase
-          assign tea_name = tea_names[forloop.index0]
-          assign tags = usage_tags[forloop.index0] | split: ' / '
-          case tea_key
-            when 'matcha'
-              assign uses = 'latte whisk'
-            when 'sencha'
-              assign uses = 'first pot'
-            else
-              assign uses = 'pot meal'
-          endcase
-          assign grams = tea.metafields.custom.net_weight_g.value | default: 0 | plus: 0
-          if grams <= 0
-            case tea.handle
-              when 'uji-matcha-30g'
-                assign grams = 30
-              when 'uji-sencha-80g'
-                assign grams = 80
-              when 'uji-hojicha-60g'
-                assign grams = 60
-            endcase
-          endif
-          assign rating = tea.metafields.reviews.rating.value
-          assign rating_count = tea.metafields.reviews.rating_count.value | default: 0 | plus: 0
-        -%}
-        <article class="tsg-tea" data-tea-uses="{{ uses }}">
-          {%- if tea.featured_image != blank -%}
-            <figure>{{ tea.featured_image | image_url: width: 960 | image_tag: widths: '320, 480, 720, 960', sizes: '(max-width: 749px) 100vw, 31vw', loading: 'lazy', alt: tea_name }}</figure>
-          {%- endif -%}
-          <h3>{{ tea_name | escape }}</h3>
-          <p>{{ tea_notes[forloop.index0] | escape }}</p>
-          <div class="tsg-tags">{% for tag in tags %}<span>{{ tag | escape }}</span>{% endfor %}</div>
-          {%- if tea != blank and tea.price_varies == false and grams > 0 -%}
-            {%- assign per_kg_price = tea.price | times: 1000.0 | divided_by: grams | round -%}
-            <p class="tsg-card-meta"><strong>{{ tea.price | money_with_currency }}</strong> · {{ grams }} g<br>{{ per_kg_price | money_with_currency }} {{ per_kg_label | escape }}</p>
-          {%- endif -%}
-          {%- if rating != blank and rating_count > 0 -%}
-            <p class="tsg-card-meta"><span aria-hidden="true">★</span> {{ rating.rating | round: 1 }} / {{ rating.scale_max }} · {{ rating_count }} {{ review_label | escape }}</p>
-          {%- endif -%}
-          {%- if tea != blank -%}
-            <a class="tsg-link" href="{{ product_base | append: tea.handle | escape }}" aria-label="{{ view | escape }} · {{ tea_name | escape }}">{{ view | escape }} <span aria-hidden="true">↗</span></a>
-          {%- endif -%}
-        </article>
-      {%- endfor -%}
-    </div>
-    <div class="tsg-brewing">
-      <h3>{{ brew_label | escape }}</h3>
-      {%- for instruction in brew_instructions -%}
-        <details><summary>{{ tea_names[forloop.index0] | escape }}</summary><p>{{ instruction | escape }}</p></details>
-      {%- endfor -%}
-    </div>
-  </section>
+  {% render 'tsukino-ja-catalog', language: language, section_key: section_key %}
   <section class="tsg-delivery" aria-labelledby="{{ section_key | escape }}-delivery">
     <div class="tsg-shell">
       <h2 id="{{ section_key | escape }}-delivery">{{ how | escape }}</h2>
@@ -353,26 +235,6 @@
     ]
   },
   "settings": [
-    {
-      "type": "image_picker",
-      "id": "hero_image",
-      "label": "Editorial hero image"
-    },
-    {
-      "type": "product",
-      "id": "tea_matcha",
-      "label": "Matcha product"
-    },
-    {
-      "type": "product",
-      "id": "tea_sencha",
-      "label": "Sencha product"
-    },
-    {
-      "type": "product",
-      "id": "tea_hojicha",
-      "label": "Hojicha product"
-    },
     {
       "type": "checkbox",
       "id": "campaign_demo",

@@ -1,0 +1,117 @@
+{%- liquid
+  assign filter_keys = 'all,matcha,loose,teabags,sets,bottled' | split: ','
+  case language
+    when 'ja'
+      assign catalog_title = '宇治茶のラインナップ'
+      assign search_label = '商品名で探す'
+      assign result_label = '表示中 {count} 件'
+      assign empty_label = '該当する商品がありません。'
+      assign filter_labels = 'すべて|抹茶|茶葉|ティーバッグ|詰め合わせ|ボトル' | split: '|'
+      assign image_label = 'AI生成のイメージ'
+      assign source_label = '出典：JAタウン'
+      assign original_label = '日本語の商品名'
+      assign featured_label = '今回の團購'
+      assign see_campaign = 'この商品の團購を見る'
+    when 'en'
+      assign catalog_title = 'Explore the Uji tea catalog'
+      assign search_label = 'Search by product name'
+      assign result_label = '{count} products shown'
+      assign empty_label = 'No products match your search.'
+      assign filter_labels = 'All|Matcha|Loose tea|Tea bags|Assortments|Bottled tea' | split: '|'
+      assign image_label = 'AI-generated illustration'
+      assign source_label = 'Source: JA Town'
+      assign original_label = 'Japanese product name'
+      assign featured_label = 'Current group buy'
+      assign see_campaign = 'See this group buy'
+    else
+      assign catalog_title = '宇治茶選品'
+      assign search_label = '搜尋商品名稱'
+      assign result_label = '顯示 {count} 件商品'
+      assign empty_label = '找不到符合的商品。'
+      assign filter_labels = '全部|抹茶|散茶|茶包|組合禮盒|瓶裝茶' | split: '|'
+      assign image_label = 'AI 生成示意圖'
+      assign source_label = '品名來源：JA Town'
+      assign original_label = '日文品名'
+      assign featured_label = '本期開團'
+      assign see_campaign = '查看本期團購'
+  endcase
+-%}
+{%- capture entries -%}
+01|teabags sets|ティーバッグ3種セット(宇治玉露、宇治煎茶、碾茶)|三款茶包組（宇治玉露、宇治煎茶、碾茶）|Three Tea Bag Set (Uji Gyokuro, Uji Sencha, Tencha)
+02|matcha|宇治抹茶-抹濃- 30g×3個|宇治抹茶「抹濃」30 g × 3|Uji Matcha “Maccha Koi” · 30 g × 3
+03|loose|プレミアム宇治玉露 50g|頂級宇治玉露 50 g|Premium Uji Gyokuro · 50 g
+04|sets|宇治茶2種セット(宇治の誉、京の香り 各100g)|兩款宇治茶（宇治之譽、京之香）各 100 g|Two Uji Teas (Uji no Homare, Kyo no Kaori) · 100 g each
+05|sets|宇治茶3種セット(山城の露、宝玉、優等煎茶 各100g)|三款宇治茶（山城之露、寶玉、優等煎茶）各 100 g|Three Uji Teas (Yamashiro no Tsuyu, Hogyoku, Sencha) · 100 g each
+06|teabags|碾茶ティーバッグ(4g×12p) 2袋セット|碾茶茶包（4 g × 12 入）2 袋|Tencha Tea Bags (4 g × 12) · 2 packs
+07|teabags|碾茶ティーバッグ(4g×12p) 4袋セット|碾茶茶包（4 g × 12 入）4 袋|Tencha Tea Bags (4 g × 12) · 4 packs
+08|sets|宇治茶2種詰合せ(宇治の誉、京の香り 各80g 紙缶入り)|兩款宇治茶禮盒（宇治之譽、京之香）各 80 g，紙罐|Two Uji Teas Gift Set (Uji no Homare, Kyo no Kaori) · 80 g per paper tin
+09|sets|宇治茶2種詰合せ(宇治の誉、京の香り 各160g缶入り)|兩款宇治茶禮盒（宇治之譽、京之香）各 160 g，罐裝|Two Uji Teas Gift Set (Uji no Homare, Kyo no Kaori) · 160 g per tin
+10|sets|宇治茶2種詰合せ(山城の露、優等煎茶 各160g缶入り 桐箱)|兩款宇治茶桐木禮盒（山城之露、優等煎茶）各 160 g，罐裝|Two Uji Teas in a Paulownia Gift Box (Yamashiro no Tsuyu, Sencha) · 160 g per tin
+11|sets|宇治茶3種詰合せ(福寿、玉露かりがね、京の香り 各80g 紙缶入り)|三款宇治茶禮盒（福壽、玉露雁金、京之香）各 80 g，紙罐|Three Uji Teas Gift Set (Fukuju, Gyokuro Karigane, Kyo no Kaori) · 80 g per paper tin
+12|loose bancha|京番茶 500g×2本|京番茶 500 g × 2 袋|Kyoto Bancha · 500 g × 2
+13|loose bancha|京番茶 500g×3本|京番茶 500 g × 3 袋|Kyoto Bancha · 500 g × 3
+14|bottled|JA京都やましろ 宇治茶 ペットボトル 500ml×24本|JA 京都山城 宇治瓶裝茶 500 mL × 24 瓶|JA Kyoto Yamashiro Bottled Uji Tea · 500 mL × 24
+{%- endcapture -%}
+<section class="tsg-compare tsg-shell" id="{{ section_key | escape }}-teas" aria-labelledby="{{ section_key | escape }}-catalog" data-tsg-filter data-result-label="{{ result_label | escape }}">
+  <div class="tsg-catalog-heading">
+    <h2 id="{{ section_key | escape }}-catalog">{{ catalog_title | escape }}</h2>
+    <a class="tsg-link" href="https://www.ja-town.com/shop/c/c4305_sgn/" target="_blank" rel="noopener noreferrer">{{ source_label | escape }} <span aria-hidden="true">↗</span></a>
+  </div>
+  <div class="tsg-catalog-controls" data-tea-filters hidden>
+    <div class="tsg-filter-list" role="group" aria-labelledby="{{ section_key | escape }}-catalog">
+      {%- for filter in filter_keys -%}
+        <button class="tsg-filter" type="button" data-tea-filter="{{ filter }}" aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}">{{ filter_labels[forloop.index0] | escape }}</button>
+      {%- endfor -%}
+    </div>
+    <label class="tsg-screen-reader" for="{{ section_key | escape }}-search">{{ search_label | escape }}</label>
+    <input class="tsg-search" id="{{ section_key | escape }}-search" type="search" data-tea-search placeholder="{{ search_label | escape }}">
+  </div>
+  <p class="tsg-catalog-count" data-tea-filter-status role="status" hidden></p>
+  <p class="tsg-catalog-count" data-tea-empty hidden>{{ empty_label | escape }}</p>
+  <div class="tsg-grid tsg-catalog-grid">
+    {%- assign records = entries | strip | newline_to_br | split: '<br />' -%}
+    {%- for line in records -%}
+      {%- liquid
+        assign record = line | strip | split: '|'
+        assign code = record[0]
+        if code == blank
+          continue
+        endif
+        assign tags = record[1]
+        assign japanese_title = record[2]
+        case language
+          when 'ja'
+            assign name = japanese_title
+          when 'en'
+            assign name = record[4]
+          else
+            assign name = record[3]
+        endcase
+        assign picture = tags | split: ' ' | last
+        if picture == 'sets'
+          assign picture = 'gifts'
+        endif
+        if forloop.first
+          assign picture = 'hero'
+        endif
+        assign filename = 'tsukino-ja-' | append: picture | append: '.jpg'
+      -%}
+      <article class="tsg-tea tsg-catalog-card" data-tea-uses="{{ tags | escape }}" data-tea-search-text="{{ name | append: ' ' | append: japanese_title | escape }}" data-item-code="{{ code | escape }}">
+        <figure>
+          <img src="{{ filename | asset_url }}" alt="" width="{% if forloop.first %}1200{% else %}768{% endif %}" height="{% if forloop.first %}800{% else %}512{% endif %}" loading="lazy">
+          <figcaption>{{ image_label | escape }}</figcaption>
+        </figure>
+        <div class="tsg-catalog-card-body">
+          {%- if forloop.first -%}<p class="tsg-catalog-featured">{{ featured_label | escape }}</p>{%- endif -%}
+          <h3>{{ name | escape }}</h3>
+          {%- if language != 'ja' -%}
+            <details class="tsg-terms tsg-original-name"><summary>{{ original_label | escape }}</summary><p lang="ja">{{ japanese_title | escape }}</p></details>
+          {%- endif -%}
+          {%- if forloop.first -%}
+            <a class="tsg-link" href="#{{ section_key | escape }}">{{ see_campaign | escape }} <span aria-hidden="true">↑</span></a>
+          {%- endif -%}
+        </div>
+      </article>
+    {%- endfor -%}
+  </div>
+</section>

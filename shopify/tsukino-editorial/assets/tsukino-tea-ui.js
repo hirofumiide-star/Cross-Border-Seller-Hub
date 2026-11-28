@@ -5,18 +5,40 @@
     const buttons = [...root.querySelectorAll('[data-tea-filter]')];
     const cards = [...root.querySelectorAll('[data-tea-uses]')];
     if (!buttons.length || !cards.length) return;
-    root.querySelector('[data-tea-filters]').hidden = false;
+    const controls = root.querySelector('[data-tea-filters]');
+    const search = root.querySelector('[data-tea-search]');
+    const status = root.querySelector('[data-tea-filter-status]');
+    const empty = root.querySelector('[data-tea-empty]');
+    let filter = 'all';
+
+    const normalize = value => value.normalize('NFKC').trim().toLocaleLowerCase();
+    const productNames = cards.map(card => normalize(card.dataset.teaSearchText || card.textContent));
+
+    function update() {
+      const query = normalize(search?.value ?? '');
+      const terms = query ? query.split(/\s+/) : [];
+      let count = 0;
+      cards.forEach((card, index) => {
+        const inCategory = filter === 'all' || card.dataset.teaUses.split(' ').includes(filter);
+        const matches = terms.every(term => productNames[index].includes(term));
+        card.hidden = !inCategory || !matches;
+        if (!card.hidden) count++;
+      });
+      status.textContent = root.dataset.resultLabel.replace('{count}', String(count));
+      if (empty) empty.hidden = count !== 0;
+    }
+
+    controls.hidden = false;
+    status.hidden = false;
     for (const button of buttons) {
       button.addEventListener('click', () => {
-        const filter = button.dataset.teaFilter;
-        for (const card of cards) {
-          card.hidden = filter !== 'all' && !card.dataset.teaUses.split(' ').includes(filter);
-        }
+        filter = button.dataset.teaFilter;
         for (const control of buttons) control.setAttribute('aria-pressed', String(control === button));
-        const count = cards.filter(card => !card.hidden).length;
-        root.querySelector('[data-tea-filter-status]').textContent = root.dataset.resultLabel.replace('{count}', String(count));
+        update();
       });
     }
+    search?.addEventListener('input', update);
+    update();
   }
 
   function purchase(root) {
