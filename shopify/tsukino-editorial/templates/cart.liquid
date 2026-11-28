@@ -21,7 +21,6 @@
       assign back = '團購ページに戻る'
       assign complete = 'デモ購入を確定する'
       assign processing = 'デモ購入を処理しています…'
-      assign success = 'デモ購入が完了しました'
       assign fault = 'デモ購入を記録できませんでした。カートを更新してからやり直してください。'
       assign image_note = 'AI生成のイメージ'
     when 'en'
@@ -37,7 +36,6 @@
       assign back = 'Back to the group buy'
       assign complete = 'Complete demo purchase'
       assign processing = 'Recording your demo purchase…'
-      assign success = 'Demo purchase complete'
       assign fault = 'We could not record this demo purchase. Refresh the cart and try again.'
       assign image_note = 'AI-generated illustration'
     else
@@ -53,16 +51,15 @@
       assign back = '返回團購頁面'
       assign complete = '確認示範購買'
       assign processing = '正在記錄示範購買…'
-      assign success = '示範購買已完成'
       assign fault = '無法記錄示範購買。請重新整理購物車後再試一次。'
       assign image_note = 'AI 生成示意圖'
   endcase
 -%}
 <div class="tsukino-editorial">
-  <section class="tsg-shell tsg-notes" aria-labelledby="TsukinoCartTitle" data-tsg-demo-cart data-cart-url="{{ routes.cart_url | escape }}" data-cart-change-url="{{ routes.cart_change_url | escape }}">
+  <section class="tsg-shell tsg-notes" aria-labelledby="TsukinoCartTitle" data-tsg-demo-cart data-cart-url="{{ routes.cart_url | escape }}" data-cart-change-url="{{ routes.cart_change_url | escape }}" data-shop-root="{{ routes.root_url | escape }}">
     <h1 id="TsukinoCartTitle">{{ heading | escape }}</h1>
     <p class="tsg-lead">{{ notice | escape }}</p>
-    <p class="tsg-cart-success" data-tsg-order-success role="status" hidden>{{ success | escape }}</p>
+    {% render 'tsukino-friend-group', language: language %}
     {%- if cart.item_count == 0 -%}
       <p class="tsg-pending" data-tsg-empty-cart>{{ empty_message | escape }}</p>
     {%- else -%}

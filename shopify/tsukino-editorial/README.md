@@ -20,9 +20,11 @@ Download the [design branch ZIP](https://github.com/hirofumiide-star/Cross-Borde
 
 The deployed demo layout is available in `layout/theme.liquid`. Its Shopify localization form uses the languages published on the current storefront domain. Publish English, Traditional Chinese, and Japanese under Shopify's **Settings → Languages** and assign them to that domain. The homepage's campaign and catalog are already translated in Liquid. Set localized homepage titles and descriptions in Translate & Adapt. If staging the campaign inside a different theme, use that theme's native language picker.
 
-## Demo cart
+## Friend-invite group-buy demo
 
-The sample campaign loads the unlisted Online Store item with handle `uji-tea-bag-tasting-set-demo`. **Join the group buy** submits Shopify's product form to add one set, then opens the localized cart. If the set is already present, the action opens the existing cart. The displayed price reads the Shopify variant price in the storefront's currency. The Shopify demo shows the cart count, item photo, quantity, price, and subtotal. **Complete demo purchase** removes the sample cart line and records the simulated set count in browser storage. Returning to the homepage updates its progress number, remaining sets, and bar. Reopening a completion URL does not count another purchase. The demo does not create Shopify orders or accept payment. A different browser starts at the configured demo baseline. The static preview uses a mock CTA.
+The deployed Shopify theme uses the unlisted tea bag tasting set for a two-person group. Start a group and use Shopify's cart to complete the first simulated purchase. The first buyer receives a time-limited invitation and can copy it, share it on LINE or WhatsApp, or open it as the friend in a separate tab. The friend completes a separate demo purchase of the same set to form the group. Both roles see the result automatically in tabs in the same browser. When demonstrating across different browsers, the friend sends the result link back for the first buyer to open.
+
+The timer starts on the first simulated purchase and expires after 10 minutes. An incomplete group expires and shows a simulated cancellation and refund. The **See an expired example** link opens an example immediately. The demo uses Shopify's actual cart and stores group outcomes in the browser. It does not install the GroupBuy app, create Shopify orders, process real payments, or reconcile refunds. The static HTML preview predates the friend-invite flow.
 
 ## Stage the design in Shopify
 

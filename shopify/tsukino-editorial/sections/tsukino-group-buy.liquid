@@ -61,15 +61,17 @@
       assign terms = '支払いと不成立時の扱い'
       assign how = '申し込みから受け取りまで'
       assign steps = '團主のページから申し込む|締切後に成立を確認し、支払いの案内を受け取る|日本から台湾の團主へまとめて発送|團主の案内に沿って台湾で受け取る' | split: '|'
+      assign demo_steps = 'セットをカートに入れデモ購入を確定|招待リンクを友達に送る|友達が10分以内に同じセットをデモ購入|成立、または期限切れのキャンセル・返金を確認' | split: '|'
       assign demo_label = 'デモ · 実際の募集ではありません'
       assign demo_join = '本番では團主の申込ページに進みます。このデモでは登録・決済は発生しません。'
-      assign demo_invite = '本番ではこの募集ページをLINEで共有します。こちらは招待文の表示例です。'
-      assign demo_invite_whatsapp = '本番ではこの募集ページをWhatsAppで共有します。こちらは招待文の表示例です。'
-      assign demo_date = '12月6日（日）22:00'
+      assign demo_start = 'グループを作る'
+      assign demo_hint = '2人で成立。最初のデモ購入を確定すると招待リンクが発行されます。'
+      assign demo_how = 'デモの流れ'
+      assign demo_date = '最初のデモ購入から10分'
       assign demo_host = '台北の林さん（デモ團主）'
       assign demo_pickup = '台北・対面受取'
       assign demo_note = 'まずは宇治煎茶から。宇治玉露と碾茶も淹れて、三種類を飲み比べてみてください。'
-      assign demo_terms = '成團後に支払いのご案内を受け取ります。不成立の場合、支払いはありません。'
+      assign demo_terms = '最初のデモ購入で招待リンクが発行されます。友達が10分以内に同じ商品をデモ購入すると成立し、期限切れの場合はキャンセルと返金を表示します。'
       assign share_intro = '台湾で宇治茶を一緒に取り寄せませんか？'
       assign image_label = 'AI生成のイメージ'
     when 'en'
@@ -96,15 +98,17 @@
       assign terms = 'Payment and what happens if the group falls short'
       assign how = 'From signup to pickup'
       assign steps = 'Sign up through the organizer|After the deadline, get the outcome and payment instructions|One shipment travels from Japan to the organizer in Taiwan|Follow the organizer’s instructions to receive your tea in Taiwan' | split: '|'
+      assign demo_steps = 'Add the tea set and complete a demo purchase|Send the invite link to one friend|Your friend completes a demo purchase within 10 minutes|See the group succeed or expire with a simulated refund' | split: '|'
       assign demo_label = 'Demo · Sample campaign'
       assign demo_join = 'The organizer’s signup page opens here in an active campaign. This demo does not collect registrations or payments.'
-      assign demo_invite = 'In an active campaign, this shares the group-buy page on LINE. Here is an example invitation.'
-      assign demo_invite_whatsapp = 'In an active campaign, this shares the group-buy page on WhatsApp. Here is an example invitation.'
-      assign demo_date = 'Sunday, Dec 6 at 22:00'
+      assign demo_start = 'Start a group'
+      assign demo_hint = '2 people needed. Complete a demo purchase to get your invite link.'
+      assign demo_how = 'How the group buy works'
+      assign demo_date = '10 minutes after the first purchase'
       assign demo_host = 'Lin in Taipei (demo organizer)'
       assign demo_pickup = 'Taipei · in-person pickup'
       assign demo_note = 'Start with Uji sencha, then brew the gyokuro and tencha side by side.'
-      assign demo_terms = 'We send payment instructions if the group buy goes ahead. No payment is due if it falls short.'
+      assign demo_terms = 'The first demo purchase creates a group and an invite link. A friend has 10 minutes to buy the same set. If the group expires, the demo shows the cancellation and refund.'
       assign share_intro = 'Let’s order a Japanese tea tasting set together.'
       assign image_label = 'AI-generated illustration'
     else
@@ -131,15 +135,17 @@
       assign terms = '付款與未成團說明'
       assign how = '從跟團到取貨'
       assign steps = '從團主的頁面報名|截止後確認是否成團，成團後通知付款|從日本集中出貨給台灣團主|依團主通知在台灣取貨' | split: '|'
+      assign demo_steps = '加入購物車並確認示範購買|將邀請連結分享給一位朋友|朋友在10分鐘內示範購買同款茶組|查看成團或逾期取消及退款' | split: '|'
       assign demo_label = '網站示範 · 非正式開團'
       assign demo_join = '正式開團時會前往團主的報名頁。示範不收集報名資料，也不會收款。'
-      assign demo_invite = '正式開團時可透過 LINE 分享本團連結。這裡是邀請訊息示範。'
-      assign demo_invite_whatsapp = '正式開團時可透過 WhatsApp 分享本團連結。這裡是邀請訊息示範。'
-      assign demo_date = '12/06（日）22:00'
+      assign demo_start = '我要開團'
+      assign demo_hint = '兩人成團。完成首筆示範購買後，即可取得邀請連結。'
+      assign demo_how = '團購流程'
+      assign demo_date = '首筆示範購買後 10 分鐘'
       assign demo_host = '台北小林（示範團主）'
       assign demo_pickup = '台北面交'
       assign demo_note = '想試試三種宇治茶，可以先泡煎茶，再比較玉露與碾茶。'
-      assign demo_terms = '成團後通知付款。若未成團，無須付款。'
+      assign demo_terms = '首筆示範購買後會產生邀請連結。朋友須在 10 分鐘內示範購買同一茶組；逾期則顯示取消及退款。'
       assign share_intro = '一起團購宇治茶！'
       assign image_label = 'AI 生成示意圖'
   endcase
@@ -156,8 +162,8 @@
         endif
       endfor
     endif
-    assign target = 30
-    assign registered = 18
+    assign steps = demo_steps
+    assign how = demo_how
     assign deadline_label = demo_date
     assign campaign_pickup = demo_pickup
     assign campaign_host = demo_host
@@ -173,7 +179,7 @@
 -%}
 
 <div class="tsukino-editorial">
-  <section class="tsg-hero tsg-shell" id="{{ section_key | escape }}" aria-labelledby="{{ section_key | escape }}-title"{% if accepting and demo == false %} data-tsg-close-at="{{ deadline_epoch }}" data-closed-label="{{ closed | escape }}"{% endif %}>
+  <section class="tsg-hero tsg-shell"{% if demo and demo_variant.available %} data-tsg-friend-home{% endif %} id="{{ section_key | escape }}" aria-labelledby="{{ section_key | escape }}-title"{% if accepting and demo == false %} data-tsg-close-at="{{ deadline_epoch }}" data-closed-label="{{ closed | escape }}"{% endif %}>
     <div class="tsg-copy">
       <div class="tsg-campaign-flags">
         <p class="tsg-kicker">{{ group | escape }}</p>
@@ -188,24 +194,29 @@
           <div><dt>{{ deadline_name | escape }} · {{ zone_label | escape }}</dt><dd>{% if demo %}{{ deadline_label | escape }}{% else %}<time datetime="{{ deadline | escape }}">{{ deadline_label | escape }}</time>{% endif %}</dd></div>
           <div><dt>{{ pickup_label | escape }}</dt><dd>{{ campaign_pickup | escape }}</dd></div>
         </dl>
-        <div class="tsg-progress"{% if demo %} data-tsg-demo-progress data-registered="{{ registered }}" data-target="{{ target }}" data-progress-label="{{ progress_label | escape }}" data-remaining-label="{{ remaining_label | escape }}" data-goal-met="{{ goal_met | escape }}"{% endif %}>
+        {%- if demo -%}
+          <p class="tsg-demo-message tsg-friend-hint" data-tsg-friend-hint>{{ demo_hint | escape }}</p>
+          {% render 'tsukino-friend-group', language: language %}
+        {%- else -%}
+        <div class="tsg-progress">
           <div class="tsg-progress-copy">
             <strong id="{{ section_key | escape }}-progress" data-tsg-progress-count>{{ progress_text | escape }}</strong>
             {%- if remaining == 0 -%}<span data-tsg-progress-remaining>{{ goal_met | escape }}</span>{%- elsif accepting or demo -%}<span data-tsg-progress-remaining data-campaign-open-only>{{ remaining_text | escape }}</span>{%- endif -%}
           </div>
           <progress aria-label="{{ progress_name | escape }}" aria-describedby="{{ section_key | escape }}-progress" value="{{ progress_value }}" max="{{ target }}">{{ progress_text | escape }}</progress>
         </div>
+        {%- endif -%}
         {%- if demo -%}
           <div class="tsg-campaign-actions">
             {%- if demo_variant.available -%}
               {%- if demo_in_cart -%}
-                <a class="tsg-button" href="{{ routes.cart_url | escape }}">{{ join | escape }} <span aria-hidden="true">↗</span></a>
+                <a class="tsg-button" data-tsg-friend-join href="{{ routes.cart_url | escape }}">{{ demo_start | escape }} <span aria-hidden="true">↗</span></a>
               {%- else -%}
                 {%- form 'product', demo_product, return_to: routes.cart_url -%}
                   <input type="hidden" name="id" value="{{ demo_variant.id }}">
                   <input type="hidden" name="quantity" value="1">
                   <input type="hidden" name="properties[_tsukino_demo_id]" data-tsg-new-demo-item disabled>
-                  <button class="tsg-button" type="submit">{{ join | escape }} <span aria-hidden="true">↗</span></button>
+                  <button class="tsg-button" type="submit" data-tsg-friend-join>{{ demo_start | escape }} <span aria-hidden="true">↗</span></button>
                 {%- endform -%}
               {%- endif -%}
             {%- else -%}
@@ -214,14 +225,6 @@
               <p class="tsg-demo-message">{{ demo_join | escape }}</p>
             </details>
             {%- endif -%}
-            <details>
-              <summary class="tsg-button tsg-button-outline">{{ invite | escape }}</summary>
-              <p class="tsg-demo-message">{{ demo_invite | escape }} <strong>{{ share_message | escape }}</strong></p>
-            </details>
-            <details>
-              <summary class="tsg-button tsg-button-outline">{{ invite_whatsapp | escape }}</summary>
-              <p class="tsg-demo-message">{{ demo_invite_whatsapp | escape }} <strong>{{ share_message | escape }}</strong></p>
-            </details>
           </div>
         {%- elsif accepting -%}
           <div class="tsg-campaign-actions" data-campaign-open-only>

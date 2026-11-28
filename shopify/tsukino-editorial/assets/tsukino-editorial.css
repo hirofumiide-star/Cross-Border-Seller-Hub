@@ -226,3 +226,24 @@
   .tsukino-editorial .tsg-cart-line { grid-template-columns:auto minmax(0,1fr); gap:8px 14px; }
   .tsukino-editorial .tsg-cart-price { grid-column:2; }
 }
+
+.tsukino-editorial .tsg-friend-group {
+  margin-top:16px; padding:14px 16px; border:1px solid var(--line); background:var(--white);
+  max-width:700px; font-size:14px; overflow-wrap:anywhere;
+}
+.tsukino-editorial .tsg-friend-group strong { font-size:16px; color:var(--green); }
+.tsukino-editorial .tsg-friend-metrics {
+  display:flex; flex-wrap:wrap; justify-content:space-between; gap:5px 16px;
+  margin:10px 0 0; padding-top:9px; border-top:1px solid var(--line); font-weight:650;
+}
+.tsukino-editorial .tsg-friend-metrics time { font-variant-numeric:tabular-nums; }
+.tsukino-editorial .tsg-friend-group label { display:block; margin-top:12px; }
+.tsukino-editorial .tsg-friend-group input {
+  display:block; width:100%; padding:7px 9px; margin-top:4px;
+  border:1px solid var(--line); color:var(--ink); font:inherit;
+}
+.tsukino-editorial .tsg-friend-actions { display:flex; align-items:center; flex-wrap:wrap; gap:9px 15px; margin-top:9px; }
+.tsukino-editorial .tsg-friend-actions :is(.tsg-button,.tsg-link) { margin:0; }
+.tsukino-editorial .tsg-friend-actions .tsg-button { min-height:38px; padding:6px 10px; }
+.tsukino-editorial .tsg-campaign-actions [aria-disabled=true] { opacity:.62; cursor:default; }
+.tsukino-editorial .tsg-friend-hint { margin-top:13px; }
