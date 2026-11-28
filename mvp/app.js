@@ -78,7 +78,8 @@
 
   function activeRoute() {
     const value = location.hash.slice(1);
-    return ['overview', 'insights', 'shops', 'sources', 'shopify', 'fulfillment', 'broker', 'store'].includes(value) ? value : 'overview';
+    return ['overview', 'insights', 'shops', 'sources', 'shopify', 'fulfillment', 'fulfillment-reports', 'broker', 'store'].includes(value)
+      ? value : 'overview';
   }
 
   function toast(message) {
@@ -297,8 +298,9 @@
 
   function render() {
     const route = activeRoute();
+    const navRoute = route === 'fulfillment-reports' ? 'fulfillment' : route;
     for (const link of document.querySelectorAll('[data-nav]')) {
-      if (link.dataset.nav === route) link.setAttribute('aria-current', 'page');
+      if (link.dataset.nav === navRoute) link.setAttribute('aria-current', 'page');
       else link.removeAttribute('aria-current');
     }
 
@@ -317,9 +319,18 @@
       ShopifyTestImport.bind(content, render);
       return;
     }
-    if (route === 'fulfillment') {
-      content.innerHTML = page('Fulfillment', 'Test Order Fulfillment', 'Review orders, shipment requests, and dispatch results. Reports identify sample data and OPENLOGI demo API results.', FulfillmentDemoImport.render(), 'Fulfillment demo');
-      FulfillmentDemoImport.bind(content, render);
+    if (navRoute === 'fulfillment') {
+      const reports = route === 'fulfillment-reports';
+      const navigation = `<nav class="fulfillment-tabs" aria-label="Fulfillment views">
+        <a href="#fulfillment"${reports ? '' : ' aria-current="page"'}>Inventory planning</a>
+        <a href="#fulfillment-reports"${reports ? ' aria-current="page"' : ''}>Shipment reports</a></nav>`;
+      const view = reports ? FulfillmentDemoImport : InventoryPlanning;
+      const description = reports
+        ? 'Review orders, shipment requests, and dispatch status from a sample or OPENLOGI demo report.'
+        : 'Forecast stockouts and plan replenishment across the Japan warehouse and Taiwan receiving hub.';
+      content.innerHTML = page('Fulfillment', 'Test Order Fulfillment', description, navigation + view.render(),
+        reports ? 'Fulfillment demo' : 'Sample inventory');
+      view.bind(content, render, toast);
       return;
     }
     if (route === 'shops') {
