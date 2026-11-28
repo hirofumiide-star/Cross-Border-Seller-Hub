@@ -2,7 +2,7 @@
 
 The first merchant segment is Japanese agricultural cooperatives. This pilot design uses the 14 Uji tea product names on the [JA Zen-Noh Kyoto category page on JA Town](https://www.ja-town.com/shop/c/c4305_sgn/). It is an independent storefront demo for a Taiwan group buy.
 
-The homepage leads with the three-variety tea bag set containing Uji gyokuro, Uji sencha, and tencha. It shows the organizer, sample campaign price, Taiwan-time deadline, number of sets registered, and pickup method. The organizer's signup and LINE sharing sit directly beneath the progress bar. The pilot covers one group, one featured set, and one pickup method.
+The homepage leads with the three-variety tea bag set containing Uji gyokuro, Uji sencha, and tencha. It shows the organizer, sample campaign price, Taiwan-time deadline, number of sets registered, and pickup method. The organizer's signup and the LINE and WhatsApp share buttons sit directly beneath the progress bar. The pilot covers one group, one featured set, and one pickup method.
 
 ## Catalog and images
 
@@ -14,7 +14,7 @@ The photography brief was restrained Japanese tea editorial still life on pale s
 
 ## Preview
 
-Download the [design branch ZIP](https://github.com/hirofumiide-star/Cross-Border-Seller-Hub/archive/refs/heads/design/tsukino-taiwan-group-buy.zip), extract it, and open [preview.html](preview.html). It opens in Traditional Chinese and offers English and Japanese. The demo buttons show what signup and LINE sharing would do.
+Download the [design branch ZIP](https://github.com/hirofumiide-star/Cross-Border-Seller-Hub/archive/refs/heads/design/tsukino-taiwan-group-buy.zip), extract it, and open [preview.html](preview.html). It opens in Traditional Chinese and offers English and Japanese. The demo buttons show what signup and sharing on LINE or WhatsApp would do.
 
 ## Stage the design in Shopify
 
@@ -25,4 +25,4 @@ Download the [design branch ZIP](https://github.com/hirofumiide-star/Cross-Borde
 
 The organizer confirms the outcome and notifies participants after the deadline. The producer prepares one shipment from Japan to the Taiwan organizer. Local pickup or delivery is coordinated by the Taiwan organizer.
 
-[Shopify product CSV documentation](https://help.shopify.com/en/manual/products/import-export/using-csv) · [LINE sharing documentation](https://developers.line.biz/en/docs/line-social-plugins/install-guide/using-line-share-buttons/)
+[Shopify product CSV documentation](https://help.shopify.com/en/manual/products/import-export/using-csv) · [LINE sharing documentation](https://developers.line.biz/en/docs/line-social-plugins/install-guide/using-line-share-buttons/) · [WhatsApp sharing documentation](https://faq.whatsapp.com/5913398998672934/)

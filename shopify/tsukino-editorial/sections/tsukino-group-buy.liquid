@@ -48,6 +48,7 @@
       assign pending = '團主、価格、受付期間、台湾での受取方法が決まり次第、ここでご案内します。'
       assign join = '團購に参加する'
       assign invite = 'LINEで友達を誘う'
+      assign invite_whatsapp = 'WhatsAppで友達を誘う'
       assign host_label = '今回の團主'
       assign price_label = '團購価格'
       assign deadline_name = '申込締切'
@@ -63,6 +64,7 @@
       assign demo_label = 'デモ · 実際の募集ではありません'
       assign demo_join = '本番では團主の申込ページに進みます。このデモでは登録・決済は発生しません。'
       assign demo_invite = '本番ではこの募集ページをLINEで共有します。こちらは招待文の表示例です。'
+      assign demo_invite_whatsapp = '本番ではこの募集ページをWhatsAppで共有します。こちらは招待文の表示例です。'
       assign demo_date = '12月6日（日）22:00'
       assign demo_host = '台北の林さん（デモ團主）'
       assign demo_pickup = '台北・対面受取'
@@ -81,6 +83,7 @@
       assign pending = 'We’ll announce the organizer, price, signup dates, and Taiwan pickup details here.'
       assign join = 'Join the group buy'
       assign invite = 'Invite friends on LINE'
+      assign invite_whatsapp = 'Invite friends on WhatsApp'
       assign host_label = 'Your group organizer'
       assign price_label = 'Group-buy price'
       assign deadline_name = 'Signup deadline'
@@ -96,6 +99,7 @@
       assign demo_label = 'Demo · Sample campaign'
       assign demo_join = 'The organizer’s signup page opens here in an active campaign. This demo does not collect registrations or payments.'
       assign demo_invite = 'In an active campaign, this shares the group-buy page on LINE. Here is an example invitation.'
+      assign demo_invite_whatsapp = 'In an active campaign, this shares the group-buy page on WhatsApp. Here is an example invitation.'
       assign demo_date = 'Sunday, Dec 6 at 22:00'
       assign demo_host = 'Lin in Taipei (demo organizer)'
       assign demo_pickup = 'Taipei · in-person pickup'
@@ -114,6 +118,7 @@
       assign pending = '團主、團購價、報名時間與台灣取貨方式確認後，將在此公布。'
       assign join = '我要跟團'
       assign invite = '用 LINE 邀朋友'
+      assign invite_whatsapp = '用 WhatsApp 邀朋友'
       assign host_label = '本期團主'
       assign price_label = '團購價'
       assign deadline_name = '報名截止'
@@ -129,6 +134,7 @@
       assign demo_label = '網站示範 · 非正式開團'
       assign demo_join = '正式開團時會前往團主的報名頁。示範不收集報名資料，也不會收款。'
       assign demo_invite = '正式開團時可透過 LINE 分享本團連結。這裡是邀請訊息示範。'
+      assign demo_invite_whatsapp = '正式開團時可透過 WhatsApp 分享本團連結。這裡是邀請訊息示範。'
       assign demo_date = '12/06（日）22:00'
       assign demo_host = '台北小林（示範團主）'
       assign demo_pickup = '台北面交'
@@ -152,6 +158,7 @@
   assign progress_text = progress_label | replace: '{registered}', registered | replace: '{target}', target
   assign remaining_text = remaining_label | replace: '{remaining}', remaining
   assign share_message = share_intro | append: ' ' | append: title
+  assign whatsapp_message = share_message | append: ' ' | append: public_share_url
 -%}
 
 <div class="tsukino-editorial">
@@ -187,11 +194,16 @@
               <summary class="tsg-button tsg-button-outline">{{ invite | escape }}</summary>
               <p class="tsg-demo-message">{{ demo_invite | escape }} <strong>{{ share_message | escape }}</strong></p>
             </details>
+            <details>
+              <summary class="tsg-button tsg-button-outline">{{ invite_whatsapp | escape }}</summary>
+              <p class="tsg-demo-message">{{ demo_invite_whatsapp | escape }} <strong>{{ share_message | escape }}</strong></p>
+            </details>
           </div>
         {%- elsif accepting -%}
           <div class="tsg-campaign-actions" data-campaign-open-only>
             <a class="tsg-button" href="{{ campaign.campaign_url | escape }}">{{ join | escape }} <span aria-hidden="true">↗</span></a>
             <a class="tsg-button tsg-button-outline" href="https://social-plugins.line.me/lineit/share?url={{ public_share_url | url_encode }}&amp;text={{ share_message | url_encode }}" target="_blank" rel="noopener noreferrer">{{ invite | escape }}</a>
+            <a class="tsg-button tsg-button-outline" href="https://wa.me/?text={{ whatsapp_message | url_encode }}" target="_blank" rel="noopener noreferrer">{{ invite_whatsapp | escape }}</a>
           </div>
         {%- endif -%}
       {%- else -%}
@@ -255,7 +267,7 @@
     {
       "type": "url",
       "id": "campaign_share_url",
-      "label": "Optional public campaign landing page for LINE"
+      "label": "Optional public campaign landing page to share"
     },
     {
       "type": "text",
