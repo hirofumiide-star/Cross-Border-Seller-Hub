@@ -33,14 +33,14 @@
 
   const documents = {
     invoice: {
-      title: '商業インボイス案',
+      title: 'Commercial invoice',
       heading: 'Commercial Invoice',
-      description: '輸出者・輸入者、品名、数量、単価、取引条件を記載。輸出者の原本と照合します。',
+      description: 'Verify the parties, items, prices, and trade terms against the exporter’s original invoice.',
       reference: (shipment) => shipment.invoiceNumber,
       render(shipment, code) {
         return fields([
           ['Invoice date', shipment.invoiceDate], ['Currency', shipment.currency],
-          ['Seller / exporter', shipment.exporter], ['Buyer / importer', shipment.importerEnglish],
+          ['Seller / exporter', shipment.exporter], ['Buyer / importer', shipment.importer],
           ['Delivery terms', shipment.tradeTerms], ['Route', shipment.route]
         ]) + table(['SKU and description', 'Origin', 'HS code', 'Quantity', 'Unit price', 'Line total'], [
           [shipment.sku + ' · ' + shipment.descriptionEnglish, 'Japan', hsCode(code.hs),
@@ -52,13 +52,13 @@
       }
     },
     packing: {
-      title: 'パッキングリスト案',
+      title: 'Packing list',
       heading: 'Packing List',
-      description: '箱番号ごとの品目、数量、正味重量、梱包込み重量。倉庫の梱包実績と照合します。',
+      description: 'Reconcile carton marks, item counts, and net and gross weights with warehouse records.',
       reference: (shipment) => shipment.id + '-PL',
       render(shipment) {
         return fields([
-          ['Exporter', shipment.exporter], ['Consignee', shipment.importerEnglish],
+          ['Exporter', shipment.exporter], ['Consignee', shipment.importer],
           ['Invoice reference', shipment.invoiceNumber], ['Route', shipment.route]
         ]) + table(['Carton', 'SKU', 'Packs', 'Net kg', 'Gross kg'],
           [...shipment.cartons.map(carton => [carton.id, shipment.sku, carton.units, kg(carton.units * shipment.packGrams), kg(carton.grossGrams)]),
@@ -66,48 +66,47 @@
       }
     },
     declaration: {
-      title: '輸入申告の転記シート',
-      heading: '進口報單｜申報資料準備表',
-      description: '台湾のCCCコード、申告品名、数量・価格、運送書類の照合に使います。',
+      title: 'Import declaration worksheet',
+      heading: 'Taiwan Import Declaration Worksheet',
+      description: 'Review the local CCC code, goods description, value, and carrier reference.',
       reference: (shipment) => shipment.id + '-DECL',
       render(shipment, code) {
         return fields([
-          ['進口人', shipment.importer], ['出口人', shipment.exporter],
-          ['商業發票號碼', shipment.invoiceNumber], ['交易條件', shipment.tradeTerms],
-          ['起運地／目的地', shipment.route], ['空運提單（AWB）', '待核對承運人簽發的提單'],
-          ['商品金額', shipment.currency + ' ' + amount(shipment.merchandiseTotal)],
-          ['運費／保險及完稅價格', '依實際費用及申報條件核對']
-        ]) + table(['中文貨名', '原產國', 'HS', '臺灣 CCC', '數量', '淨重 kg'], [
-          [shipment.productChinese, '日本', hsCode(code.hs), cccCode(code.ccc), shipment.quantity + ' 包', kg(shipment.netGrams)]
+          ['Importer', shipment.importer], ['Exporter', shipment.exporter],
+          ['Commercial invoice reference', shipment.invoiceNumber], ['Trade terms', shipment.tradeTerms],
+          ['Route', shipment.route], ['Air waybill (AWB)', 'Reconcile with the carrier-issued air waybill'],
+          ['Merchandise value', shipment.currency + ' ' + amount(shipment.merchandiseTotal)],
+          ['Freight, insurance, and customs value', 'Verify charges and valuation based on the transaction']
+        ]) + table(['Goods description (Traditional Chinese)', 'Origin', 'HS', 'Taiwan CCC', 'Quantity', 'Net kg'], [
+          [shipment.productChinese, 'Japan', hsCode(code.hs), cccCode(code.ccc), shipment.quantity + ' packs', kg(shipment.netGrams)]
         ]);
       }
     },
     food: {
-      title: '食品報驗の品目資料案',
-      heading: '輸入食品查驗｜產品資料草稿',
-      description: '品名・原材料・ブランド・製造者・原産国を整理。報驗申請書、輸入申告の写し等と照合します。',
+      title: 'TFDA product information sheet',
+      heading: 'TFDA Food Inspection Product Information',
+      description: 'Check the ingredients, brand, producer, and origin against the inspection application.',
       reference: (shipment) => shipment.id + '-FOOD',
       render(shipment, code) {
         return fields([
-          ['進口人', shipment.importer], ['申報品名', shipment.productChinese],
-          ['品牌', shipment.brand], ['製造商', shipment.manufacturer],
-          ['原料成分', '綠茶 100%'], ['原產國', '日本'],
-          ['包裝規格', shipment.packGrams + ' g／包'], ['數量／淨重', shipment.quantity + ' 包／' + kg(shipment.netGrams) + ' kg'],
-          ['臺灣 CCC', cccCode(code.ccc)], ['輸入規定', code.ccc === teaCode.ccc ? teaCode.importRule + '（範例）' : '依所填 CCC 查詢'],
-          ['批號／有效日期', '依生產商批次資料與標示確認'],
-          ['進口報單號碼', '以實際申報資料補填']
-        ]) + '<p class="broker-print-note" lang="ja">申請時は報驗申請書・輸入申告の写しと照合し、指定・追加資料を案件ごとに確認します。</p>';
+          ['Importer', shipment.importer], ['Declared goods (Traditional Chinese)', shipment.productChinese],
+          ['Brand', shipment.brand], ['Manufacturer', shipment.manufacturer],
+          ['Ingredients', shipment.ingredient], ['Origin', 'Japan'],
+          ['Pack size', shipment.packGrams + ' g per pack'], ['Quantity and net weight', shipment.quantity + ' packs / ' + kg(shipment.netGrams) + ' kg'],
+          ['Taiwan CCC', cccCode(code.ccc)], ['Import regulation', code.ccc === teaCode.ccc ? teaCode.importRule + ' (reference)' : 'Confirm against the saved CCC'],
+          ['Lot number and expiry', 'Verify against producer lot records and labels'],
+          ['Import declaration number', 'Enter the filed reference']
+        ]) + '<p class="broker-print-note">Reconcile with the inspection application and a copy of the import declaration. Confirm any additional evidence requested for the shipment.</p>';
       }
     }
   };
 
   function preview(key, shipment, classification) {
     const doc = documents[key];
-    const lang = key === 'invoice' || key === 'packing' ? 'en' : 'zh-Hant';
-    return '<article class="broker-document" lang="' + lang + '"><header class="broker-print-head"><div><p class="broker-watermark">DEMO · DRAFT · 送信不可</p><h3>' +
+    return '<article class="broker-document" lang="en"><header class="broker-print-head"><div><p class="broker-watermark">DEMO DRAFT · FOR REVIEW ONLY</p><h3>' +
       escape(doc.heading) + '</h3></div><div class="broker-print-ref">' + escape(doc.reference(shipment)) +
       '<br>Revision ' + classification.revision + '</div></header>' + doc.render(shipment, classification) + '</article>' +
-      '<div class="broker-print-actions row-actions"><button class="button primary" type="button" data-broker-print>印刷・PDF保存</button></div>';
+      '<div class="broker-print-actions row-actions"><button class="button primary" type="button" data-broker-print>Print / Save as PDF</button></div>';
   }
 
   globalThis.BrokerDocuments = { sources, teaCode, escape, hsCode, cccCode, documents, preview };

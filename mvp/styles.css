@@ -252,11 +252,38 @@ dialog::backdrop { background:#102b22a1 }
 .broker-document :is(th,td) { white-space:normal; padding:7px 8px; overflow-wrap:anywhere }
 .broker-print-note { margin-top:9px; color:var(--quiet); font-size:.76rem }
 .broker-print-actions { margin-top:14px }
+.broker-review { overflow:hidden }
+.broker-review .panel-head { padding-bottom:7px }
+.broker-review-controls { display:flex; flex-wrap:wrap; align-items:end; gap:10px; padding:8px 17px 12px }
+.broker-review-controls label { display:grid; gap:4px; font-size:.78rem; font-weight:680 }
+.broker-review-controls select { min-width:145px }
+.broker-review-summary { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin:0 17px 6px; padding:9px 12px; border-radius:8px; background:var(--pale) }
+.broker-review-summary strong { font-size:.9rem }
+.broker-review-summary .sub { margin-top:2px; font-size:.75rem }
+.broker-review-summary ul { display:flex; flex-wrap:wrap; gap:5px; margin:0; padding:0; list-style:none }
+.review-status { display:inline-flex; align-items:center; gap:3px; width:max-content; border-radius:999px; padding:3px 8px; font-size:.73rem; font-weight:680; white-space:nowrap }
+.review-status strong { font-size:inherit }
+.review-status.match { color:#265839; background:#e7f2e5 }
+.review-status.mismatch { color:#802f2e; background:#f8e8e4 }
+.review-status.review { color:#624710; background:#f8efd7 }
+.broker-findings { padding:0 17px 9px }
+.broker-finding + .broker-finding { border-top:1px solid var(--border) }
+.broker-finding summary { display:grid; grid-template-columns:14px minmax(0,1fr) auto; gap:6px; align-items:center; cursor:pointer; padding:7px 0; font-size:.84rem; font-weight:650 }
+.broker-finding summary::before { content:'›'; color:var(--quiet); font-size:1rem }
+.broker-finding[open] summary::before { transform:rotate(90deg) }
+.broker-finding summary::-webkit-details-marker { display:none }
+.broker-finding-body { padding:0 0 10px 20px }
+.broker-finding dl { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px 14px; font-size:.81rem }
+.broker-finding dt { color:var(--quiet); font-size:.73rem }
+.broker-finding dd { overflow-wrap:anywhere; margin:2px 0 0; font-weight:600 }
+.broker-finding .sub { font-size:.78rem }
+.broker-finding-links { display:flex; align-items:center; gap:10px; flex-wrap:wrap; font-size:.76rem; margin-top:4px }
+.broker-finding-links .button { min-height:34px }
 @media(max-width:1030px) {
   .broker-workspace { grid-template-columns:1fr }
 }
 @media(max-width:420px) {
-  .broker-code-summary,.broker-code-inputs,.broker-print-fields { grid-template-columns:1fr }
+  .broker-code-summary,.broker-code-inputs,.broker-print-fields,.broker-finding dl { grid-template-columns:1fr }
   .broker-doc-list li { grid-template-columns:1fr; gap:6px }
 }
 @media print {

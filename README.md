@@ -29,7 +29,7 @@ The demo uses a fixed seed to generate 7,696 fictional orders. The initial 30-da
 
 ### Taiwan broker portal MVP
 
-Open [the broker portal](mvp/index.html#broker) and start document review as the Taiwanese broker. Correct the HS and Taiwan CCC codes with a recorded reason, then generate draft commercial invoices, packing lists, import declaration worksheets, and TFDA product information sheets. Preview the drafts and print them to PDF. Switch roles to test the importer mandate, handoff, document requests, simulated filing and sampling, receiving hub handoff, and final delivery to Taiwan buyers. See the [document sources, workflow, and operating-model review](docs/broker-portal-mvp.md).
+Open [the English broker portal](mvp/index.html#broker) to review a draft against destination and product reference data. The AI-assisted review uses demo rules to show mismatched codes, unreconciled document totals, and evidence to request. Start document review as the Taiwanese broker to apply a code candidate to the editable case. Correct the HS and Taiwan CCC codes with a recorded reason, then generate draft commercial invoices, packing lists, import declaration worksheets, and TFDA product information sheets. Preview the drafts and print them to PDF. Switch roles to test the importer mandate, handoff, document requests, simulated filing and sampling, receiving hub handoff, and final delivery to Taiwan buyers. See the [document sources, workflow, and operating-model review](docs/broker-portal-mvp.md).
 
 ## Shopify storefront and fulfillment verification
 

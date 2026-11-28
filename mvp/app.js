@@ -10,6 +10,7 @@
   const $ = id => document.getElementById(id);
   const content = $('content');
   const dialog = $('dialog');
+  const navigationLabels = [...document.querySelectorAll('[data-nav-label]')].map(node => [node, node.textContent]);
   const n = value => new Intl.NumberFormat('ja-JP').format(value);
   const money = value => `NT$${n(value)}`;
   const rate = value => `${(value * 100).toFixed(1)}%`;
@@ -99,9 +100,9 @@
     return options([['all', 'すべての市場'], ...items], selected);
   }
 
-  function page(crumb, title, note, body, label = '架空データ') {
+  function page(crumb, title, note, body, label = '架空データ', storeLabel = 'Shopifyデモ店舗を開く') {
     return `<div class="content-wrap">
-      <div class="topbar"><span>Seller Hub / ${crumb}</span><div><span class="tag gray">${label}</span><a class="button" href="${shopifyStorefront}">Shopifyデモ店舗を開く</a></div></div>
+      <div class="topbar"><span>Seller Hub / ${crumb}</span><div><span class="tag gray">${label}</span><a class="button" href="${shopifyStorefront}">${storeLabel}</a></div></div>
       <header class="page-head"><div><h1>${title}</h1><p class="sub">${note}</p></div></header>
       ${body}
     </div>`;
@@ -295,6 +296,12 @@
 
   function render() {
     const route = activeRoute();
+    const brokerLocale = route === 'broker';
+    document.documentElement.lang = brokerLocale ? 'en' : 'ja';
+    for (const [node, japanese] of navigationLabels) node.textContent = brokerLocale ? node.dataset.navLabel : japanese;
+    document.querySelector('.side-nav').setAttribute('aria-label', brokerLocale ? 'Main navigation' : 'メインナビゲーション');
+    document.querySelector('.brand').setAttribute('aria-label', brokerLocale ? 'Seller Hub sales analytics' : 'Seller Hub 販売分析');
+    document.querySelector('.skip').textContent = brokerLocale ? 'Skip to content' : 'コンテンツに移動';
     for (const link of document.querySelectorAll('[data-nav]')) {
       if (link.dataset.nav === route) link.setAttribute('aria-current', 'page');
       else link.removeAttribute('aria-current');
@@ -307,8 +314,8 @@
     }
     document.title = 'Seller Hub | 日本茶の販売分析';
     if (route === 'broker') {
-      document.title = 'Seller Hub | 通関業者ポータル';
-      content.innerHTML = page('台湾團購', '通関業者ポータル', '日本茶の一括輸入を想定し、品目分類の確認、書類の生成、通関から台湾国内の配達までを試せます。', BrokerDemo.render(), '模擬案件');
+      document.title = 'Seller Hub | Customs Broker Portal';
+      content.innerHTML = page('Taiwan group buy', 'Customs Broker Portal', 'Review the shipment, prepare customs documents, and track the case through clearance and local delivery.', BrokerDemo.render(), 'Demo case', 'Open Shopify demo store');
       BrokerDemo.bind(content, render, toast, openDialog);
       return;
     }
@@ -332,8 +339,8 @@
     content.innerHTML = (route === 'insights' ? insights : route === 'sources' ? sources : overview)(data);
   }
 
-  function openDialog(title, body) {
-    dialog.innerHTML = `<div class="panel-head"><h2 id="dialog-title">${title}</h2><form method="dialog"><button class="button" type="submit">閉じる</button></form></div><div class="dialog-body">${body}</div>`;
+  function openDialog(title, body, closeLabel = '閉じる') {
+    dialog.innerHTML = `<div class="panel-head"><h2 id="dialog-title">${title}</h2><form method="dialog"><button class="button" type="submit">${closeLabel}</button></form></div><div class="dialog-body">${body}</div>`;
     if (!dialog.open) dialog.showModal();
   }
 
