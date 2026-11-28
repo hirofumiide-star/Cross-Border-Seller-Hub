@@ -1,0 +1,89 @@
+{%- liquid
+  assign language = request.locale.iso_code | downcase | split: '-' | first
+  assign fields = 'origin,harvest,tea_amount,water_temperature,brew_time' | split: ','
+  assign has_content = false
+  if section.settings.tasting_notes != blank
+    assign has_content = true
+  endif
+  for field in fields
+    if section.settings[field] != blank
+      assign has_content = true
+    endif
+  endfor
+  case language
+    when 'ja'
+      assign heading = '味わいと淹れ方'
+      assign labels = '茶葉の産地|収穫時期|茶葉の量|湯温|抽出時間' | split: '|'
+    when 'en'
+      assign heading = 'Taste and preparation'
+      assign labels = 'Growing region|Harvest season|Tea amount|Water temperature|Time' | split: '|'
+    else
+      assign heading = '風味與沖泡'
+      assign labels = '茶葉產地|採收季節|茶葉用量|水溫|沖泡時間' | split: '|'
+  endcase
+-%}
+{%- if has_content -%}
+  {{ 'tsukino-editorial.css' | asset_url | stylesheet_tag }}
+  <div class="tsukino-editorial">
+    <section class="tsg-notes tsg-shell" aria-labelledby="tsukino-notes-{{ section.id | escape }}">
+      <h2 id="tsukino-notes-{{ section.id | escape }}">{{ heading | escape }}</h2>
+      {%- if section.settings.tasting_notes != blank -%}
+        <div class="tsg-lead">{{ section.settings.tasting_notes }}</div>
+      {%- endif -%}
+      <dl class="tsg-facts">
+        {%- for field in fields -%}
+          {%- if section.settings[field] != blank -%}
+            <div><dt>{{ labels[forloop.index0] | escape }}</dt><dd>{{ section.settings[field] | escape }}</dd></div>
+          {%- endif -%}
+        {%- endfor -%}
+      </dl>
+    </section>
+  </div>
+{%- endif -%}
+{% schema %}
+{
+  "name": "Tsukino tea details",
+  "enabled_on": {
+    "templates": [
+      "product"
+    ]
+  },
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "tasting_notes",
+      "label": "Tasting notes and recommended use"
+    },
+    {
+      "type": "text",
+      "id": "origin",
+      "label": "Verified growing region"
+    },
+    {
+      "type": "text",
+      "id": "harvest",
+      "label": "Verified harvest season"
+    },
+    {
+      "type": "text",
+      "id": "tea_amount",
+      "label": "Tea amount"
+    },
+    {
+      "type": "text",
+      "id": "water_temperature",
+      "label": "Water temperature"
+    },
+    {
+      "type": "text",
+      "id": "brew_time",
+      "label": "Brewing or whisking time"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tsukino tea details"
+    }
+  ]
+}
+{% endschema %}

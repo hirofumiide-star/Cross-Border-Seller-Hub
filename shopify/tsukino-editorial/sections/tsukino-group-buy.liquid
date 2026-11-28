@@ -1,0 +1,244 @@
+{{ 'tsukino-editorial.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign language = request.locale.iso_code | downcase | split: '-' | first
+  assign section_key = 'tsukino-buy-' | append: section.id
+  assign campaign_open = false
+  if section.settings.campaign_open and section.settings.campaign_url != blank and section.settings.campaign_price != blank and section.settings.campaign_deadline != blank and section.settings.campaign_minimum != blank and section.settings.campaign_delivery != blank and section.settings.refund_terms != blank
+    assign campaign_open = true
+  endif
+  assign facts = 'campaign_price,campaign_deadline,campaign_minimum,campaign_delivery' | split: ','
+  assign tea_keys = 'matcha,sencha,hojicha' | split: ','
+  assign shop_root = routes.root_url | append: '/' | replace: '//', '/'
+  assign product_base = shop_root | append: 'products/'
+  assign tea_set = section.settings.tea_set | default: all_products['uji-tea-tasting-set']
+  assign tea_matcha = section.settings.tea_matcha | default: all_products['uji-matcha-30g']
+  assign tea_sencha = section.settings.tea_sencha | default: all_products['uji-sencha-80g']
+  assign tea_hojicha = section.settings.tea_hojicha | default: all_products['uji-hojicha-60g']
+  case language
+    when 'ja'
+      assign group = '台湾の共同購入'
+      assign headline = '三つの日本茶を、|ひと箱で。' | split: '|'
+      assign intro = '抹茶のうま味、煎茶の清々しさ、ほうじ茶の香ばしさ。月野茶房の飲み比べセットを、台湾の團購で。'
+      assign see = '今期の團購を見る'
+      assign heroAlt = '黒い急須から煎茶を注ぐ様子'
+      assign title = '宇治のお茶 飲み比べセット'
+      assign desc = '抹茶・煎茶・ほうじ茶を少しずつ。いつもの一杯と、まだ知らない一杯を飲み比べ。'
+      assign pre = '募集準備中'
+      assign open = '受付中'
+      assign pending = '価格・締切・成立数量・台湾でのお届け予定は、受付開始時にご案内します。'
+      assign terms = '不成立時の返金条件'
+      assign join = '台湾の販売パートナーで申し込む'
+      assign set = 'セット内容を見る'
+      assign compare = '気分で選ぶ、三つの味わい。'
+      assign view = 'お茶の詳細を見る'
+      assign how = '台湾でのお届けまで'
+      assign steps = '團購主からの案内を確認|締切後に成立を確定|日本から一括発送|台湾から個別にお届け' | split: '|'
+      assign fact_labels = '團購価格|申込締切|成立数量|お届け予定' | split: '|'
+      assign tea_names = '抹茶|煎茶|ほうじ茶' | split: '|'
+      assign tea_notes = 'まろやかなうま味 · お点前、ラテ|清々しい香り · 急須で淹れる日々の一杯|香ばしい焙煎香 · 食事のあとにも' | split: '|'
+    when 'en'
+      assign group = 'Taiwan group buy'
+      assign headline = 'Three Japanese teas,|one tasting set.' | split: '|'
+      assign intro = 'Mellow matcha, bright sencha, and toasty hojicha. Discover Tsukino Tea House through our Taiwan group buy.'
+      assign see = 'Explore the group buy'
+      assign heroAlt = 'Sencha pouring from a dark teapot'
+      assign title = 'Uji Tea Tasting Set'
+      assign desc = 'Three small portions to compare side by side, from a familiar favorite to a tea you haven’t tried.'
+      assign pre = 'In preparation'
+      assign open = 'Orders open'
+      assign pending = 'We’ll share the price, deadline, minimum quantity, and Taiwan delivery estimate when orders open.'
+      assign terms = 'Refunds if the group buy falls short'
+      assign join = 'Join via our Taiwan partner'
+      assign set = 'See what’s inside'
+      assign compare = 'Find a tea for your taste.'
+      assign view = 'View tea details'
+      assign how = 'From group buy to delivery'
+      assign steps = 'See your organizer’s offer|Campaign confirmed after closing|One shipment from Japan|Individual delivery in Taiwan' | split: '|'
+      assign fact_labels = 'Group-buy price|Deadline|Minimum quantity|Estimated delivery' | split: '|'
+      assign tea_names = 'Matcha|Sencha|Hojicha' | split: '|'
+      assign tea_notes = 'Mellow umami · Whisked or in a latte|Fresh and lightly sweet · Everyday brewing|Toasty and light · After a meal' | split: '|'
+    else
+      assign group = '台灣團購'
+      assign headline = '一盒，品嚐|三款日本茶。' | split: '|'
+      assign intro = '抹茶的醇厚、煎茶的清爽、焙茶的溫潤。跟著團購，把月野茶房的日本茶帶回家。'
+      assign see = '查看本期團購'
+      assign heroAlt = '用深色茶壺沖倒煎茶'
+      assign title = '宇治茶三款品飲組'
+      assign desc = '一次品嚐抹茶、煎茶與焙茶。從熟悉的茶香，找到下一款想喝的茶。'
+      assign pre = '籌備中'
+      assign open = '開團中'
+      assign pending = '團購價、截止時間、成團門檻與台灣配送時間將於開團時公布。'
+      assign terms = '未成團時的退款條件'
+      assign join = '前往台灣合作夥伴網站報名'
+      assign set = '查看品飲組內容'
+      assign compare = '選一杯，合你口味的茶。'
+      assign view = '查看茶品'
+      assign how = '從開團到到貨'
+      assign steps = '查看團購主的開團資訊|截止後確認是否成團|日本集中出貨至台灣|台灣境內分寄到府' | split: '|'
+      assign fact_labels = '團購價|截止時間|成團門檻|預計送達' | split: '|'
+      assign tea_names = '抹茶|煎茶|焙茶' | split: '|'
+      assign tea_notes = '醇厚鮮味 · 點茶、拿鐵|清香回甘 · 日常茶壺沖泡|溫潤焙香 · 餐後飲用' | split: '|'
+  endcase
+-%}
+
+<div class="tsukino-editorial">
+  <section class="tsg-hero tsg-shell" aria-labelledby="{{ section_key | escape }}-title">
+    <div class="tsg-copy">
+      <p class="tsg-kicker">{{ group | escape }}</p>
+      <h1 id="{{ section_key | escape }}-title">{{ headline[0] | escape }}<br>{{ headline[1] | escape }}</h1>
+      <p class="tsg-lead">{{ intro | escape }}</p>
+      <a class="tsg-button" href="#{{ section_key | escape }}">{{ see | escape }} <span aria-hidden="true">↘</span></a>
+    </div>
+    <figure class="tsg-hero-media">
+      {%- if section.settings.hero_image != blank -%}
+        {{ section.settings.hero_image | image_url: width: 1760 | image_tag: widths: '480, 768, 1120, 1440, 1760', sizes: '(max-width: 749px) 100vw, 53vw', loading: 'eager', fetchpriority: 'high', alt: heroAlt }}
+      {%- else -%}
+        <img src="{{ 'tsukino-pour.png' | asset_url }}" width="1536" height="1024" fetchpriority="high" alt="{{ heroAlt | escape }}">
+      {%- endif -%}
+    </figure>
+  </section>
+  <section class="tsg-campaign tsg-shell" id="{{ section_key | escape }}" aria-labelledby="{{ section_key | escape }}-campaign">
+    {%- if tea_set.featured_image != blank -%}
+      <figure class="tsg-set-media">{{ tea_set.featured_image | image_url: width: 1200 | image_tag: widths: '400, 640, 900, 1200', sizes: '(max-width: 749px) 100vw, 42vw', loading: 'lazy', alt: title }}</figure>
+    {%- endif -%}
+    <div class="tsg-campaign-body">
+      <p class="tsg-state">{% if campaign_open %}{{ open | escape }}{% else %}{{ pre | escape }}{% endif %}</p>
+      <h2 id="{{ section_key | escape }}-campaign">{{ title | escape }}</h2>
+      <p class="tsg-lead">{{ desc | escape }}</p>
+      {%- if campaign_open -%}
+        <dl class="tsg-facts">
+          {%- for setting in facts -%}
+            <div><dt>{{ fact_labels[forloop.index0] | escape }}</dt><dd>{{ section.settings[setting] | escape }}</dd></div>
+          {%- endfor -%}
+        </dl>
+        {%- if section.settings.campaign_progress != blank -%}
+          <p class="tsg-pending">{{ section.settings.campaign_progress | escape }}</p>
+        {%- endif -%}
+        <details class="tsg-terms"><summary>{{ terms | escape }}</summary><p>{{ section.settings.refund_terms | escape | newline_to_br }}</p></details>
+        <a class="tsg-button" href="{{ section.settings.campaign_url | escape }}">{{ join | escape }} <span aria-hidden="true">↗</span></a>
+      {%- else -%}
+        <p class="tsg-pending">{{ pending | escape }}</p>
+      {%- endif -%}
+      {%- if tea_set != blank -%}
+        <a class="tsg-link" href="{{ product_base | append: tea_set.handle | escape }}">{{ set | escape }} <span aria-hidden="true">↗</span></a>
+      {%- endif -%}
+    </div>
+  </section>
+  <section class="tsg-compare tsg-shell" aria-labelledby="{{ section_key | escape }}-teas">
+    <h2 id="{{ section_key | escape }}-teas">{{ compare | escape }}</h2>
+    <div class="tsg-grid">
+      {%- for tea_key in tea_keys -%}
+        {%- liquid
+          case tea_key
+            when 'matcha'
+              assign tea = tea_matcha
+            when 'sencha'
+              assign tea = tea_sencha
+            else
+              assign tea = tea_hojicha
+          endcase
+          assign tea_name = tea_names[forloop.index0]
+        -%}
+        <article class="tsg-tea">
+          {%- if tea.featured_image != blank -%}
+            <figure>{{ tea.featured_image | image_url: width: 960 | image_tag: widths: '320, 480, 720, 960', sizes: '(max-width: 749px) 100vw, 31vw', loading: 'lazy', alt: tea_name }}</figure>
+          {%- endif -%}
+          <h3>{{ tea_name | escape }}</h3>
+          <p>{{ tea_notes[forloop.index0] | escape }}</p>
+          {%- if tea != blank -%}
+            <a class="tsg-link" href="{{ product_base | append: tea.handle | escape }}" aria-label="{{ view | escape }} · {{ tea_name | escape }}">{{ view | escape }} <span aria-hidden="true">↗</span></a>
+          {%- endif -%}
+        </article>
+      {%- endfor -%}
+    </div>
+  </section>
+  <section class="tsg-delivery" aria-labelledby="{{ section_key | escape }}-delivery">
+    <div class="tsg-shell">
+      <h2 id="{{ section_key | escape }}-delivery">{{ how | escape }}</h2>
+      <ol>{% for step in steps %}<li>{{ step | escape }}</li>{% endfor %}</ol>
+    </div>
+  </section>
+</div>
+{% schema %}
+{
+  "name": "Tsukino group buy",
+  "enabled_on": {
+    "templates": [
+      "index"
+    ]
+  },
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Editorial hero image"
+    },
+    {
+      "type": "product",
+      "id": "tea_set",
+      "label": "Tasting set product"
+    },
+    {
+      "type": "product",
+      "id": "tea_matcha",
+      "label": "Matcha product"
+    },
+    {
+      "type": "product",
+      "id": "tea_sencha",
+      "label": "Sencha product"
+    },
+    {
+      "type": "product",
+      "id": "tea_hojicha",
+      "label": "Hojicha product"
+    },
+    {
+      "type": "checkbox",
+      "id": "campaign_open",
+      "label": "Open Taiwan group buy",
+      "default": false
+    },
+    {
+      "type": "url",
+      "id": "campaign_url",
+      "label": "Taiwan retail partner signup URL"
+    },
+    {
+      "type": "text",
+      "id": "campaign_price",
+      "label": "Confirmed group-buy price and currency"
+    },
+    {
+      "type": "text",
+      "id": "campaign_deadline",
+      "label": "Confirmed deadline and time zone"
+    },
+    {
+      "type": "text",
+      "id": "campaign_minimum",
+      "label": "Confirmed minimum quantity"
+    },
+    {
+      "type": "text",
+      "id": "campaign_delivery",
+      "label": "Confirmed delivery estimate"
+    },
+    {
+      "type": "text",
+      "id": "campaign_progress",
+      "label": "Optional confirmed signup progress"
+    },
+    {
+      "type": "textarea",
+      "id": "refund_terms",
+      "label": "Confirmed refund terms if threshold is missed"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tsukino group buy"
+    }
+  ]
+}
+{% endschema %}
