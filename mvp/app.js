@@ -308,8 +308,8 @@
     document.title = 'Seller Hub | 日本茶の販売分析';
     if (route === 'broker') {
       document.title = 'Seller Hub | 通関業者ポータル';
-      content.innerHTML = page('台湾團購', '通関業者ポータル', '日本茶の一括出荷を想定し、輸入者の委任確認から食品報驗・通関、台湾の購入者への配達完了までを試せます。', BrokerDemo.render(), '模擬案件');
-      BrokerDemo.bind(content, render, toast);
+      content.innerHTML = page('台湾團購', '通関業者ポータル', '日本茶の一括輸入を想定し、品目分類の確認、書類の生成、通関から台湾国内の配達までを試せます。', BrokerDemo.render(), '模擬案件');
+      BrokerDemo.bind(content, render, toast, openDialog);
       return;
     }
     if (route === 'shopify') {

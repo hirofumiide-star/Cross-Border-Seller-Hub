@@ -29,7 +29,7 @@ The demo uses a fixed seed to generate 7,696 fictional orders. The initial 30-da
 
 ### Taiwan broker portal MVP
 
-Open [the broker portal](mvp/index.html#broker) or select the broker portal in the sidebar. Switch between Seller Hub and the Taiwanese broker to try the importer mandate check, document handoff, information requests, filing, optional sampling, handoff to the Taiwan receiving hub, and confirmation of final delivery to Taiwan buyers. The workflow uses a fictional campaign and produces no external submissions. See the [workflow and operating-model review](docs/broker-portal-mvp.md).
+Open [the broker portal](mvp/index.html#broker) and start document review as the Taiwanese broker. Correct the HS and Taiwan CCC codes with a recorded reason, then generate draft commercial invoices, packing lists, import declaration worksheets, and TFDA product information sheets. Preview the drafts and print them to PDF. Switch roles to test the importer mandate, handoff, document requests, simulated filing and sampling, receiving hub handoff, and final delivery to Taiwan buyers. See the [document sources, workflow, and operating-model review](docs/broker-portal-mvp.md).
 
 ## Shopify storefront and fulfillment verification
 

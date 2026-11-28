@@ -220,3 +220,52 @@ dialog::backdrop { background:#102b22a1 }
 .broker-events span { display:block; color:var(--quiet); font-size:.73rem }
 .broker-events p { margin-block:4px 0 }
 @media(max-width:680px) { .broker-details,.broker-grid { grid-template-columns:1fr } }
+
+.broker-workspace { display:grid; grid-template-columns:minmax(0,1.07fr) minmax(0,1fr); gap:15px; align-items:start }
+.broker-case .broker-details dl { grid-template-columns:repeat(2,minmax(0,1fr)) }
+.broker-code-summary { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:9px; margin:5px 0 14px }
+.broker-code-summary span { display:grid; align-content:start; gap:3px; padding:9px; border:1px solid var(--border); border-radius:8px; color:var(--quiet); font-size:.73rem }
+.broker-code-summary strong,.broker-code-change { font-variant-numeric:tabular-nums; overflow-wrap:anywhere }
+.broker-code-summary strong { color:var(--ink); font-size:.95rem }
+.broker-code-summary small { font-size:.70rem }
+.broker-code-form { padding-bottom:8px }
+.broker-code-inputs { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.35fr); gap:9px; margin-bottom:10px }
+.broker-code-inputs label { display:grid; align-content:start; gap:5px; font-size:.83rem; font-weight:650 }
+.broker-code-inputs input { width:100%; min-height:40px; padding:7px 9px; border:1px solid #ccd8cc; border-radius:8px; background:#fff; color:var(--ink); font-variant-numeric:tabular-nums }
+.broker-links { display:flex; flex-wrap:wrap; gap:5px 14px; margin-top:10px; font-size:.76rem }
+.broker-links a { text-decoration-thickness:1px; text-underline-offset:2px }
+.broker-doc-list { margin:0; padding:0 17px; list-style:none }
+.broker-doc-list li { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:12px; align-items:center; border-top:1px solid var(--border); padding:11px 0 }
+.broker-doc-list strong { font-size:.9rem }
+.broker-doc-list .sub { margin-top:2px; font-size:.77rem }
+.broker-external { border-top:1px solid var(--border); padding:11px 17px 14px; font-size:.84rem }
+.broker-external summary { cursor:pointer; font-weight:650 }
+.broker-external ul { padding-left:19px; margin-block:8px; display:grid; gap:4px }
+.broker-print-head { display:flex; justify-content:space-between; gap:14px; align-items:end; padding-bottom:12px; border-bottom:2px solid currentColor }
+.broker-print-head h3 { font-size:1.25rem }
+.broker-watermark { width:max-content; max-width:100%; margin-bottom:6px; padding:3px 7px; border:1px solid var(--rose); border-radius:4px; color:var(--rose); font-size:.68rem; font-weight:800; letter-spacing:.06em }
+.broker-print-ref { text-align:right; font-size:.77rem; color:var(--quiet) }
+.broker-print-fields { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:11px 14px; padding:11px 0 }
+.broker-print-fields dt { font-size:.73rem; color:var(--quiet) }
+.broker-print-fields dd { margin:2px 0 0; font-size:.86rem; overflow-wrap:anywhere }
+.broker-document table { min-width:0; font-size:.77rem }
+.broker-document :is(th,td) { white-space:normal; padding:7px 8px; overflow-wrap:anywhere }
+.broker-print-note { margin-top:9px; color:var(--quiet); font-size:.76rem }
+.broker-print-actions { margin-top:14px }
+@media(max-width:1030px) {
+  .broker-workspace { grid-template-columns:1fr }
+}
+@media(max-width:420px) {
+  .broker-code-summary,.broker-code-inputs,.broker-print-fields { grid-template-columns:1fr }
+  .broker-doc-list li { grid-template-columns:1fr; gap:6px }
+}
+@media print {
+  body:has(#dialog[open] .broker-document) { background:#fff; color:#111 }
+  body:has(#dialog[open] .broker-document) > :not(#dialog) { display:none!important }
+  #dialog:has(.broker-document)[open] { position:static; width:auto; max-width:none; height:auto; max-height:none; margin:0; padding:0; border:0; box-shadow:none; overflow:visible }
+  #dialog:has(.broker-document)::backdrop { display:none }
+  #dialog:has(.broker-document) :is(.panel-head,.broker-print-actions) { display:none }
+  #dialog:has(.broker-document) .dialog-body { padding:0 }
+  #dialog .broker-document .table-scroll { overflow:visible }
+  #dialog .broker-document tr { break-inside:avoid }
+}

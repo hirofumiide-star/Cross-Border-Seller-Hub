@@ -4,10 +4,25 @@ Open [the MVP broker portal](../mvp/index.html#broker). This workflow uses a fic
 
 ## Run the mock campaign
 
-1. In the **Seller Hub** view, record the product and document review with the Taiwanese importer and broker. Record that the importer has authorized the broker. The demo allows handoff only after these steps and once confirmed quantities meet the campaign threshold.
-2. Hand off the case. Switch to the **Taiwanese broker** view, accept it, and download the generated JSON bundle to inspect its commercial invoice draft, packing list draft, and product label draft. All prices and packing details are fictional.
-3. Request a missing document. Switch to **Seller Hub** to log the supplemental material, then switch back to the **Taiwanese broker** view to log the filing. Try the optional sampling or hold path. A document request or hold returns to the previous stage when resolved.
-4. Record both satisfactory food inspection and customs release. Switch to **Seller Hub** to record handoff to the receiving hub. Browser history persists across reloads. In the Seller Hub view, confirm final delivery to the buyers in Taiwan as a separate event. The demo records this for all confirmed units at once; the live service closes each order against its own delivery record.
+Select **Start document review as a broker** (通関業者として書類確認を始める) to populate the sample handoff and open the editing screen. To run the handoff step by step, record the product review and importer authorization in **Seller Hub**, hand off the case, switch to **Taiwanese broker**, and accept it.
+
+1. In **Commodity classification**, inspect the imported example HS code 0902.20. The fictional supplier ships unfermented sencha in 80 g retail packs. Compare the specification against the [Taiwan tariff search](https://portal.sw.nat.gov.tw/APGQ/XGC411) and the [TFDA F01/F02 commodity list](https://www.fda.gov.tw/tc/includes/GetFile.ashx?id=f638258815796454372). Use the sencha example to populate HS 0902.10 and Taiwan CCC 0902.10.00.00-7, then save the review with its reason. The portal checks 6 and 11 digits and the shared prefix. It records the previous and new values, reviewer role, timestamp, and revision.
+2. Generate and preview a commercial invoice, packing list, import declaration worksheet, or TFDA product information sheet. Preview uses the saved revision. Use **Print / Save as PDF** for a copy marked as a demo draft. Inspect the data bundle with **Shipment data (JSON)**.
+3. Request a missing document if needed. Switch to **Seller Hub** to record the response. Return to the **Taiwanese broker** view to record filing. Try the optional sampling or hold path. Resolving a document request or hold returns the case to its previous stage. After filing, the editor becomes read-only. Any live correction requires the appropriate [Customs amendment procedure](https://web.customs.gov.tw/singlehtml/40?cntId=450b2b9654b34f2eac353c434e373daf).
+4. Record satisfactory food inspection and customs release. Switch to **Seller Hub** to record handoff to the Taiwanese receiving hub, then separately confirm final delivery to Taiwanese buyers. The demo records delivery for all confirmed units at once. The live service would close each order against its delivery record.
+
+## What the broker checks
+
+| Document | Owner and purpose |
+| --- | --- |
+| Commercial invoice | The exporter supplies the transaction document. The broker checks the parties, currency, quantities, values, origin, and trade terms. Reconcile the working draft with the original invoice. An invoice amount may differ from the customs value, which depends on the transaction and applicable freight, insurance and any other adjustments. |
+| Packing list | The exporter or warehouse supplies actual packing data. The broker checks carton marks, SKU quantities, net weights and gross weights against the shipment. |
+| Air waybill (AWB) or equivalent transport document | The carrier issues the document. The broker checks the actual reference and route. |
+| Import declaration | The Taiwan importer or its authorized broker enters the Taiwan commodity code, goods description, value and supporting details in the customs system. The portal generates a review worksheet. |
+| TFDA food inspection application and product information | The importer or its representative prepares the application, product information and a copy of the customs declaration. TFDA may request more documentation. One inspection batch normally requires the same import declaration, CCC code, product name, ingredients, brand, producer and origin. |
+| Importer authorization and supporting evidence | The importer authorizes the broker and provides applicable permits or evidence. The broker verifies which documents are required for the goods and filing channel. |
+
+References: [Taiwan Customs import documents](https://web.customs.gov.tw/ekeelung/singlehtml/1451) · [Taiwan Customs valuation](https://web.customs.gov.tw/en/singlehtml/1865?cntId=cus16_183499_1865) · [TFDA food inspection regulations, Articles 3–5](https://www.fda.gov.tw/eng/lawContent.aspx?cid=5094&id=3068).
 
 ## Operating-model review
 
