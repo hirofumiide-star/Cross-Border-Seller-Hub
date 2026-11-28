@@ -1,4 +1,5 @@
 {{ 'tsukino-editorial.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'tsukino-tea-ui.js' | asset_url }}" defer></script>
 {%- liquid
   assign language = request.locale.iso_code | downcase | split: '-' | first
   assign section_key = 'tsukino-buy-' | append: section.id
@@ -79,6 +80,36 @@
       assign tea_names = '抹茶|煎茶|焙茶' | split: '|'
       assign tea_notes = '醇厚鮮味 · 點茶、拿鐵|清香回甘 · 日常茶壺沖泡|溫潤焙香 · 餐後飲用' | split: '|'
   endcase
+  case language
+    when 'ja'
+      assign choose_label = '飲み方で選ぶ'
+      assign filter_labels = 'すべて|初めての一杯|ラテ|茶筅で点てる|急須で淹れる|食後' | split: '|'
+      assign filter_result = '{count}種類を表示'
+      assign usage_tags = 'ラテ / 茶筅で点てる|初めての一杯 / 急須で淹れる|急須で淹れる / 食後' | split: '|'
+      assign brew_label = 'それぞれのお茶の淹れ方'
+      assign brew_instructions = '抹茶をふるい、少量の湯を注いで茶筅で手早く点てます。ラテなら、点てた後にミルクを加えます。|急須に茶葉と湯を入れて蒸らし、最後まで注ぎ切ります。柔らかな味にしたいときは、少し冷ました湯を使います。|急須で熱めの湯を使い、短めに抽出します。すっきりした後味を目安に、時間を調整します。' | split: '|'
+      assign per_kg_label = '1 kgあたり'
+      assign review_label = '件の評価'
+    when 'en'
+      assign choose_label = 'Choose by how you drink it'
+      assign filter_labels = 'All teas|First cup|Latte|Whisked|Teapot|After a meal' | split: '|'
+      assign filter_result = '{count} teas shown'
+      assign usage_tags = 'Latte / Whisked|First cup / Teapot|Teapot / After a meal' | split: '|'
+      assign brew_label = 'How to prepare each tea'
+      assign brew_instructions = 'Sift the matcha, add a little warm water, and whisk briskly with a chasen. For a latte, add milk or plant milk after whisking.|Steep the leaves in a teapot and pour out all the tea. Use slightly cooler water for a softer taste.|Steep briefly in a teapot with hot water. Start with a short steep for a clean finish, then adjust to taste.' | split: '|'
+      assign per_kg_label = 'per kg'
+      assign review_label = 'ratings'
+    else
+      assign choose_label = '依飲用方式選茶'
+      assign filter_labels = '全部|第一次嘗試|拿鐵|茶筅點茶|茶壺沖泡|餐後' | split: '|'
+      assign filter_result = '顯示 {count} 款茶'
+      assign usage_tags = '拿鐵 / 茶筅點茶|第一次嘗試 / 茶壺沖泡|茶壺沖泡 / 餐後' | split: '|'
+      assign brew_label = '第一次泡這款茶？'
+      assign brew_instructions = '將抹茶過篩，加少量溫水，用茶筅快速攪打。做拿鐵時，點好後再倒入牛奶或植物奶。|把茶葉放入茶壺，倒入熱水沖泡，再將茶湯倒盡。用較溫的水可以讓滋味更柔和。|用茶壺以熱水短時間沖泡。想保留清爽尾韻，可以先少浸泡一會兒，再依口味調整。' | split: '|'
+      assign per_kg_label = '每公斤'
+      assign review_label = '則評分'
+  endcase
+  assign filter_keys = 'all,first,latte,whisk,pot,meal' | split: ','
 -%}
 
 <div class="tsukino-editorial">
@@ -124,8 +155,15 @@
       {%- endif -%}
     </div>
   </section>
-  <section class="tsg-compare tsg-shell" aria-labelledby="{{ section_key | escape }}-teas">
+  <section class="tsg-compare tsg-shell" aria-labelledby="{{ section_key | escape }}-teas" data-tsg-filter data-result-label="{{ filter_result | escape }}">
     <h2 id="{{ section_key | escape }}-teas">{{ compare | escape }}</h2>
+    <fieldset class="tsg-filter-list" data-tea-filters hidden>
+      <legend>{{ choose_label | escape }}</legend>
+      {%- for filter in filter_keys -%}
+        <button class="tsg-filter" type="button" data-tea-filter="{{ filter }}" aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}">{{ filter_labels[forloop.index0] | escape }}</button>
+      {%- endfor -%}
+    </fieldset>
+    <span class="tsg-screen-reader" data-tea-filter-status aria-live="polite"></span>
     <div class="tsg-grid">
       {%- for tea_key in tea_keys -%}
         {%- liquid
@@ -138,17 +176,53 @@
               assign tea = tea_hojicha
           endcase
           assign tea_name = tea_names[forloop.index0]
+          assign tags = usage_tags[forloop.index0] | split: ' / '
+          case tea_key
+            when 'matcha'
+              assign uses = 'latte whisk'
+            when 'sencha'
+              assign uses = 'first pot'
+            else
+              assign uses = 'pot meal'
+          endcase
+          assign grams = tea.metafields.custom.net_weight_g.value | default: 0 | plus: 0
+          if grams <= 0
+            case tea.handle
+              when 'uji-matcha-30g'
+                assign grams = 30
+              when 'uji-sencha-80g'
+                assign grams = 80
+              when 'uji-hojicha-60g'
+                assign grams = 60
+            endcase
+          endif
+          assign rating = tea.metafields.reviews.rating.value
+          assign rating_count = tea.metafields.reviews.rating_count.value | default: 0 | plus: 0
         -%}
-        <article class="tsg-tea">
+        <article class="tsg-tea" data-tea-uses="{{ uses }}">
           {%- if tea.featured_image != blank -%}
             <figure>{{ tea.featured_image | image_url: width: 960 | image_tag: widths: '320, 480, 720, 960', sizes: '(max-width: 749px) 100vw, 31vw', loading: 'lazy', alt: tea_name }}</figure>
           {%- endif -%}
           <h3>{{ tea_name | escape }}</h3>
           <p>{{ tea_notes[forloop.index0] | escape }}</p>
+          <div class="tsg-tags">{% for tag in tags %}<span>{{ tag | escape }}</span>{% endfor %}</div>
+          {%- if tea != blank and tea.price_varies == false and grams > 0 -%}
+            {%- assign per_kg_price = tea.price | times: 1000.0 | divided_by: grams | round -%}
+            <p class="tsg-card-meta"><strong>{{ tea.price | money_with_currency }}</strong> · {{ grams }} g<br>{{ per_kg_price | money_with_currency }} {{ per_kg_label | escape }}</p>
+          {%- endif -%}
+          {%- if rating != blank and rating_count > 0 -%}
+            <p class="tsg-card-meta"><span aria-hidden="true">★</span> {{ rating.rating | round: 1 }} / {{ rating.scale_max }} · {{ rating_count }} {{ review_label | escape }}</p>
+          {%- endif -%}
           {%- if tea != blank -%}
             <a class="tsg-link" href="{{ product_base | append: tea.handle | escape }}" aria-label="{{ view | escape }} · {{ tea_name | escape }}">{{ view | escape }} <span aria-hidden="true">↗</span></a>
           {%- endif -%}
         </article>
+      {%- endfor -%}
+    </div>
+    <div class="tsg-brewing">
+      <h3>{{ brew_label | escape }}</h3>
+      {%- for instruction in brew_instructions -%}
+        <details><summary>{{ tea_names[forloop.index0] | escape }}</summary><p>{{ instruction | escape }}</p></details>
       {%- endfor -%}
     </div>
   </section>

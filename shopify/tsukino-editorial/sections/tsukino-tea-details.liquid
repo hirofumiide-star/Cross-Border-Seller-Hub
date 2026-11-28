@@ -1,6 +1,19 @@
 {%- liquid
+  assign fields = 'origin,grower,cultivar,elevation,harvest,tea_amount,water_temperature,brew_time' | split: ','
   assign language = request.locale.iso_code | downcase | split: '-' | first
-  assign fields = 'origin,harvest,tea_amount,water_temperature,brew_time' | split: ','
+  assign variant = product.selected_or_first_available_variant
+  assign plan_count = 0
+  for allocation in variant.selling_plan_allocations
+    if allocation.selling_plan.recurring_deliveries
+      assign plan_count = plan_count | plus: 1
+    endif
+  endfor
+  assign show_purchase = false
+  if section.settings.show_purchase and product.variants.size == 1 and variant.available and plan_count > 0
+    assign show_purchase = true
+  endif
+  assign pack = section.settings.package_grams | default: product.metafields.custom.net_weight_g.value | default: 0 | plus: 0
+  assign per_cup = section.settings.grams_per_cup | default: 0 | plus: 0
   assign has_content = false
   if section.settings.tasting_notes != blank
     assign has_content = true
@@ -10,33 +23,98 @@
       assign has_content = true
     endif
   endfor
+  assign view_key = 'tsukino-tea-' | append: section.id
+  assign purchase_form_id = view_key | append: '-form'
+  assign hero_image = section.settings.story_image | default: product.featured_image
   case language
     when 'ja'
-      assign heading = '味わいと淹れ方'
-      assign labels = '茶葉の産地|収穫時期|茶葉の量|湯温|抽出時間' | split: '|'
+      assign heading = '産地と淹れ方'
+      assign labels = '茶葉の産地|生産者・茶園|品種|標高|収穫時期|茶葉の量|湯温|抽出時間' | split: '|'
+      assign buy_heading = '購入方法'
+      assign one_label = '1回購入'
+      assign subscribe_label = '定期購入'
+      assign cadence_label = '配送頻度'
+      assign cups_label = '1日の杯数'
+      assign estimate_template = '1袋で約{days}日分です。近い配送間隔を選んでください。'
+      assign add_label = 'カートに入れる'
     when 'en'
-      assign heading = 'Taste and preparation'
-      assign labels = 'Growing region|Harvest season|Tea amount|Water temperature|Time' | split: '|'
+      assign heading = 'Origin and preparation'
+      assign labels = 'Growing region|Grower or tea garden|Cultivar|Elevation|Harvest season|Tea amount|Water temperature|Brewing time' | split: '|'
+      assign buy_heading = 'Purchase options'
+      assign one_label = 'One-time purchase'
+      assign subscribe_label = 'Subscribe & save'
+      assign cadence_label = 'Delivery frequency'
+      assign cups_label = 'Cups per day'
+      assign estimate_template = 'One pack lasts about {days} days. Choose a delivery interval close to that.'
+      assign add_label = 'Add to cart'
     else
-      assign heading = '風味與沖泡'
-      assign labels = '茶葉產地|採收季節|茶葉用量|水溫|沖泡時間' | split: '|'
+      assign heading = '產地與沖泡'
+      assign labels = '產區|茶農／茶園|茶樹品種|海拔|採收季節|茶葉用量|水溫|沖泡時間' | split: '|'
+      assign buy_heading = '購買方式'
+      assign one_label = '單次購買'
+      assign subscribe_label = '定期配送'
+      assign cadence_label = '配送頻率'
+      assign cups_label = '每天喝幾杯？'
+      assign estimate_template = '一罐約喝 {days} 天，可挑選接近的配送週期。'
+      assign add_label = '加入購物車'
   endcase
 -%}
-{%- if has_content -%}
+{%- if has_content or show_purchase -%}
   {{ 'tsukino-editorial.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'tsukino-tea-ui.js' | asset_url }}" defer></script>
   <div class="tsukino-editorial">
-    <section class="tsg-notes tsg-shell" aria-labelledby="tsukino-notes-{{ section.id | escape }}">
-      <h2 id="tsukino-notes-{{ section.id | escape }}">{{ heading | escape }}</h2>
-      {%- if section.settings.tasting_notes != blank -%}
-        <div class="tsg-lead">{{ section.settings.tasting_notes }}</div>
+    <section class="tsg-notes tsg-shell tsg-detail-layout" aria-labelledby="{{ view_key | escape }}">
+      {%- if hero_image != blank -%}
+        <figure>{{ hero_image | image_url: width: 1100 | image_tag: widths: '400, 700, 1100', sizes: '(max-width: 749px) 100vw, 47vw', loading: 'lazy', alt: product.title }}</figure>
       {%- endif -%}
-      <dl class="tsg-facts">
-        {%- for field in fields -%}
-          {%- if section.settings[field] != blank -%}
-            <div><dt>{{ labels[forloop.index0] | escape }}</dt><dd>{{ section.settings[field] | escape }}</dd></div>
-          {%- endif -%}
-        {%- endfor -%}
-      </dl>
+      <div>
+        <h2 id="{{ view_key | escape }}">{{ heading | escape }}</h2>
+        {%- if section.settings.tasting_notes != blank -%}
+          <div class="tsg-lead">{{ section.settings.tasting_notes }}</div>
+        {%- endif -%}
+        {%- if has_content -%}
+          <dl class="tsg-facts">
+            {%- for field in fields -%}
+              {%- if section.settings[field] != blank -%}
+                <div><dt>{{ labels[forloop.index0] | escape }}</dt><dd>{{ section.settings[field] | escape }}</dd></div>
+              {%- endif -%}
+            {%- endfor -%}
+          </dl>
+        {%- endif -%}
+        {%- if show_purchase -%}
+          <div class="tsg-purchase" data-tsg-purchase data-grams="{{ pack }}" data-per-cup="{{ per_cup }}" data-single-price="{{ variant.price | money_with_currency | escape }}" hidden>
+            {%- form 'product', product, id: purchase_form_id -%}
+              <input type="hidden" name="id" value="{{ variant.id }}">
+              <fieldset>
+                <legend>{{ buy_heading | escape }}</legend>
+                {%- unless variant.requires_selling_plan -%}
+                  <label><input type="radio" name="tsukino_purchase_mode" value="once" data-purchase-mode checked> {{ one_label | escape }}</label>
+                {%- endunless -%}
+                <label><input type="radio" name="tsukino_purchase_mode" value="subscription" data-purchase-mode{% if variant.requires_selling_plan %} checked{% endif %}> {{ subscribe_label | escape }}</label>
+              </fieldset>
+              <div class="tsg-delivery-options" data-delivery-options hidden>
+                <label for="{{ view_key | escape }}-plan">{{ cadence_label | escape }}</label>
+                <select name="selling_plan" id="{{ view_key | escape }}-plan" data-selling-plan disabled>
+                  {%- for allocation in variant.selling_plan_allocations -%}
+                    {%- if allocation.selling_plan.recurring_deliveries -%}
+                      <option value="{{ allocation.selling_plan.id }}" data-price="{{ allocation.price | money_with_currency | escape }}">{{ allocation.selling_plan.name | escape }} · {{ allocation.price | money_with_currency }}</option>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </select>
+                {%- if pack > 0 and per_cup > 0 -%}
+                  <label for="{{ view_key | escape }}-cups">{{ cups_label | escape }}</label>
+                  <select id="{{ view_key | escape }}-cups" data-cups>
+                    {%- for cups in (1..4) -%}<option value="{{ cups }}">{{ cups }}</option>{%- endfor -%}
+                  </select>
+                  <p class="tsg-cadence" data-cadence-estimate data-template="{{ estimate_template | escape }}" aria-live="polite"></p>
+                {%- endif -%}
+              </div>
+              <p class="tsg-purchase-price" data-purchase-price aria-live="polite">{{ variant.price | money_with_currency }}</p>
+              <button class="tsg-button" type="submit">{{ add_label | escape }}</button>
+            {%- endform -%}
+          </div>
+        {%- endif -%}
+      </div>
     </section>
   </div>
 {%- endif -%}
@@ -49,11 +127,6 @@
     ]
   },
   "settings": [
-    {
-      "type": "richtext",
-      "id": "tasting_notes",
-      "label": "Tasting notes and recommended use"
-    },
     {
       "type": "text",
       "id": "origin",
@@ -78,6 +151,47 @@
       "type": "text",
       "id": "brew_time",
       "label": "Brewing or whisking time"
+    },
+    {
+      "type": "text",
+      "id": "grower",
+      "label": "Verified grower or tea garden"
+    },
+    {
+      "type": "text",
+      "id": "cultivar",
+      "label": "Verified tea cultivar"
+    },
+    {
+      "type": "text",
+      "id": "elevation",
+      "label": "Verified tea garden elevation"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_purchase",
+      "label": "Show one-time and subscription selector",
+      "default": false
+    },
+    {
+      "type": "number",
+      "id": "package_grams",
+      "label": "Verified package net weight in grams"
+    },
+    {
+      "type": "number",
+      "id": "grams_per_cup",
+      "label": "Grams per cup for the cadence estimate"
+    },
+    {
+      "type": "image_picker",
+      "id": "story_image",
+      "label": "Tea or producer image"
+    },
+    {
+      "type": "richtext",
+      "id": "tasting_notes",
+      "label": "Tasting notes and preparation"
     }
   ],
   "presets": [
