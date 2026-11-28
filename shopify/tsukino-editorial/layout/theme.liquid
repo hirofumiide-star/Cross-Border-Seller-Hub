@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code | escape }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ page_title | default: shop.name | escape }}</title>
+    {% if page_description != blank %}<meta name="description" content="{{ page_description | escape }}">{% endif %}
+    <link rel="canonical" href="{{ canonical_url | escape }}">
+    <style>
+      body { margin: 0; background: #f7f4ed; color: #202923; }
+      .tsg-store-header { border-bottom: 1px solid #d4d8cb; }
+      .tsg-store-header .tsg-shell { min-height: 60px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 18px; padding-block: 8px; }
+      .tsg-store-header a { color: inherit; font: 650 23px/1.2 "Hiragino Mincho ProN", Georgia, serif; text-decoration: none; }
+      .tsg-store-languages { display: flex; flex-wrap: wrap; align-items: center; gap: 3px; margin: 0; }
+      .tsg-store-languages button {
+        min-height: 44px; border: 0; background: none; padding: 3px 8px; color: inherit;
+        font: 600 13px/1.4 system-ui, sans-serif; cursor: pointer;
+      }
+      .tsg-store-languages button[aria-current="true"] { text-decoration: underline; text-underline-offset: 4px; }
+      .tsg-store-footer { border-top: 1px solid #d4d8cb; padding: 22px 0; font-size: 13px; }
+    </style>
+    {{ 'tsukino-editorial.css' | asset_url | stylesheet_tag }}
+    {{ content_for_header }}
+  </head>
+  <body>
+    <header class="tsukino-editorial tsg-store-header">
+      <div class="tsg-shell">
+        <a href="{{ routes.root_url | escape }}">{{ shop.name | escape }}</a>
+        {%- if localization.available_languages.size > 1 -%}
+          {%- liquid
+            assign current_code = localization.language.iso_code
+            assign current_primary = current_code | downcase | split: '-' | first
+            case current_primary
+              when 'ja'
+                assign language_label = '表示言語'
+              when 'zh'
+                assign language_label = '顯示語言'
+              else
+                assign language_label = 'Display language'
+            endcase
+          -%}
+          {%- form 'localization', id: 'TsukinoLanguage', class: 'tsg-store-languages' -%}
+            <div role="group" aria-label="{{ language_label | escape }}">
+              {%- for language in localization.available_languages -%}
+                {%- liquid
+                  assign code = language.iso_code | downcase
+                  case code
+                    when 'en'
+                      assign label = 'English'
+                    when 'zh-tw'
+                      assign label = '繁體中文'
+                    when 'ja'
+                      assign label = '日本語'
+                    else
+                      assign label = language.endonym_name
+                  endcase
+                -%}
+                <button type="submit" name="language_code" value="{{ language.iso_code | escape }}" lang="{{ language.iso_code | escape }}"{% if language.iso_code == current_code %} aria-current="true"{% endif %}>{{ label | escape }}</button>
+              {%- endfor -%}
+            </div>
+          {%- endform -%}
+        {%- endif -%}
+      </div>
+    </header>
+    <main id="MainContent">{{ content_for_layout }}</main>
+    <footer class="tsukino-editorial tsg-store-footer"><div class="tsg-shell">{{ shop.name | escape }}</div></footer>
+  </body>
+</html>

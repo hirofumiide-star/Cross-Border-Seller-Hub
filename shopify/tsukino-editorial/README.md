@@ -16,6 +16,10 @@ The photography brief was restrained Japanese tea editorial still life on pale s
 
 Download the [design branch ZIP](https://github.com/hirofumiide-star/Cross-Border-Seller-Hub/archive/refs/heads/design/tsukino-taiwan-group-buy.zip), extract it, and open [preview.html](preview.html). It opens in Traditional Chinese and offers English and Japanese. The demo buttons show what signup and sharing on LINE or WhatsApp would do.
 
+## Storefront languages
+
+The deployed demo layout is available in `layout/theme.liquid`. Its Shopify localization form uses the languages published on the current storefront domain. Publish English, Traditional Chinese, and Japanese under Shopify's **Settings → Languages** and assign them to that domain. The homepage's campaign and catalog are already translated in Liquid. Set localized homepage titles and descriptions in Translate & Adapt. If staging the campaign inside a different theme, use that theme's native language picker.
+
 ## Stage the design in Shopify
 
 1. Duplicate the current theme. Copy the group-buy section, the catalog snippet, the CSS and JS, and the seven `tsukino-ja-*.jpg` images into the corresponding theme directories.
