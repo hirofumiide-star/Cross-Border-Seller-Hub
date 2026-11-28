@@ -4,7 +4,7 @@
   const { stores, markets, channels, categories, themes, statusLabels, exports, summarize, dateAt } = TeaMarket;
   const sample = stores[0];
   const storeById = new Map(stores.map(store => [store.id, store]));
-  const shopifyStorefront = 'https://uji-tsukino-sabo-demo.myshopify.com/';
+  const shopifyGroupBuyPreview = 'https://admin.shopify.com/store/rgjmwn-ks/themes/191201902671/editor';
   const keys = { orders: 'tea-market-test-orders-v1', actions: 'tea-market-actions-v1' };
   const filters = { days: 30, market: 'all', store: 'all' };
   const $ = id => document.getElementById(id);
@@ -104,7 +104,7 @@
   function page(crumb, title, note, body, label = 'Sample data') {
     document.title = `Seller Hub | ${title}`;
     return `<div class="content-wrap">
-      <div class="topbar"><span>Seller Hub / ${crumb}</span><div><span class="tag gray">${label}</span><a class="button" href="${shopifyStorefront}">Open Shopify demo store</a></div></div>
+      <div class="topbar"><span>Seller Hub / ${crumb}</span><div><span class="tag gray">${label}</span><a class="button" href="${shopifyGroupBuyPreview}">Preview Shopify group buy</a></div></div>
       <header class="page-head"><div><h1>${title}</h1><p class="sub">${note}</p></div></header>
       ${body}
     </div>`;
@@ -267,9 +267,9 @@
   }
 
   function shops() {
-    return page('Connected stores', 'Connected Stores', `Browse ${stores.length} stores with sample data or open the Uji Tsukino Tea House demo on Shopify.`, `
+    return page('Connected stores', 'Connected Stores', `Browse ${stores.length} stores with sample data or preview the Uji Tsukino Tea House group buy in Shopify.`, `
       <section class="panel section-gap">
-        <div class="panel-head"><div class="store-controls"><label for="shop-search" class="sr-only">Search by store name or region</label><input id="shop-search" class="search" type="search" placeholder="Search stores or regions"></div><a class="button primary" href="${shopifyStorefront}">Open Shopify demo store</a></div>
+        <div class="panel-head"><div class="store-controls"><label for="shop-search" class="sr-only">Search by store name or region</label><input id="shop-search" class="search" type="search" placeholder="Search stores or regions"></div><a class="button primary" href="${shopifyGroupBuyPreview}">Preview Shopify group buy</a></div>
         <div id="shop-results"></div>
       </section>`);
   }
@@ -305,8 +305,8 @@
     }
 
     if (route === 'store') {
-      content.innerHTML = page('Shopify', 'Uji Tsukino Tea House', 'Opening the Shopify development store.', '');
-      location.replace(shopifyStorefront);
+      content.innerHTML = page('Shopify', 'Uji Tsukino Tea House', 'Opening the group-buy preview in Shopify.', '');
+      location.replace(shopifyGroupBuyPreview);
       return;
     }
     if (route === 'broker') {

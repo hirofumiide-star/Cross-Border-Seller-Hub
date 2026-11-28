@@ -16,7 +16,7 @@ The first pilot takes **Japanese tea to Taiwan**. It tests paid website developm
 
 ## Japanese tea multi-store analytics MVP
 
-The [English-language Seller Hub dashboard](mvp/index.html) matches orders, shipments, and reviews across 36 fictional Shopify-style stores. The dashboard's demo store link opens the [Uji Tsukino Tea House Shopify development storefront](https://uji-tsukino-sabo-demo.myshopify.com/), where Shopify handles browsing, the cart, and test checkout. The old `#store` URL redirects to Shopify.
+The [English-language Seller Hub dashboard](mvp/index.html) matches orders, shipments, and reviews across 36 fictional Shopify-style stores. **Preview Shopify group buy** and the `#store` URL open the [10-buyer Uji Tsukino Tea House theme preview](https://admin.shopify.com/store/rgjmwn-ks/themes/191201902671/editor) for users with access to its Shopify admin. The test-order and inventory API workflow uses the separate development store described below.
 
 Download the source and open `mvp/index.html` in a browser, or run `python3 -m http.server 8000` at the repository root and open `http://localhost:8000/mvp/`.
 
