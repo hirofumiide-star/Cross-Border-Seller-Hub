@@ -4,15 +4,18 @@
       assign started = 'グループを作成しました'
       assign invited = '友達から招待が届きました'
       assign formed = 'グループが成立しました'
+      assign joined = 'デモ購入を受け付けました'
+      assign joined_note = '購入状況リンクを、招待してくれた友達に送り返せます。'
+      assign already_joined = 'このグループには参加済みです。'
       assign expired = '期限切れで不成立'
-      assign started_note = '友達1人が期限内に同じセットをデモ購入すると成立します。'
-      assign invited_note = '友達が先にデモ購入しました。同じセットをデモ購入すると2人で成立します。'
-      assign formed_note = '2人のデモ購入が確定しました。'
+      assign started_note = 'このリンクを友達にシェアしてください。期限内に合計10人が同じセットをデモ購入すると成立します。'
+      assign invited_note = '友達が先にデモ購入しました。同じセットを購入して、10人のグループに参加できます。'
+      assign formed_note = '10人のデモ購入が確定しました。'
       assign expired_note = 'デモ購入をキャンセルし、返金済みとして表示します。実際の決済はありません。'
-      assign progress_label = '{count}／2人が購入済み'
+      assign progress_label = '{count}／{target}人が購入済み'
       assign remaining_label = '残り'
       assign invitation = '招待リンク'
-      assign result_link = '友達に成立結果を返すリンク'
+      assign result_link = '購入状況を共有するリンク'
       assign copy = 'リンクをコピー'
       assign copied = 'コピーしました'
       assign open_invite = '友達として開く'
@@ -26,15 +29,18 @@
       assign started = 'Your group is open'
       assign invited = 'A friend invited you'
       assign formed = 'Your group is complete'
+      assign joined = 'Your demo purchase is recorded'
+      assign joined_note = 'Send the purchase status link back to the friend who invited you.'
+      assign already_joined = 'You already joined this group.'
       assign expired = 'Group expired'
-      assign started_note = 'Invite one friend to make a demo purchase of the same tea set before the timer runs out.'
-      assign invited_note = 'Your friend already made a demo purchase. Buy the same set to complete the group together.'
-      assign formed_note = 'Both demo purchases are confirmed.'
+      assign started_note = 'Share the link with friends. The group succeeds when 10 buyers purchase this tea set before the deadline.'
+      assign invited_note = 'Your friend already bought the set. Make a demo purchase of the same set to take one of the 10 spots.'
+      assign formed_note = 'All 10 demo purchases are confirmed.'
       assign expired_note = 'The demo purchase is shown as canceled and refunded. No real payment was collected.'
-      assign progress_label = '{count} of 2 people purchased'
+      assign progress_label = '{count} of {target} people purchased'
       assign remaining_label = 'Time left'
       assign invitation = 'Invite link'
-      assign result_link = 'Link to send the result to your friend'
+      assign result_link = 'Link to share the purchase status'
       assign copy = 'Copy link'
       assign copied = 'Copied'
       assign open_invite = 'Open as a friend'
@@ -48,15 +54,18 @@
       assign started = '已開團'
       assign invited = '朋友邀請你跟團'
       assign formed = '團購已成立'
+      assign joined = '已記錄你的示範購買'
+      assign joined_note = '可將購買進度連結傳回邀請你的朋友。'
+      assign already_joined = '你已加入此團購。'
       assign expired = '已截止，未成團'
-      assign started_note = '分享連結給一位好友。對方在倒數結束前示範購買同一款茶組，即可成團。'
-      assign invited_note = '朋友已完成示範購買。試買同一款茶組，即可兩人成團。'
-      assign formed_note = '兩筆示範購買均已確認。'
+      assign started_note = '將連結分享給好友。截止前共有 10 人示範購買同款茶組，即可成團。'
+      assign invited_note = '朋友已完成示範購買。試買同款茶組，即可加入 10 人團購。'
+      assign formed_note = '10 人的示範購買均已確認。'
       assign expired_note = '示範訂單顯示為已取消並退款。此次示範未實際收款。'
-      assign progress_label = '{count}／2 人已購買'
+      assign progress_label = '{count}／{target} 人已購買'
       assign remaining_label = '剩餘時間'
       assign invitation = '邀請連結'
-      assign result_link = '分享成團結果給朋友的連結'
+      assign result_link = '分享購買進度的連結'
       assign copy = '複製連結'
       assign copied = '已複製'
       assign open_invite = '以朋友身分開啟'
@@ -69,11 +78,12 @@
   endcase
 -%}
 <div class="tsg-friend-group" data-tsg-friend-status
-  data-join-label="{{ join_label | escape }}" data-unavailable="{{ unavailable | escape }}"
-  data-progress-template="{{ progress_label | escape }}" data-invite-message="{{ invite_message | escape }}" hidden>
+  data-join-label="{{ join_label | escape }}" data-unavailable="{{ unavailable | escape }}" data-already-joined="{{ already_joined | escape }}"
+  data-group-size="10" data-progress-template="{{ progress_label | escape }}" data-invite-message="{{ invite_message | escape }}" hidden>
   <div role="status">
     <p data-group-copy="started" hidden><strong>{{ started | escape }}</strong><br>{{ started_note | escape }}</p>
     <p data-group-copy="invited" hidden><strong>{{ invited | escape }}</strong><br>{{ invited_note | escape }}</p>
+    <p data-group-copy="joined" hidden><strong>{{ joined | escape }}</strong><br>{{ joined_note | escape }}</p>
     <p data-group-copy="formed" hidden><strong>{{ formed | escape }}</strong><br>{{ formed_note | escape }}</p>
     <p data-group-copy="expired" hidden><strong>{{ expired | escape }}</strong><br>{{ expired_note | escape }}</p>
   </div>

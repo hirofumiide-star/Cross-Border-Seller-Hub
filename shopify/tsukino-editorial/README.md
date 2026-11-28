@@ -22,9 +22,11 @@ The deployed demo layout is available in `layout/theme.liquid`. Its Shopify loca
 
 ## Friend-invite group-buy demo
 
-The deployed Shopify theme uses the unlisted tea bag tasting set for a two-person group. Start a group and use Shopify's cart to complete the first simulated purchase. The first buyer receives a time-limited invitation and can copy it, share it on LINE or WhatsApp, or open it as the friend in a separate tab. The friend completes a separate demo purchase of the same set to form the group. Both roles see the result automatically in tabs in the same browser. When demonstrating across different browsers, the friend sends the result link back for the first buyer to open.
+Start a group with a simulated purchase of the unlisted Uji tea bag tasting set in Shopify's cart. The group succeeds when 10 participants buy the same set within 10 minutes, counting the first buyer and nine invited friends. The progress display counts participating browsers or tabs with distinct demo purchases, regardless of the quantity in the cart. Additional purchases from the same tab for the same group do not increase the count.
 
-The timer starts on the first simulated purchase and expires after 10 minutes. An incomplete group expires and shows a simulated cancellation and refund. The **See an expired example** link opens an example immediately. The demo uses Shopify's actual cart and stores group outcomes in the browser. It does not install the GroupBuy app, create Shopify orders, process real payments, or reconcile refunds. The static HTML preview predates the friend-invite flow.
+Copy the invite, share it on LINE or WhatsApp, or select **Open as a friend** to test a new participant in another tab. Progress updates across tabs in the same browser. When testing with separate browsers, each guest can send the progress link back for the organizer to open and merge their purchase. Reopening a progress link does not count the same purchase again.
+
+An incomplete group expires at the deadline and displays a simulated cancellation and refund. **See an expired example** opens a sample immediately. The demo uses Shopify's cart and browser storage for progress. It runs without a GroupBuy app installation, Shopify orders, real charges, or refund processing. The static HTML preview predates the friend-invite flow.
 
 ## Stage the design in Shopify
 

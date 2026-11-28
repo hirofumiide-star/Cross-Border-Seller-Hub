@@ -2,7 +2,7 @@
   'use strict';
 
   const duration = 10 * 60 * 1000;
-  const prefix = 'tsukino-friend-group:v1:';
+  const prefix = 'tsukino-friend-group:v2:';
   const intentKey = prefix + 'incoming';
   const recentKey = prefix + 'recent';
   const idPattern = /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/;
@@ -12,12 +12,14 @@
   const status = (home ?? cart)?.querySelector('[data-tsg-friend-status]');
   if (!status) return;
 
+  const groupSize = Number(status.dataset.groupSize);
+
   function parseGroup(token) {
-    const [id, time, extra] = (token || '').split('.');
-    if (extra !== undefined || !idPattern.test(id) || !/^\d{13}$/.test(time)) return null;
+    const [version, id, time, extra] = (token || '').split('.');
+    if (version !== 'v2' || extra !== undefined || !idPattern.test(id) || !/^\d{13}$/.test(time)) return null;
     const expires = Number(time);
     if (expires > Date.now() + duration + 60 * 1000) return null;
-    return { token, expires };
+    return { id, token, expires };
   }
 
   function readStored(key) {
@@ -28,37 +30,73 @@
     }
   }
 
-  function completedAt(group) {
-    const value = Number(readStored(prefix + 'group:' + group.token));
-    return value > group.expires - duration && value < group.expires ? value : 0;
+  function validReceipts(group, receipts) {
+    const ordered = [...receipts].filter(([id, time]) =>
+      idPattern.test(id) && id !== group.id && Number.isSafeInteger(time) &&
+      time >= group.expires - duration && time < group.expires && time <= Date.now()
+    ).sort(([idA, timeA], [idB, timeB]) => timeA - timeB || idA.localeCompare(idB));
+    const unique = new Map();
+    for (const [id, time] of ordered) {
+      if (unique.has(id)) continue;
+      unique.set(id, time);
+      if (unique.size === groupSize - 1) break;
+    }
+    return unique;
   }
 
-  function groupUrl(key, value) {
+  function readReceipts(group) {
+    try {
+      return validReceipts(group, JSON.parse(readStored(prefix + 'group:' + group.token) || '[]'));
+    } catch {
+      return new Map();
+    }
+  }
+
+  function mergeReceipts(group, additions) {
+    const existing = readReceipts(group);
+    for (const [id, time] of validReceipts(group, additions)) {
+      if (!existing.has(id) || time < existing.get(id)) existing.set(id, time);
+    }
+    const receipts = validReceipts(group, existing);
+    localStorage.setItem(prefix + 'group:' + group.token, JSON.stringify([...receipts]));
+    return receipts;
+  }
+
+  function groupUrl(key, value, receipts) {
     const url = new URL(cart?.dataset.shopRoot || location.pathname, location.origin);
     url.searchParams.set(key, value);
+    if (receipts?.size) {
+      url.searchParams.set('demo_receipts', [...receipts].map(([id, time]) => id + '.' + time).join(','));
+    }
     return url.href;
   }
 
-  function recordResult() {
-    const [token, time, extra] = (params.get('demo_result') || '').split('~');
-    const group = parseGroup(token);
-    const timestamp = Number(time);
-    if (extra !== undefined || !group || !Number.isSafeInteger(timestamp) || timestamp > Date.now() ||
-        timestamp <= group.expires - duration || timestamp >= group.expires) return null;
+  function participantId(group) {
     try {
-      localStorage.setItem(prefix + 'group:' + group.token, String(timestamp));
-      recentGroup = group;
+      return sessionStorage.getItem(prefix + 'participant:' + group.token);
     } catch {
       return null;
     }
-    return group;
   }
 
   let recentGroup = parseGroup(readStored(recentKey));
-  const invite = parseGroup(params.get('demo_invite'));
+  const inviteParameter = params.get('demo_invite');
+  const invite = parseGroup(inviteParameter);
   const receipt = parseGroup(params.get('demo_group'));
+  const result = parseGroup(params.get('demo_result'));
   const sampleExpired = params.get('demo_example') === 'expired';
-  const result = recordResult();
+  const incoming = invite || result;
+  const encodedReceipts = params.get('demo_receipts') || '';
+  if (incoming && encodedReceipts && encodedReceipts.length <= 1500) {
+    try {
+      mergeReceipts(incoming, encodedReceipts.split(',').map(entry => {
+        const [id, time, extra] = entry.split('.');
+        return [id, extra === undefined ? Number(time) : NaN];
+      }));
+    } catch {
+      // The corresponding local group can still be read with storage disabled.
+    }
+  }
   const hint = home?.querySelector('[data-tsg-friend-hint]');
   const join = home?.querySelector('[data-tsg-friend-join]');
   const checkout = cart?.querySelector('[data-tsg-confirm-demo]');
@@ -80,35 +118,45 @@
   function updateGroup() {
     const participantInvite = invite || cartInvite;
     const group = participantInvite || receipt || result || (home && !sampleExpired ? recentGroup : null);
-    const completed = group ? completedAt(group) : 0;
+    const receipts = group ? readReceipts(group) : new Map();
+    const count = Math.min(groupSize, 1 + receipts.size);
+    const completed = count === groupSize;
     const expired = sampleExpired || (group && Date.now() >= group.expires && !completed);
+    const participant = group ? participantId(group) : null;
+    const alreadyJoined = Boolean(participant && (participant === group.id || receipts.has(participant)));
     status.hidden = !group && !sampleExpired;
     if (hint) hint.hidden = !status.hidden;
+    if (join && inviteParameter && !invite) {
+      join.textContent = status.dataset.unavailable;
+      if (join.tagName === 'BUTTON') join.disabled = true;
+      else join.setAttribute('aria-disabled', 'true');
+    }
     if (status.hidden) return;
 
-    const state = completed ? 'formed' : expired ? 'expired' : participantInvite ? 'invited' : 'started';
+    const state = sampleExpired || expired ? 'expired' : completed ? 'formed' :
+      participantInvite && !alreadyJoined ? 'invited' : participant && participant !== group.id ? 'joined' : 'started';
     for (const copy of status.querySelectorAll('[data-group-copy]')) {
       copy.hidden = copy.dataset.groupCopy !== state;
     }
-    const count = state === 'formed' ? 2 : 1;
-    status.querySelector('[data-group-progress]').textContent = status.dataset.progressTemplate.replace('{count}', String(count));
+    status.querySelector('[data-group-progress]').textContent = status.dataset.progressTemplate
+      .replace('{count}', String(sampleExpired ? 1 : count)).replace('{target}', String(groupSize));
 
-    timeoutLabel.hidden = state !== 'started' && state !== 'invited';
+    timeoutLabel.hidden = state === 'formed' || state === 'expired';
     if (!timeoutLabel.hidden) {
       const seconds = Math.max(0, Math.ceil((group.expires - Date.now()) / 1000));
       const time = [Math.floor(seconds / 60), seconds % 60].map(n => String(n).padStart(2, '0')).join(':');
       timeoutLabel.querySelector('time').textContent = time;
     }
 
-    share.hidden = state !== 'started' && state !== 'formed';
+    share.hidden = state === 'invited' || state === 'expired';
     if (!share.hidden) {
-      const isResult = state === 'formed';
-      const url = isResult ? groupUrl('demo_result', group.token + '~' + completed) : groupUrl('demo_invite', group.token);
+      const isResult = state !== 'started';
+      const url = groupUrl(isResult ? 'demo_result' : 'demo_invite', group.token, receipts);
       if (field.value !== url) {
         field.value = url;
         copyFeedback.hidden = true;
       }
-      const message = isResult ? status.querySelector('[data-group-copy="formed"] strong').textContent : status.dataset.inviteMessage;
+      const message = isResult ? status.querySelector('[data-group-copy="' + state + '"] strong').textContent : status.dataset.inviteMessage;
       status.querySelector('[data-group-invite-label]').hidden = isResult;
       status.querySelector('[data-group-result-label]').hidden = !isResult;
       tryLink.hidden = isResult;
@@ -127,11 +175,11 @@
     }
     if (join && invite) {
       const open = state === 'invited';
-      join.textContent = open ? status.dataset.joinLabel : status.dataset.unavailable;
+      join.textContent = open ? status.dataset.joinLabel : alreadyJoined ? status.dataset.alreadyJoined : status.dataset.unavailable;
       if (join.tagName === 'BUTTON') join.disabled = !open;
       else join.setAttribute('aria-disabled', String(!open));
     }
-    if (checkout && cartInvite && (state === 'formed' || state === 'expired')) checkout.disabled = true;
+    if (checkout && cartInvite && (state !== 'invited')) checkout.disabled = true;
   }
 
   status.querySelector('[data-copy-link]').addEventListener('click', async () => {
@@ -146,7 +194,7 @@
 
   if (join) {
     join.addEventListener('click', event => {
-      if (invite && (completedAt(invite) || Date.now() >= invite.expires)) {
+      if (inviteParameter && (!invite || participantId(invite) || readReceipts(invite).size >= groupSize - 1 || Date.now() >= invite.expires)) {
         event.preventDefault();
         return;
       }
@@ -182,10 +230,10 @@
         if (existing) return existing;
 
         const now = Date.now();
-        if (cartInvite && (completedAt(cartInvite) || now >= cartInvite.expires)) {
+        if (cartInvite && (participantId(cartInvite) || readReceipts(cartInvite).size >= groupSize - 1 || now >= cartInvite.expires)) {
           throw new Error('Invitation closed');
         }
-        const group = cartInvite || parseGroup(crypto.randomUUID() + '.' + (now + duration));
+        const group = cartInvite || parseGroup('v2.' + crypto.randomUUID() + '.' + (now + duration));
         const response = await fetch(cart.dataset.cartChangeUrl + '.js', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -194,7 +242,8 @@
         if (!response.ok || (await response.json()).items.some(item => item.key === checkout.dataset.lineKey)) {
           throw new Error('The Shopify cart changed');
         }
-        if (cartInvite) localStorage.setItem(prefix + 'group:' + group.token, String(now));
+        if (cartInvite) mergeReceipts(group, [[lineId, now]]);
+        sessionStorage.setItem(prefix + 'participant:' + group.token, cartInvite ? lineId : group.id);
         localStorage.setItem(receiptKey, group.token);
         localStorage.setItem(recentKey, group.token);
         sessionStorage.removeItem(intentKey);
