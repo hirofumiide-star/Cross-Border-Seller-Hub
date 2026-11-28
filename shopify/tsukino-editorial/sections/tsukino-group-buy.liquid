@@ -144,7 +144,18 @@
       assign image_label = 'AI 生成示意圖'
   endcase
   if demo
+    assign demo_product = all_products['uji-tea-bag-tasting-set-demo']
+    assign demo_variant = demo_product.selected_or_first_available_variant
     assign campaign_price = 'NT$980'
+    if demo_variant.available
+      assign campaign_price = demo_variant.price | money_with_currency
+      for item in cart.items
+        if item.variant.id == demo_variant.id
+          assign demo_in_cart = true
+          break
+        endif
+      endfor
+    endif
     assign target = 30
     assign registered = 18
     assign deadline_label = demo_date
@@ -186,10 +197,22 @@
         </div>
         {%- if demo -%}
           <div class="tsg-campaign-actions">
+            {%- if demo_variant.available -%}
+              {%- if demo_in_cart -%}
+                <a class="tsg-button" href="{{ routes.cart_url | escape }}">{{ join | escape }} <span aria-hidden="true">↗</span></a>
+              {%- else -%}
+                {%- form 'product', demo_product, return_to: routes.cart_url -%}
+                  <input type="hidden" name="id" value="{{ demo_variant.id }}">
+                  <input type="hidden" name="quantity" value="1">
+                  <button class="tsg-button" type="submit">{{ join | escape }} <span aria-hidden="true">↗</span></button>
+                {%- endform -%}
+              {%- endif -%}
+            {%- else -%}
             <details>
               <summary class="tsg-button">{{ join | escape }} <span aria-hidden="true">↗</span></summary>
               <p class="tsg-demo-message">{{ demo_join | escape }}</p>
             </details>
+            {%- endif -%}
             <details>
               <summary class="tsg-button tsg-button-outline">{{ invite | escape }}</summary>
               <p class="tsg-demo-message">{{ demo_invite | escape }} <strong>{{ share_message | escape }}</strong></p>

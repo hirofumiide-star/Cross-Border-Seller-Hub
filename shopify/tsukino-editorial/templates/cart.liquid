@@ -1,0 +1,58 @@
+{%- liquid
+  assign language = request.locale.iso_code | downcase | split: '-' | first
+  case language
+    when 'ja'
+      assign heading = '團購デモのカート'
+      assign notice = 'カート追加のデモです。ここでの注文確定や支払いはありません。'
+      assign empty_message = 'カートに商品が入っていません。'
+      assign featured = '宇治茶 ティーバッグ3種セット（デモ）'
+      assign quantity = '数量'
+      assign remove = '削除'
+      assign total = '小計'
+      assign back = '團購ページに戻る'
+    when 'en'
+      assign heading = 'Group buy demo cart'
+      assign notice = 'This demo shows how items are added to the cart. It does not place an order or collect payment.'
+      assign empty_message = 'Your cart is empty.'
+      assign featured = 'Three Uji Tea Bag Varieties (Demo)'
+      assign quantity = 'Quantity'
+      assign remove = 'Remove'
+      assign total = 'Subtotal'
+      assign back = 'Back to the group buy'
+    else
+      assign heading = '團購示範購物車'
+      assign notice = '此為加入購物車的示範，不會成立訂單或收款。'
+      assign empty_message = '你的購物車目前沒有商品。'
+      assign featured = '宇治茶包三款組（示範）'
+      assign quantity = '數量'
+      assign remove = '移除'
+      assign total = '小計'
+      assign back = '返回團購頁面'
+  endcase
+-%}
+<div class="tsukino-editorial">
+  <section class="tsg-shell tsg-notes" aria-labelledby="TsukinoCartTitle">
+    <p class="tsg-kicker">{{ shop.name | escape }}</p>
+    <h1 id="TsukinoCartTitle">{{ heading | escape }}</h1>
+    <p class="tsg-lead">{{ notice | escape }}</p>
+    {%- if cart.item_count == 0 -%}
+      <p class="tsg-pending">{{ empty_message | escape }}</p>
+    {%- else -%}
+      <ul style="list-style:none;padding:0;margin:24px 0 15px;">
+        {%- for item in cart.items -%}
+          {%- assign item_name = item.product.title -%}
+          {%- if item.product.handle == 'uji-tea-bag-tasting-set-demo' -%}
+            {%- assign item_name = featured -%}
+          {%- endif -%}
+          <li style="border-block-start:1px solid var(--line);padding:14px 0;">
+            <h2 style="font-size:clamp(21px,3vw,30px);">{{ item_name | escape }}</h2>
+            <p>{{ quantity | escape }} {{ item.quantity }} · {{ item.final_line_price | money_with_currency }}</p>
+            <a class="tsg-link" href="{{ item.url_to_remove | escape }}" aria-label="{{ remove | escape }} {{ item_name | escape }}">{{ remove | escape }}</a>
+          </li>
+        {%- endfor -%}
+      </ul>
+      <p style="border-block-start:1px solid var(--line);padding-top:12px;"><strong>{{ total | escape }} · {{ cart.total_price | money_with_currency }}</strong></p>
+    {%- endif -%}
+    <a class="tsg-button" href="{{ routes.root_url | escape }}">{{ back | escape }}</a>
+  </section>
+</div>

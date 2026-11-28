@@ -20,6 +20,10 @@ Download the [design branch ZIP](https://github.com/hirofumiide-star/Cross-Borde
 
 The deployed demo layout is available in `layout/theme.liquid`. Its Shopify localization form uses the languages published on the current storefront domain. Publish English, Traditional Chinese, and Japanese under Shopify's **Settings → Languages** and assign them to that domain. The homepage's campaign and catalog are already translated in Liquid. Set localized homepage titles and descriptions in Translate & Adapt. If staging the campaign inside a different theme, use that theme's native language picker.
 
+## Demo cart
+
+The sample campaign loads the unlisted Online Store item with handle `uji-tea-bag-tasting-set-demo`. **Join the group buy** submits Shopify's product form to add one set, then opens the localized cart. If the set is already present, the action opens the existing cart. The displayed price reads the Shopify variant price in the storefront's currency. The demo cart lists real cart lines and lets visitors remove them, and does not offer a checkout action. The static preview uses a mock CTA.
+
 ## Stage the design in Shopify
 
 1. Duplicate the current theme. Copy the group-buy section, the catalog snippet, the CSS and JS, and the seven `tsukino-ja-*.jpg` images into the corresponding theme directories.
