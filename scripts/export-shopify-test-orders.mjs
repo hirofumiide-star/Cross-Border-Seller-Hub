@@ -1,16 +1,20 @@
 import { createHash } from 'node:crypto';
+import { pathToFileURL } from 'node:url';
 
 const version = '2026-10';
 const day = 86_400_000;
 const maxOrders = 1000;
+const maxInventoryItems = 250;
+const historyDays = 14;
 const storePattern = /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.myshopify\.com$/;
 const moneyPattern = /^\d{1,12}(?:\.\d{1,6})?$/;
+const stockStates = ['on_hand', 'available', 'committed', 'incoming'];
 
 const scopeQuery = `query SellerHubDevStore {
   shop { myshopifyDomain plan { partnerDevelopment } }
 }`;
 
-const ordersQuery = `query SellerHubTestOrders($search: String!, $after: String) {
+const ordersQuery = `query SellerHubTestOrders($search: String!, $after: String, $includeSku: Boolean!) {
   orders(first: 30, query: $search, after: $after, sortKey: CREATED_AT, reverse: true) {
     pageInfo { hasNextPage endCursor }
     nodes {
@@ -18,21 +22,41 @@ const ordersQuery = `query SellerHubTestOrders($search: String!, $after: String)
       currentSubtotalPriceSet { shopMoney { amount currencyCode } }
       lineItems(first: 12) {
         pageInfo { hasNextPage endCursor }
-        nodes { title currentQuantity }
+        nodes { title currentQuantity sku @include(if: $includeSku) }
       }
     }
   }
 }`;
 
-const moreLinesQuery = `query SellerHubMoreTestOrderLines($id: ID!, $after: String!) {
+const moreLinesQuery = `query SellerHubMoreTestOrderLines($id: ID!, $after: String!, $includeSku: Boolean!) {
   order(id: $id) {
     id test
     lineItems(first: 50, after: $after) {
       pageInfo { hasNextPage endCursor }
-      nodes { title currentQuantity }
+      nodes { title currentQuantity sku @include(if: $includeSku) }
     }
   }
 }`;
+
+const levelFields = `pageInfo { hasNextPage endCursor }
+  nodes {
+    isActive
+    location { id name isActive fulfillsOnlineOrders }
+    quantities(names: ["on_hand", "available", "committed", "incoming"]) { name quantity }
+  }`;
+const inventoryQuery = `query SellerHubInventory($after: String) {
+  inventoryItems(first: 12, after: $after) {
+    pageInfo { hasNextPage endCursor }
+    nodes { id sku tracked inventoryLevels(first: 10) { ${levelFields} } }
+  }
+}`;
+const moreLevelsQuery = `query SellerHubMoreInventoryLevels($id: ID!, $after: String!) {
+  inventoryItem(id: $id) { id inventoryLevels(first: 50, after: $after) { ${levelFields} } }
+}`;
+const reference = (prefix, host, id) => prefix + '-' + createHash('sha256').update(host + '|' + id).digest('hex').slice(0, 14);
+const skuValue = value => typeof value === 'string' && value.trim().length <= 100 && !/[\u0000-\u001f\u007f]/.test(value)
+  ? value.trim() || null : null;
+const displayName = (value, fallback) => (typeof value === 'string' ? value.replace(/[\u0000-\u001f\u007f]/g, ' ').trim().slice(0, 100) : '') || fallback;
 
 async function requestJson(url, headers, body, label) {
   let response;
@@ -74,7 +98,7 @@ function nextPage(connection, after) {
   return cursor;
 }
 
-async function exportOrders(env) {
+async function openDevelopmentStore(env) {
   const host = env.SHOPIFY_DEV_STORE?.trim().toLowerCase();
   if (!host || !storePattern.test(host)) throw new Error('SHOPIFY_DEV_STOREに開発ストアの .myshopify.com ホスト名を指定してください。');
   const token = await accessToken(env, host);
@@ -83,24 +107,26 @@ async function exportOrders(env) {
       { 'Content-Type': 'application/json', 'X-Shopify-Access-Token': token },
       JSON.stringify({ query, variables }), 'Shopify Admin API');
     if (result?.errors?.length || !result?.data) {
-      throw new Error('Shopify Admin APIがクエリを拒否しました。read_ordersとアプリの承認状態を確認してください。');
+      throw new Error('Shopify rejected the request. Verify app installation, approved scopes, and the API version.');
     }
     return result.data;
   };
 
   const access = await graphql(scopeQuery);
   if (access.shop?.myshopifyDomain?.toLowerCase() !== host || access.shop?.plan?.partnerDevelopment !== true) {
-    throw new Error('開発ストアを確認できません。注文の読み取りを中止しました。');
+    throw new Error('The requested shop could not be verified as a Shopify development store.');
   }
+  return { host, graphql };
+}
 
-  const current = new Date();
+async function readOrders({ host, graphql }, current, includeSku = false) {
   const fromTime = new Date(current.getTime() - 30 * day);
   const search = 'test:true AND created_at:>=' + fromTime.toISOString();
   const orders = [];
   const seen = new Set();
   let after = null;
   do {
-    const { orders: connection } = await graphql(ordersQuery, { search, after });
+    const { orders: connection } = await graphql(ordersQuery, { search, after, includeSku });
     if (!Array.isArray(connection?.nodes)) throw new Error('注文一覧を受信できませんでした。');
     for (const order of connection.nodes) {
       if (order.test !== true || !/^gid:\/\/shopify\/Order\/\d+$/.test(order.id) || seen.has(order.id)) continue;
@@ -121,19 +147,20 @@ async function exportOrders(env) {
         for (const item of linePage.nodes) {
           if (!Number.isInteger(item.currentQuantity) || item.currentQuantity <= 0) continue;
           if (lines.length >= 300) throw new Error('処理可能な商品明細数の上限を超えました。');
-          const title = typeof item.title === 'string' ? item.title.replace(/[\u0000-\u001f\u007f]/g, ' ').trim().slice(0, 100) : '';
-          lines.push({ title: title || '商品名なし', quantity: item.currentQuantity });
+          const line = { title: displayName(item.title, 'Untitled product'), quantity: item.currentQuantity };
+          if (includeSku) line.sku = skuValue(item.sku);
+          lines.push(line);
         }
         lineAfter = nextPage(linePage, lineAfter);
         if (lineAfter) {
-          const page = await graphql(moreLinesQuery, { id: order.id, after: lineAfter });
+          const page = await graphql(moreLinesQuery, { id: order.id, after: lineAfter, includeSku });
           if (page.order?.test !== true || page.order.id !== order.id) throw new Error('注文情報が変更されました。もう一度実行してください。');
           linePage = page.order.lineItems;
         }
       } while (lineAfter);
 
       orders.push({
-        id: 'SHOP-' + createHash('sha256').update(host + '|' + order.id).digest('hex').slice(0, 14),
+        id: reference('SHOP', host, order.id),
         date: created.toISOString().slice(0, 10), test: true, cancelled: Boolean(order.cancelledAt),
         payment: order.displayFinancialStatus || 'UNKNOWN',
         fulfillment: order.displayFulfillmentStatus || 'UNKNOWN',
@@ -147,11 +174,114 @@ async function exportOrders(env) {
     exportedAt: current.toISOString(), from: fromTime.toISOString().slice(0, 10), orders };
 }
 
-try {
-  const result = await exportOrders(process.env);
-  console.log(JSON.stringify(result, null, 2));
-  console.error('Shopify開発ストアからテスト注文 ' + result.orders.length + ' 件を出力しました。');
-} catch (error) {
-  console.error(error.message);
-  process.exitCode = 1;
+function parseLevel(level, host) {
+  const location = level?.location;
+  if (!/^gid:\/\/shopify\/Location\/\d+$/.test(location?.id) || typeof level.isActive !== 'boolean'
+    || typeof location.isActive !== 'boolean' || typeof location.fulfillsOnlineOrders !== 'boolean'
+    || !Array.isArray(level.quantities)) throw new Error('Shopify returned an invalid inventory location or quantity list.');
+  const quantities = Object.fromEntries(level.quantities.map(entry => [entry.name, entry.quantity]));
+  if (!stockStates.every(name => Number.isSafeInteger(quantities[name]))) {
+    throw new Error('Shopify did not return all requested inventory quantities.');
+  }
+  return {
+    id: reference('LOC', host, location.id), name: displayName(location.name, 'Unnamed location'),
+    online: level.isActive && location.isActive && location.fulfillsOnlineOrders,
+    onHand: quantities.on_hand, available: quantities.available, committed: quantities.committed, incoming: quantities.incoming
+  };
 }
+
+async function readInventory({ host, graphql }) {
+  const items = [];
+  const seen = new Set();
+  const inventoryCursors = new Set();
+  let after = null;
+  do {
+    const { inventoryItems: page } = await graphql(inventoryQuery, { after });
+    if (!Array.isArray(page?.nodes)) throw new Error('Shopify did not return inventory items.');
+    for (const item of page.nodes) {
+      if (!/^gid:\/\/shopify\/InventoryItem\/\d+$/.test(item?.id) || typeof item.tracked !== 'boolean' || seen.has(item.id)) {
+        throw new Error('Shopify returned an invalid or duplicate inventory item.');
+      }
+      seen.add(item.id);
+      if (seen.size > maxInventoryItems) throw new Error('The development store exceeds the 250-item inventory limit.');
+      if (!item.tracked) continue;
+      const levels = [];
+      const locations = new Set();
+      const levelCursors = new Set();
+      let connection = item.inventoryLevels;
+      let cursor = null;
+      do {
+        if (!Array.isArray(connection?.nodes)) throw new Error('Shopify did not return inventory levels.');
+        for (const raw of connection.nodes) {
+          const level = parseLevel(raw, host);
+          if (locations.has(level.id) || levels.length >= 100) throw new Error('Invalid or excessive inventory locations for one item.');
+          locations.add(level.id);
+          levels.push(level);
+        }
+        cursor = nextPage(connection, cursor);
+        if (cursor) {
+          if (levelCursors.has(cursor)) throw new Error('Shopify repeated an inventory location cursor.');
+          levelCursors.add(cursor);
+          const { inventoryItem } = await graphql(moreLevelsQuery, { id: item.id, after: cursor });
+          if (inventoryItem?.id !== item.id) throw new Error('The inventory item changed while reading its locations.');
+          connection = inventoryItem.inventoryLevels;
+        }
+      } while (cursor);
+      items.push({ id: reference('INV', host, item.id), sku: skuValue(item.sku), levels });
+    }
+    after = nextPage(page, after);
+    if (after) {
+      if (inventoryCursors.has(after)) throw new Error('Shopify repeated an inventory cursor.');
+      inventoryCursors.add(after);
+    }
+  } while (after);
+  return items;
+}
+
+function demandHistory(orders, current) {
+  const today = Date.parse(current.toISOString().slice(0, 10));
+  const start = today - historyDays * day;
+  const demand = new Map();
+  for (const order of orders) {
+    const index = (Date.parse(order.date) - start) / day;
+    if (order.cancelled || order.payment !== 'PAID' || index < 0 || index >= historyDays) continue;
+    for (const line of order.lines) {
+      if (!line.sku) continue;
+      if (!demand.has(line.sku)) demand.set(line.sku, { title: line.title, units: Array(historyDays).fill(0) });
+      demand.get(line.sku).units[index] += line.quantity;
+    }
+  }
+  return demand;
+}
+
+export async function exportShopifyReport(env, { inventory = false, current = new Date() } = {}) {
+  const store = await openDevelopmentStore(env);
+  if (!inventory) return readOrders(store, current);
+  const [orders, items] = await Promise.all([readOrders(store, current, true), readInventory(store)]);
+  const demand = demandHistory(orders.orders, current);
+  return {
+    schemaVersion: 1, source: 'shopify-dev-inventory', mode: 'api', store: store.host,
+    exportedAt: current.toISOString(), testOrdersRead: orders.orders.length,
+    items: items.map(item => {
+      const history = demand.get(item.sku);
+      return { ...item, name: history?.title ?? item.sku ?? 'Unmapped inventory item',
+        demand: history?.units ?? Array(historyDays).fill(0) };
+    })
+  };
+}
+
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  try {
+    const args = process.argv.slice(2);
+    if (args.length > 1 || (args.length && args[0] !== '--inventory')) throw new Error('Use --inventory to export a planning snapshot, or no flag for test orders.');
+    const result = await exportShopifyReport(process.env, { inventory: args.length === 1 });
+    console.log(JSON.stringify(result, null, 2));
+    console.error(result.source === 'shopify-dev-inventory'
+      ? `Read ${result.testOrdersRead} test orders and ${result.items.length} tracked inventory items.`
+      : `Read ${result.orders.length} Shopify development-store test orders.`);
+  } catch (error) {
+    console.error(error.message);
+    process.exitCode = 1;
+  }
+}
+

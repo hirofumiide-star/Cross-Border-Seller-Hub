@@ -37,10 +37,14 @@
   const average = values => values.reduce((total, value) => total + value, 0) / values.length;
   const unitsOn = (records, day) => records.reduce((sum, record) => sum + (record.day === day ? record.units : 0), 0);
 
+  function demandEstimate(history) {
+    const olderRate = average(history.slice(0, 7));
+    const recentRate = average(history.slice(-7));
+    return { olderRate, recentRate, baseline: olderRate * 0.35 + recentRate * 0.65 };
+  }
+
   function forecast(item, { uplift = 0, receiptDelay = 0, leadDays = item.leadDays } = {}) {
-    const olderRate = average(item.history.slice(0, 7));
-    const recentRate = average(item.history.slice(-7));
-    const baseline = olderRate * 0.35 + recentRate * 0.65;
+    const { olderRate, recentRate, baseline } = demandEstimate(item.history);
     const dailyDemand = baseline * (1 + uplift / 100);
     const receipts = item.receipts.map(receipt => ({ ...receipt, day: receipt.day + receiptDelay }));
     const opening = item.onHand - item.reserved;
@@ -72,5 +76,5 @@
     return { item, opening, dailyDemand, olderRate, recentRate, receipts, points, buffer, stockout, leadDays, replenishment };
   }
 
-  globalThis.InventoryForecast = { asOf, horizon, replenishmentWindow, items, dateLabel, forecast };
+  globalThis.InventoryForecast = { asOf, horizon, replenishmentWindow, items, dateLabel, demandEstimate, forecast };
 })();

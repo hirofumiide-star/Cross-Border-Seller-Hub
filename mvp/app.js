@@ -78,7 +78,7 @@
 
   function activeRoute() {
     const value = location.hash.slice(1);
-    return ['overview', 'insights', 'shops', 'sources', 'shopify', 'fulfillment', 'fulfillment-reports', 'broker', 'store'].includes(value)
+    return ['overview', 'insights', 'shops', 'sources', 'shopify', 'fulfillment', 'fulfillment-reports', 'fulfillment-shopify', 'broker', 'store'].includes(value)
       ? value : 'overview';
   }
 
@@ -298,7 +298,7 @@
 
   function render() {
     const route = activeRoute();
-    const navRoute = route === 'fulfillment-reports' ? 'fulfillment' : route;
+    const navRoute = route.startsWith('fulfillment-') ? 'fulfillment' : route;
     for (const link of document.querySelectorAll('[data-nav]')) {
       if (link.dataset.nav === navRoute) link.setAttribute('aria-current', 'page');
       else link.removeAttribute('aria-current');
@@ -320,16 +320,18 @@
       return;
     }
     if (navRoute === 'fulfillment') {
-      const reports = route === 'fulfillment-reports';
-      const navigation = `<nav class="fulfillment-tabs" aria-label="Fulfillment views">
-        <a href="#fulfillment"${reports ? '' : ' aria-current="page"'}>Inventory planning</a>
-        <a href="#fulfillment-reports"${reports ? ' aria-current="page"' : ''}>Shipment reports</a></nav>`;
-      const view = reports ? FulfillmentDemoImport : InventoryPlanning;
-      const description = reports
-        ? 'Review orders, shipment requests, and dispatch status from a sample or OPENLOGI demo report.'
-        : 'Forecast stockouts and plan replenishment across the Japan warehouse and Taiwan receiving hub.';
-      content.innerHTML = page('Fulfillment', 'Test Order Fulfillment', description, navigation + view.render(),
-        reports ? 'Fulfillment demo' : 'Sample inventory');
+      const views = {
+        fulfillment: ['Inventory planning', InventoryPlanning, 'Sample inventory',
+          'Forecast stockouts and plan replenishment across the Japan warehouse and Taiwan receiving hub.'],
+        'fulfillment-shopify': ['Shopify snapshot', ShopifyInventoryImport, 'Development store',
+          'Import a read-only Shopify snapshot to review available stock and test-order demand.'],
+        'fulfillment-reports': ['Shipment reports', FulfillmentDemoImport, 'Fulfillment demo',
+          'Review orders, shipment requests, and dispatch status from a sample or OPENLOGI demo report.']
+      };
+      const navigation = `<nav class="fulfillment-tabs" aria-label="Fulfillment views">${Object.entries(views).map(([key, [title]]) =>
+        `<a href="#${key}"${route === key ? ' aria-current="page"' : ''}>${title}</a>`).join('')}</nav>`;
+      const [, view, label, description] = views[route];
+      content.innerHTML = page('Fulfillment', 'Test Order Fulfillment', description, navigation + view.render(), label);
       view.bind(content, render, toast);
       return;
     }

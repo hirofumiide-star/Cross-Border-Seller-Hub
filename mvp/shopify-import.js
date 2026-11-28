@@ -116,6 +116,7 @@
         <div class="store-controls">
           <label for="shopify-file">Orders JSON</label><input type="file" id="shopify-file" accept=".json,application/json" aria-describedby="shopify-report-error">
           <button type="button" class="button" data-shopify-action="sample">Load sample orders</button>
+          <a class="button inline" href="#fulfillment-shopify">Open Shopify inventory snapshot</a>
         </div>
         <p class="sub" id="shopify-report-error" role="alert">${escape(error)}</p>
       </div>
