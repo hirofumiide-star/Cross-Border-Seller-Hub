@@ -1,6 +1,8 @@
-# Tsukino Tea House editorial Shopify design
+# Tsukino Tea House Shopify group buy
 
-The homepage leads with the Taiwan group buy. The storefront comparison and product detail sections apply the shopping interactions from the design references in an original visual style.
+The homepage opens with one Taiwan group buy for an Uji tea tasting set. It shows the organizer, group price, Taiwan-time deadline, registered sets, minimum quantity, remaining sets, and pickup method. Visitors can join on the organizer’s signup page or share the campaign through LINE. Below the offer are the organizer’s recommendation, the three-tea comparison, and the steps from signup to pickup.
+
+The first pilot assumes one organizer, one set, and one pickup method. Registration happens before payment. At the deadline, the organizer confirms whether the group can go ahead and sends payment instructions when it can. The producer sends one shipment to the organizer in Taiwan after the campaign is confirmed and the orders are ready to fulfill. The organizer handles local pickup or delivery.
 
 | Shopping interaction | Implementation |
 | --- | --- |
@@ -11,17 +13,18 @@ The homepage leads with the Taiwan group buy. The storefront comparison and prod
 
 ## Preview
 
-Download the design branch ZIP, extract it, and open [preview.html](preview.html). The preview opens in Traditional Chinese with English and Japanese language choices. Try a use filter, expand a brewing guide, and select **Preview the product page** to exercise the plan selector and cups-per-day estimator. Prices for ordinary single packs use the demo catalog as a fixture. Subscription prices, intervals, and the review example are illustrative. The preview cannot submit an order. Product links open the Shopify development storefront and may require its password.
+Download the [design branch ZIP](https://github.com/hirofumiide-star/Cross-Border-Seller-Hub/archive/refs/heads/design/tsukino-taiwan-group-buy.zip), extract it, and open [preview.html](preview.html). The preview opens in Traditional Chinese and offers English and Japanese. The sample campaign shows NT$980, 18 of 30 sets registered, and in-person pickup in Taipei. The signup and LINE controls open sample explanations. They collect no information, submit no payment, and send no messages. The product-page preview retains the sample subscription and rating from the editorial design.
 
 ## Stage the design in Shopify
 
-1. Duplicate the Rise theme. Add the two files in `sections/` and the CSS, JavaScript, and hero image in `assets/` to the corresponding folders in the duplicate.
-2. Add **Tsukino group buy** to the home template. Move it to the top and hide the superseded homepage hero and featured collection. The section uses the four existing product handles by default. The theme editor supports changing the products and hero image.
-3. Add **Tsukino tea details** to a product template. Map fields to verified product metafields through dynamic sources where supported, or use separate templates for different tea details. The home price comparison reads `custom.net_weight_g` when present. The three original pack sizes are fallback values only for their existing handles. A changing variant price or missing weight suppresses the comparison.
-4. Keep the theme's native buy buttons when using ordinary checkout or an existing subscription app block. To use the custom selector, first create eligible recurring plans through a Shopify subscription app. Enable the selector on the appropriate single-variant product template. Verify a test order and keep a single visible purchase form when configuring that template. Use the native subscription app block for multi-variant products. The custom selector does not set up plans or automatically change the buyer's selected interval.
-5. Keep the group-buy campaign in preparation until the Taiwan retail partner confirms prices, deadline with time zone, threshold, delivery estimate, refund terms, and signup URL. The section only opens when all these values are set. Use the Shopify theme editor to edit and translate the values. The retail partner handles Taiwan campaign sign-up and payment.
-6. Verify the duplicate on mobile and desktop in the shop's enabled languages. Enable English in Shopify if it should be available on the storefront. The copy is already present in the section.
+1. Duplicate the current theme. Add the two files in `sections/` and the CSS, JavaScript, and hero image in `assets/` to the corresponding folders in the duplicate.
+2. Add **Tsukino group buy** to the home template and move it to the top. Hide the superseded homepage hero and featured collection. Set the section’s hero photo and three tea products if the defaults do not match the catalog.
+3. Turn on **Show the sample campaign (no signups)** in the theme editor for the draft preview. Verify the two campaign controls and the comparison on a phone. Keep the sample off for the customer campaign.
+4. For a real campaign, set the organizer’s name and recommendation, price, pickup method and area, minimum sets, current registered sets, signup URL, and payment and shortfall terms. Use an ISO 8601 deadline with a Taiwan offset, such as `2026-12-06T22:00:00+08:00`. The storefront starts in preparation. A valid enabled campaign displays signup and sharing until the deadline and shows it as closed afterward. The organizer’s signup service also needs to enforce the deadline.
+5. Use **Optional public campaign landing page for LINE** for an organizer-specific URL or a tagged public campaign URL. By default, the LINE button shares the storefront page at the campaign section. Use a URL that Taiwan buyers can open. The partner owns registration, payment, and tracking from the signup link.
+6. Update **Sets registered** from the organizer’s actual registrations. Count sets rather than participants. Progress is manually maintained, and a full bar means the minimum quantity was reached. The organizer confirms the outcome and payment after the deadline.
+7. Add **Tsukino tea details** to the product template as needed. Map verified product facts through dynamic sources where supported. Keep the native buy buttons or a compatible subscription app block for ordinary individual purchases. To use the custom selector, first configure recurring plans for an eligible single-variant product and leave only one visible purchase form.
 
-The hero photograph is an illustrative still life. Use catalog photos and verified producer information for product claims.
+The hero photo is illustrative. Use verified catalog and producer information for product claims.
 
-[Shopify section architecture](https://shopify.dev/docs/storefronts/themes/architecture/sections) · [Shopify subscriptions and purchase options](https://shopify.dev/docs/storefronts/themes/pricing-payments/subscriptions) · [Shopify rating metafields](https://shopify.dev/docs/apps/build/metafields/list-of-standard-definitions)
+[Shopify section architecture](https://shopify.dev/docs/storefronts/themes/architecture/sections) · [LINE share buttons](https://developers.line.biz/en/docs/line-social-plugins/install-guide/using-line-share-buttons/) · [Shopify subscription options](https://shopify.dev/docs/storefronts/themes/pricing-payments/subscriptions)

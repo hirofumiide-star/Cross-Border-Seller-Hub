@@ -3,83 +3,170 @@
 {%- liquid
   assign language = request.locale.iso_code | downcase | split: '-' | first
   assign section_key = 'tsukino-buy-' | append: section.id
-  assign campaign_open = false
-  if section.settings.campaign_open and section.settings.campaign_url != blank and section.settings.campaign_price != blank and section.settings.campaign_deadline != blank and section.settings.campaign_minimum != blank and section.settings.campaign_delivery != blank and section.settings.refund_terms != blank
-    assign campaign_open = true
+  assign campaign = section.settings
+  assign demo = campaign.campaign_demo
+  assign target = campaign.campaign_target_sets | default: 0 | plus: 0
+  assign registered = campaign.campaign_registered_sets | default: 0 | plus: 0
+  assign deadline = campaign.campaign_deadline | strip
+  assign time_zone = deadline | slice: -6, 6
+  assign deadline_size = deadline | size
+  assign deadline_epoch = deadline | date: '%s' | plus: 0
+  assign now_epoch = 'now' | date: '%s' | plus: 0
+  assign campaign_ready = false
+  if campaign.campaign_open and target > 0 and registered >= 0 and campaign.campaign_registered_sets != blank and deadline_size == 25 and time_zone == '+08:00' and deadline_epoch > 86400
+    if campaign.campaign_url != blank and campaign.campaign_price != blank and campaign.campaign_delivery != blank and campaign.campaign_host != blank and campaign.campaign_host_note != blank and campaign.refund_terms != blank
+      assign campaign_ready = true
+    endif
   endif
-  assign facts = 'campaign_price,campaign_deadline,campaign_minimum,campaign_delivery' | split: ','
+  assign accepting = false
+  if campaign_ready and deadline_epoch > now_epoch
+    assign accepting = true
+  endif
+  assign campaign_price = campaign.campaign_price
+  assign campaign_host = campaign.campaign_host
+  assign campaign_note = campaign.campaign_host_note
+  assign campaign_pickup = campaign.campaign_delivery
+  assign payment_terms = campaign.refund_terms
+  assign deadline_label = deadline | slice: 0, 16 | replace: 'T', ' ' | replace: '-', '/'
+  assign public_share_url = campaign.campaign_share_url | default: canonical_url
+  if campaign.campaign_share_url == blank
+    assign public_share_url = public_share_url | append: '#' | append: section_key
+  endif
+  assign share_url_prefix = public_share_url | slice: 0, 1
+  if share_url_prefix == '/'
+    assign public_share_url = request.origin | append: public_share_url
+  endif
   assign tea_keys = 'matcha,sencha,hojicha' | split: ','
   assign shop_root = routes.root_url | append: '/' | replace: '//', '/'
   assign product_base = shop_root | append: 'products/'
-  assign tea_set = section.settings.tea_set | default: all_products['uji-tea-tasting-set']
   assign tea_matcha = section.settings.tea_matcha | default: all_products['uji-matcha-30g']
   assign tea_sencha = section.settings.tea_sencha | default: all_products['uji-sencha-80g']
   assign tea_hojicha = section.settings.tea_hojicha | default: all_products['uji-hojicha-60g']
   case language
     when 'ja'
-      assign group = '台湾の共同購入'
-      assign headline = '三つの日本茶を、|ひと箱で。' | split: '|'
-      assign intro = '抹茶のうま味、煎茶の清々しさ、ほうじ茶の香ばしさ。月野茶房の飲み比べセットを、台湾の團購で。'
-      assign see = '今期の團購を見る'
-      assign heroAlt = '黒い急須から煎茶を注ぐ様子'
-      assign title = '宇治のお茶 飲み比べセット'
-      assign desc = '抹茶・煎茶・ほうじ茶を少しずつ。いつもの一杯と、まだ知らない一杯を飲み比べ。'
+      assign group = '台湾・今期の團購'
+      assign title = '宇治茶 三種飲み比べセット'
+      assign desc = '抹茶、煎茶、ほうじ茶。台湾の團主と一緒に取り寄せる、月野茶房の飲み比べセット。'
+      assign heroAlt = '黒い急須からお茶を注ぐ様子'
       assign pre = '募集準備中'
       assign open = '受付中'
-      assign pending = '価格・締切・成立数量・台湾でのお届け予定は、受付開始時にご案内します。'
-      assign terms = '不成立時の返金条件'
-      assign join = '台湾の販売パートナーで申し込む'
-      assign set = 'セット内容を見る'
+      assign closed = '受付終了'
+      assign pending = '團主、価格、受付期間、台湾での受取方法が決まり次第、ここでご案内します。'
+      assign join = '團購に参加する'
+      assign invite = 'LINEで友達を誘う'
+      assign host_label = '今回の團主'
+      assign price_label = '團購価格'
+      assign deadline_name = '申込締切'
+      assign pickup_label = '受取方法'
+      assign zone_label = '台湾時間'
+      assign progress_name = '申込セット数'
+      assign progress_label = '{registered}／{target} セット申込済み'
+      assign remaining_label = 'あと {remaining} セットで成立条件に到達'
+      assign goal_met = '成立に必要なセット数に到達'
+      assign terms = '支払いと不成立時の扱い'
+      assign how = '申し込みから受け取りまで'
+      assign steps = '團主のページから申し込む|締切後に成立を確認し、支払いの案内を受け取る|日本から台湾の團主へまとめて発送|團主の案内に沿って台湾で受け取る' | split: '|'
+      assign demo_label = 'デモ · 実際の募集ではありません'
+      assign demo_join = '本番では團主の申込ページに進みます。このデモでは登録・決済は発生しません。'
+      assign demo_invite = '本番ではこの募集ページをLINEで共有します。こちらは招待文の表示例です。'
+      assign demo_date = '12月6日（日）22:00'
+      assign demo_host = '台北の林さん（デモ團主）'
+      assign demo_pickup = '台北・対面受取'
+      assign demo_note = 'まずは煎茶をゆっくり味わってみてください。抹茶はラテに、ほうじ茶は食後に。三つの香りを一箱で楽しめます。'
+      assign demo_terms = '成團後に支払いのご案内を受け取ります。不成立の場合、支払いはありません。'
+      assign share_intro = '台湾で宇治茶を一緒に取り寄せませんか？'
       assign compare = '気分で選ぶ、三つの味わい。'
       assign view = 'お茶の詳細を見る'
-      assign how = '台湾でのお届けまで'
-      assign steps = '團購主からの案内を確認|締切後に成立を確定|日本から一括発送|台湾から個別にお届け' | split: '|'
-      assign fact_labels = '團購価格|申込締切|成立数量|お届け予定' | split: '|'
       assign tea_names = '抹茶|煎茶|ほうじ茶' | split: '|'
       assign tea_notes = 'まろやかなうま味 · お点前、ラテ|清々しい香り · 急須で淹れる日々の一杯|香ばしい焙煎香 · 食事のあとにも' | split: '|'
     when 'en'
-      assign group = 'Taiwan group buy'
-      assign headline = 'Three Japanese teas,|one tasting set.' | split: '|'
-      assign intro = 'Mellow matcha, bright sencha, and toasty hojicha. Discover Tsukino Tea House through our Taiwan group buy.'
-      assign see = 'Explore the group buy'
-      assign heroAlt = 'Sencha pouring from a dark teapot'
+      assign group = 'Taiwan · current group buy'
       assign title = 'Uji Tea Tasting Set'
-      assign desc = 'Three small portions to compare side by side, from a familiar favorite to a tea you haven’t tried.'
+      assign desc = 'Matcha, sencha, and hojicha. Bring three Japanese teas to Taiwan with a local group organizer.'
+      assign heroAlt = 'Tea pouring from a dark teapot'
       assign pre = 'In preparation'
-      assign open = 'Orders open'
-      assign pending = 'We’ll share the price, deadline, minimum quantity, and Taiwan delivery estimate when orders open.'
-      assign terms = 'Refunds if the group buy falls short'
-      assign join = 'Join via our Taiwan partner'
-      assign set = 'See what’s inside'
+      assign open = 'Open for signups'
+      assign closed = 'Signups closed'
+      assign pending = 'We’ll announce the organizer, price, signup dates, and Taiwan pickup details here.'
+      assign join = 'Join the group buy'
+      assign invite = 'Invite friends on LINE'
+      assign host_label = 'Your group organizer'
+      assign price_label = 'Group-buy price'
+      assign deadline_name = 'Signup deadline'
+      assign pickup_label = 'Pickup method'
+      assign zone_label = 'Taiwan time'
+      assign progress_name = 'Sets registered'
+      assign progress_label = '{registered} of {target} sets registered'
+      assign remaining_label = '{remaining} more to reach the minimum'
+      assign goal_met = 'Minimum quantity reached'
+      assign terms = 'Payment and what happens if the group falls short'
+      assign how = 'From signup to pickup'
+      assign steps = 'Sign up through the organizer|After the deadline, get the outcome and payment instructions|One shipment travels from Japan to the organizer in Taiwan|Follow the organizer’s instructions to receive your tea in Taiwan' | split: '|'
+      assign demo_label = 'Demo · Sample campaign'
+      assign demo_join = 'The organizer’s signup page opens here in an active campaign. This demo does not collect registrations or payments.'
+      assign demo_invite = 'In an active campaign, this shares the group-buy page on LINE. Here is an example invitation.'
+      assign demo_date = 'Sunday, Dec 6 at 22:00'
+      assign demo_host = 'Lin in Taipei (demo organizer)'
+      assign demo_pickup = 'Taipei · in-person pickup'
+      assign demo_note = 'Start with the sencha, whisk the matcha into a latte, and save the hojicha for after dinner. There are three ways to enjoy the same box.'
+      assign demo_terms = 'We send payment instructions if the group buy goes ahead. No payment is due if it falls short.'
+      assign share_intro = 'Let’s order a Japanese tea tasting set together.'
       assign compare = 'Find a tea for your taste.'
       assign view = 'View tea details'
-      assign how = 'From group buy to delivery'
-      assign steps = 'See your organizer’s offer|Campaign confirmed after closing|One shipment from Japan|Individual delivery in Taiwan' | split: '|'
-      assign fact_labels = 'Group-buy price|Deadline|Minimum quantity|Estimated delivery' | split: '|'
       assign tea_names = 'Matcha|Sencha|Hojicha' | split: '|'
       assign tea_notes = 'Mellow umami · Whisked or in a latte|Fresh and lightly sweet · Everyday brewing|Toasty and light · After a meal' | split: '|'
     else
-      assign group = '台灣團購'
-      assign headline = '一盒，品嚐|三款日本茶。' | split: '|'
-      assign intro = '抹茶的醇厚、煎茶的清爽、焙茶的溫潤。跟著團購，把月野茶房的日本茶帶回家。'
-      assign see = '查看本期團購'
-      assign heroAlt = '用深色茶壺沖倒煎茶'
-      assign title = '宇治茶三款品飲組'
-      assign desc = '一次品嚐抹茶、煎茶與焙茶。從熟悉的茶香，找到下一款想喝的茶。'
+      assign group = '台灣・本期開團'
+      assign title = '宇治三款茶體驗組'
+      assign desc = '抹茶、煎茶、焙茶。跟著台灣團主，一起把月野茶房的三款日本茶帶回家。'
+      assign heroAlt = '從深色茶壺倒出茶湯'
       assign pre = '籌備中'
       assign open = '開團中'
-      assign pending = '團購價、截止時間、成團門檻與台灣配送時間將於開團時公布。'
-      assign terms = '未成團時的退款條件'
-      assign join = '前往台灣合作夥伴網站報名'
-      assign set = '查看品飲組內容'
+      assign closed = '已截止'
+      assign pending = '團主、團購價、報名時間與台灣取貨方式確認後，將在此公布。'
+      assign join = '我要跟團'
+      assign invite = '用 LINE 邀朋友'
+      assign host_label = '本期團主'
+      assign price_label = '團購價'
+      assign deadline_name = '報名截止'
+      assign pickup_label = '取貨方式'
+      assign zone_label = '台灣時間'
+      assign progress_name = '已登記的組數'
+      assign progress_label = '已登記 {registered}／{target} 組'
+      assign remaining_label = '再 {remaining} 組達成門檻'
+      assign goal_met = '已達成團門檻'
+      assign terms = '付款與未成團說明'
+      assign how = '從跟團到取貨'
+      assign steps = '從團主的頁面報名|截止後確認是否成團，成團後通知付款|從日本集中出貨給台灣團主|依團主通知在台灣取貨' | split: '|'
+      assign demo_label = '網站示範 · 非正式開團'
+      assign demo_join = '正式開團時會前往團主的報名頁。示範不收集報名資料，也不會收款。'
+      assign demo_invite = '正式開團時可透過 LINE 分享本團連結。這裡是邀請訊息示範。'
+      assign demo_date = '12/06（日）22:00'
+      assign demo_host = '台北小林（示範團主）'
+      assign demo_pickup = '台北面交'
+      assign demo_note = '第一次喝，可以先從煎茶開始。抹茶做成拿鐵，焙茶留到飯後慢慢喝，一盒就能比較三種茶香。'
+      assign demo_terms = '成團後通知付款。若未成團，無須付款。'
+      assign share_intro = '一起團購宇治茶！'
       assign compare = '選一杯，合你口味的茶。'
       assign view = '查看茶品'
-      assign how = '從開團到到貨'
-      assign steps = '查看團購主的開團資訊|截止後確認是否成團|日本集中出貨至台灣|台灣境內分寄到府' | split: '|'
-      assign fact_labels = '團購價|截止時間|成團門檻|預計送達' | split: '|'
       assign tea_names = '抹茶|煎茶|焙茶' | split: '|'
       assign tea_notes = '醇厚鮮味 · 點茶、拿鐵|清香回甘 · 日常茶壺沖泡|溫潤焙香 · 餐後飲用' | split: '|'
   endcase
+  if demo
+    assign campaign_price = 'NT$980'
+    assign target = 30
+    assign registered = 18
+    assign deadline_label = demo_date
+    assign campaign_pickup = demo_pickup
+    assign campaign_host = demo_host
+    assign campaign_note = demo_note
+    assign payment_terms = demo_terms
+  endif
+  assign remaining = target | minus: registered | at_least: 0
+  assign progress_value = registered | at_most: target
+  assign progress_text = progress_label | replace: '{registered}', registered | replace: '{target}', target
+  assign remaining_text = remaining_label | replace: '{remaining}', remaining
+  assign share_message = share_intro | append: ' ' | append: title
   case language
     when 'ja'
       assign choose_label = '飲み方で選ぶ'
@@ -113,48 +200,69 @@
 -%}
 
 <div class="tsukino-editorial">
-  <section class="tsg-hero tsg-shell" aria-labelledby="{{ section_key | escape }}-title">
+  <section class="tsg-hero tsg-shell" id="{{ section_key | escape }}" aria-labelledby="{{ section_key | escape }}-title"{% if accepting and demo == false %} data-tsg-close-at="{{ deadline_epoch }}" data-closed-label="{{ closed | escape }}"{% endif %}>
     <div class="tsg-copy">
-      <p class="tsg-kicker">{{ group | escape }}</p>
-      <h1 id="{{ section_key | escape }}-title">{{ headline[0] | escape }}<br>{{ headline[1] | escape }}</h1>
-      <p class="tsg-lead">{{ intro | escape }}</p>
-      <a class="tsg-button" href="#{{ section_key | escape }}">{{ see | escape }} <span aria-hidden="true">↘</span></a>
+      <div class="tsg-campaign-flags">
+        <p class="tsg-kicker">{{ group | escape }}</p>
+        <p class="tsg-state" data-campaign-status>{% if demo %}{{ demo_label | escape }}{% elsif accepting %}{{ open | escape }}{% elsif campaign_ready %}{{ closed | escape }}{% else %}{{ pre | escape }}{% endif %}</p>
+      </div>
+      <h1 id="{{ section_key | escape }}-title">{{ title | escape }}</h1>
+      <p class="tsg-lead">{{ desc | escape }}</p>
+      {%- if demo or campaign_ready -%}
+        <p class="tsg-campaign-host"><span>{{ host_label | escape }}</span> {{ campaign_host | escape }}</p>
+        <dl class="tsg-campaign-facts">
+          <div><dt>{{ price_label | escape }}</dt><dd>{{ campaign_price | escape }}</dd></div>
+          <div><dt>{{ deadline_name | escape }} · {{ zone_label | escape }}</dt><dd>{% if demo %}{{ deadline_label | escape }}{% else %}<time datetime="{{ deadline | escape }}">{{ deadline_label | escape }}</time>{% endif %}</dd></div>
+          <div><dt>{{ pickup_label | escape }}</dt><dd>{{ campaign_pickup | escape }}</dd></div>
+        </dl>
+        <div class="tsg-progress">
+          <div class="tsg-progress-copy">
+            <strong id="{{ section_key | escape }}-progress">{{ progress_text | escape }}</strong>
+            {%- if remaining == 0 -%}<span>{{ goal_met | escape }}</span>{%- elsif accepting or demo -%}<span data-campaign-open-only>{{ remaining_text | escape }}</span>{%- endif -%}
+          </div>
+          <progress aria-label="{{ progress_name | escape }}" aria-describedby="{{ section_key | escape }}-progress" value="{{ progress_value }}" max="{{ target }}">{{ progress_text | escape }}</progress>
+        </div>
+        {%- if demo -%}
+          <div class="tsg-campaign-actions">
+            <details>
+              <summary class="tsg-button">{{ join | escape }} <span aria-hidden="true">↗</span></summary>
+              <p class="tsg-demo-message">{{ demo_join | escape }}</p>
+            </details>
+            <details>
+              <summary class="tsg-button tsg-button-outline">{{ invite | escape }}</summary>
+              <p class="tsg-demo-message">{{ demo_invite | escape }} <strong>{{ share_message | escape }}</strong></p>
+            </details>
+          </div>
+        {%- elsif accepting -%}
+          <div class="tsg-campaign-actions" data-campaign-open-only>
+            <a class="tsg-button" href="{{ campaign.campaign_url | escape }}">{{ join | escape }} <span aria-hidden="true">↗</span></a>
+            <a class="tsg-button tsg-button-outline" href="https://social-plugins.line.me/lineit/share?url={{ public_share_url | url_encode }}&amp;text={{ share_message | url_encode }}" target="_blank" rel="noopener noreferrer">{{ invite | escape }}</a>
+          </div>
+        {%- endif -%}
+      {%- else -%}
+        <p class="tsg-pending">{{ pending | escape }}</p>
+      {%- endif -%}
     </div>
     <figure class="tsg-hero-media">
-      {%- if section.settings.hero_image != blank -%}
-        {{ section.settings.hero_image | image_url: width: 1760 | image_tag: widths: '480, 768, 1120, 1440, 1760', sizes: '(max-width: 749px) 100vw, 53vw', loading: 'eager', fetchpriority: 'high', alt: heroAlt }}
+      {%- if campaign.hero_image != blank -%}
+        {{ campaign.hero_image | image_url: width: 1760 | image_tag: widths: '480, 768, 1120, 1440, 1760', sizes: '(max-width: 749px) 100vw, 53vw', loading: 'eager', fetchpriority: 'high', alt: heroAlt }}
       {%- else -%}
         <img src="{{ 'tsukino-pour.png' | asset_url }}" width="1536" height="1024" fetchpriority="high" alt="{{ heroAlt | escape }}">
       {%- endif -%}
     </figure>
   </section>
-  <section class="tsg-campaign tsg-shell" id="{{ section_key | escape }}" aria-labelledby="{{ section_key | escape }}-campaign">
-    {%- if tea_set.featured_image != blank -%}
-      <figure class="tsg-set-media">{{ tea_set.featured_image | image_url: width: 1200 | image_tag: widths: '400, 640, 900, 1200', sizes: '(max-width: 749px) 100vw, 42vw', loading: 'lazy', alt: title }}</figure>
-    {%- endif -%}
-    <div class="tsg-campaign-body">
-      <p class="tsg-state">{% if campaign_open %}{{ open | escape }}{% else %}{{ pre | escape }}{% endif %}</p>
-      <h2 id="{{ section_key | escape }}-campaign">{{ title | escape }}</h2>
-      <p class="tsg-lead">{{ desc | escape }}</p>
-      {%- if campaign_open -%}
-        <dl class="tsg-facts">
-          {%- for setting in facts -%}
-            <div><dt>{{ fact_labels[forloop.index0] | escape }}</dt><dd>{{ section.settings[setting] | escape }}</dd></div>
-          {%- endfor -%}
-        </dl>
-        {%- if section.settings.campaign_progress != blank -%}
-          <p class="tsg-pending">{{ section.settings.campaign_progress | escape }}</p>
-        {%- endif -%}
-        <details class="tsg-terms"><summary>{{ terms | escape }}</summary><p>{{ section.settings.refund_terms | escape | newline_to_br }}</p></details>
-        <a class="tsg-button" href="{{ section.settings.campaign_url | escape }}">{{ join | escape }} <span aria-hidden="true">↗</span></a>
-      {%- else -%}
-        <p class="tsg-pending">{{ pending | escape }}</p>
+  {%- if demo or campaign_ready -%}
+    <section class="tsg-host tsg-shell" aria-labelledby="{{ section_key | escape }}-host">
+      {%- if campaign.campaign_host_photo != blank and demo == false -%}
+        <figure>{{ campaign.campaign_host_photo | image_url: width: 320 | image_tag: widths: '160, 240, 320', sizes: '104px', loading: 'lazy', alt: campaign_host }}</figure>
       {%- endif -%}
-      {%- if tea_set != blank -%}
-        <a class="tsg-link" href="{{ product_base | append: tea_set.handle | escape }}">{{ set | escape }} <span aria-hidden="true">↗</span></a>
-      {%- endif -%}
-    </div>
-  </section>
+      <div>
+        <p class="tsg-kicker">{{ host_label | escape }}</p>
+        <h2 id="{{ section_key | escape }}-host">{{ campaign_host | escape }}</h2>
+        <blockquote>{{ campaign_note | escape | newline_to_br }}</blockquote>
+      </div>
+    </section>
+  {%- endif -%}
   <section class="tsg-compare tsg-shell" aria-labelledby="{{ section_key | escape }}-teas" data-tsg-filter data-result-label="{{ filter_result | escape }}">
     <h2 id="{{ section_key | escape }}-teas">{{ compare | escape }}</h2>
     <fieldset class="tsg-filter-list" data-tea-filters hidden>
@@ -230,6 +338,9 @@
     <div class="tsg-shell">
       <h2 id="{{ section_key | escape }}-delivery">{{ how | escape }}</h2>
       <ol>{% for step in steps %}<li>{{ step | escape }}</li>{% endfor %}</ol>
+      {%- if demo or campaign_ready -%}
+        <details class="tsg-terms"><summary>{{ terms | escape }}</summary><p>{{ payment_terms | escape | newline_to_br }}</p></details>
+      {%- endif -%}
     </div>
   </section>
 </div>
@@ -249,11 +360,6 @@
     },
     {
       "type": "product",
-      "id": "tea_set",
-      "label": "Tasting set product"
-    },
-    {
-      "type": "product",
       "id": "tea_matcha",
       "label": "Matcha product"
     },
@@ -269,44 +375,72 @@
     },
     {
       "type": "checkbox",
+      "id": "campaign_demo",
+      "label": "Show the sample campaign (no signups)",
+      "default": false
+    },
+    {
+      "type": "checkbox",
       "id": "campaign_open",
-      "label": "Open Taiwan group buy",
+      "label": "Enable Taiwan group buy",
       "default": false
     },
     {
       "type": "url",
       "id": "campaign_url",
-      "label": "Taiwan retail partner signup URL"
+      "label": "Organizer signup page"
+    },
+    {
+      "type": "url",
+      "id": "campaign_share_url",
+      "label": "Optional public campaign landing page for LINE"
+    },
+    {
+      "type": "text",
+      "id": "campaign_host",
+      "label": "Organizer name"
+    },
+    {
+      "type": "image_picker",
+      "id": "campaign_host_photo",
+      "label": "Organizer photo"
+    },
+    {
+      "type": "textarea",
+      "id": "campaign_host_note",
+      "label": "Organizer’s recommendation"
     },
     {
       "type": "text",
       "id": "campaign_price",
-      "label": "Confirmed group-buy price and currency"
+      "label": "Group-buy price and currency (e.g. NT$980)"
     },
     {
       "type": "text",
       "id": "campaign_deadline",
-      "label": "Confirmed deadline and time zone"
+      "label": "Deadline (Taiwan time)",
+      "info": "Use the format 2026-12-06T22:00:00+08:00."
     },
     {
-      "type": "text",
-      "id": "campaign_minimum",
-      "label": "Confirmed minimum quantity"
+      "type": "number",
+      "id": "campaign_target_sets",
+      "label": "Minimum sets to form the group"
+    },
+    {
+      "type": "number",
+      "id": "campaign_registered_sets",
+      "label": "Sets registered",
+      "default": 0
     },
     {
       "type": "text",
       "id": "campaign_delivery",
-      "label": "Confirmed delivery estimate"
-    },
-    {
-      "type": "text",
-      "id": "campaign_progress",
-      "label": "Optional confirmed signup progress"
+      "label": "Pickup or delivery method and area"
     },
     {
       "type": "textarea",
       "id": "refund_terms",
-      "label": "Confirmed refund terms if threshold is missed"
+      "label": "Payment terms and what happens if the group falls short"
     }
   ],
   "presets": [

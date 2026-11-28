@@ -53,7 +53,17 @@
     root.hidden = false;
   }
 
+  function expireCampaigns(container) {
+    for (const campaign of container.querySelectorAll('[data-tsg-close-at]')) {
+      const deadline = Number(campaign.dataset.tsgCloseAt) * 1000;
+      if (Date.now() < deadline) continue;
+      campaign.querySelector('[data-campaign-status]').textContent = campaign.dataset.closedLabel;
+      for (const element of campaign.querySelectorAll('[data-campaign-open-only]')) element.hidden = true;
+    }
+  }
+
   function init(container) {
+    expireCampaigns(container);
     for (const root of container.querySelectorAll('[data-tsg-filter]')) {
       if (root.hasAttribute('data-tsg-ready')) continue;
       root.setAttribute('data-tsg-ready', '');
@@ -69,5 +79,6 @@
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => init(document), { once: true });
   } else init(document);
+  window.addEventListener('pageshow', () => expireCampaigns(document));
   document.addEventListener('shopify:section:load', event => init(event.target));
 })();
