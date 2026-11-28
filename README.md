@@ -16,14 +16,14 @@ The first pilot takes **Japanese tea to Taiwan**. It tests paid website developm
 
 ## Japanese tea multi-store analytics MVP
 
-The [analytics dashboard](mvp/index.html) matches orders, shipments, and reviews across 36 fictional Shopify-style stores. The dashboard's demo store link opens the [宇治 月野茶房 Shopify development storefront](https://uji-tsukino-sabo-demo.myshopify.com/), where Shopify handles browsing, the cart, and test checkout. The old `#store` URL redirects to Shopify.
+The [English-language Seller Hub dashboard](mvp/index.html) matches orders, shipments, and reviews across 36 fictional Shopify-style stores. The dashboard's demo store link opens the [Uji Tsukino Tea House Shopify development storefront](https://uji-tsukino-sabo-demo.myshopify.com/), where Shopify handles browsing, the cart, and test checkout. The old `#store` URL redirects to Shopify.
 
 Download the source and open `mvp/index.html` in a browser, or run `python3 -m http.server 8000` at the repository root and open `http://localhost:8000/mvp/`.
 
 1. In **Sales analytics**, switch the market, period, and store to compare sales, delivery costs, and Taiwan group-buy orders.
 2. Use **Open Shopify demo store** to see the products and try Shopify test checkout if you have access to the password-protected development store.
 3. In **Shopify import**, follow the [read-only import guide](docs/shopify-test-import.md) to review orders exported from the development store. Use the fictional sample option to explore this screen without store access. Shopify orders are reviewed separately from the fictional analytics.
-4. In **Imported data**, inspect fictional orders, shipping charges, and reviews and export the selected range as CSV. In **AI insights**, review the supporting evidence and record a next action.
+4. In **Data sources**, inspect fictional orders, shipping charges, and reviews and export the selected range as CSV. In **AI insights**, review the supporting evidence and record a next action.
 
 The demo uses a fixed seed to generate 7,696 fictional orders. The initial 30-day view contains 2,462 valid orders. Net merchandise sales exclude canceled and refunded orders. Freight ratios and the amount remaining after product and shipping costs use completed orders with recorded freight costs. Rules recalculate the metrics and suggestions when inputs change. Previously saved mock orders remain available in demo analytics, and saved actions remain in local storage.
 
@@ -33,9 +33,9 @@ Open [the English broker portal](mvp/index.html#broker) to review a draft agains
 
 ## Shopify storefront and fulfillment verification
 
-[The 宇治 月野茶房 Shopify dev store](https://uji-tsukino-sabo-demo.myshopify.com/) contains four Japanese tea products and a test checkout. Test order #1001 was completed on November 26, 2026 (JST). Traditional Chinese (`zh-TW`) is now the domain's default display language, with [Japanese available at `/ja`](https://uji-tsukino-sabo-demo.myshopify.com/ja). Product copy, the homepage, navigation and contact page have been translated. The cart, checkout, privacy policy and language switch were verified in the live storefront. The dev store remains password protected; the store owner can also use the admin preview.
+[The Uji Tsukino Tea House Shopify dev store](https://uji-tsukino-sabo-demo.myshopify.com/) contains four Japanese tea products and a test checkout. Test order #1001 was completed on November 26, 2026 (JST). Traditional Chinese (`zh-TW`) is now the domain's default display language, with [Japanese available at `/ja`](https://uji-tsukino-sabo-demo.myshopify.com/ja). Product copy, the homepage, navigation and contact page have been translated. The cart, checkout, privacy policy and language switch were verified in the live storefront. The dev store remains password protected; the store owner can also use the admin preview.
 
-The MVP's **物流連携** view imports the CLI's redacted test-order and shipment-request reports. It distinguishes fixture data from OPENLOGI demo API results and separates customer-paid shipping from actual freight costs.
+The MVP's **Fulfillment** view imports the CLI's redacted test-order and shipment-request reports. It distinguishes fixture data from OPENLOGI demo API results and separates customer-paid shipping from actual freight costs.
 
 ```sh
 node scripts/run-fulfillment-demo.mjs --mode fixture --output .runtime/fulfillment-report.json

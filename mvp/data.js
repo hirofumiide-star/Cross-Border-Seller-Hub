@@ -5,42 +5,42 @@
   const asOf = Date.parse('2026-11-25T00:00:00Z');
   const dateAt = daysAgo => new Date(asOf - daysAgo * DAY).toISOString().slice(0, 10);
   const markets = {
-    TW: { name: '台湾', freight: 62, weight: 52 },
-    HK: { name: '香港', freight: 92, weight: 19 },
-    SG: { name: 'シンガポール', freight: 118, weight: 15 },
-    JP: { name: '日本', freight: 42, weight: 14 }
+    TW: { name: 'Taiwan', freight: 62, weight: 52 },
+    HK: { name: 'Hong Kong', freight: 92, weight: 19 },
+    SG: { name: 'Singapore', freight: 118, weight: 15 },
+    JP: { name: 'Japan', freight: 42, weight: 14 }
   };
   const channels = {
-    DIRECT: 'オンラインショップ', GROUP: '台湾團購', SOCIAL: 'SNS紹介', SEARCH: '検索', AI: 'AI検索の参照元'
+    DIRECT: 'Online store', GROUP: 'Taiwan group buy', SOCIAL: 'Social referral', SEARCH: 'Search', AI: 'AI search referral'
   };
   const categories = {
-    sencha: { name: '煎茶', size: '80 g', base: 420, cost: 156, description: '爽やかな香りと、すっきりとした甘み。急須で楽しむ毎日のお茶です。' },
-    matcha: { name: '抹茶', size: '30 g', base: 590, cost: 246, description: 'きめ細かな茶の粉末。お点前や抹茶ラテにも楽しめます。' },
-    hojicha: { name: 'ほうじ茶', size: '60 g', base: 360, cost: 128, description: '茶葉を焙じた香ばしさと、軽やかな後味が特徴です。' },
-    bundle: { name: 'お茶の飲み比べセット', size: '3 種', base: 790, cost: 328, description: '煎茶・抹茶・ほうじ茶の少量セット。香りと味わいの違いを楽しめます。' }
+    sencha: { name: 'Sencha', size: '80 g', base: 420, cost: 156, description: 'Everyday green tea with a fresh aroma and a clean, sweet finish.' },
+    matcha: { name: 'Matcha', size: '30 g', base: 590, cost: 246, description: 'Finely ground green tea for whisking or making matcha lattes.' },
+    hojicha: { name: 'Hojicha', size: '60 g', base: 360, cost: 128, description: 'Roasted tea leaves with a toasty aroma and a light finish.' },
+    bundle: { name: 'Tea tasting set', size: '3 varieties', base: 790, cost: 328, description: 'Small packs of sencha, matcha, and hojicha to taste side by side.' }
   };
   const regionGroups = [
-    ['京都・宇治', ['宇治 月野茶房', '山雫茶舗', '宇治 柚葉園']],
-    ['福岡・八女', ['八女 青峰製茶', '白露茶房', '八女 野の葉']],
-    ['静岡', ['霧庭製茶', '静岡 朝露茶寮', '牧の丘茶舗']],
-    ['鹿児島', ['南風茶園', '薩摩 緑蔵', '薩摩 晴葉茶房']],
-    ['埼玉・狭山', ['狭山 葉音園', '入間 麦乃茶房', '狭山 月丘茶舗']],
-    ['三重・伊勢', ['伊勢 宵葉茶舗', '清野茶寮', '伊勢 朝森製茶']],
-    ['佐賀・嬉野', ['嬉野 風待ち茶舗', '嬉野 雨花製茶', '嬉野 霞庭']],
-    ['長崎・東彼杵', ['彼杵 海雲茶房', '長崎 野渡茶舗', '波間茶園']],
-    ['宮崎', ['日向 露森茶房', '宮崎 梢製茶', '日向 風谷茶舗']],
-    ['島根', ['出雲 葉織製茶', '石見 水庭', '出雲 川音茶寮']],
-    ['奈良', ['月ヶ瀬 星谷茶房', '大和 葉月製茶', '奈良 青庭茶舗']],
-    ['熊本', ['肥後 雲野茶舗', '熊本 葉影茶房', '阿蘇 深緑園']]
+    ['Uji, Kyoto', ['Uji Tsukino Tea House', 'Yamashizuku Tea Shop', 'Uji Yuzuha Tea Garden']],
+    ['Yame, Fukuoka', ['Yame Aomine Tea', 'Hakuro Tea House', 'Yame Nonoha Tea']],
+    ['Shizuoka', ['Kiriniwa Tea', 'Shizuoka Asatsuyu Tea House', 'Makino Oka Tea Shop']],
+    ['Kagoshima', ['Minamikaze Tea Garden', 'Satsuma Midorikura Tea', 'Satsuma Hareha Tea House']],
+    ['Sayama, Saitama', ['Sayama Haoto Tea Garden', 'Iruma Mugino Tea House', 'Sayama Tsukioka Tea Shop']],
+    ['Ise, Mie', ['Ise Yoiha Tea Shop', 'Kiyono Tea House', 'Ise Asamori Tea']],
+    ['Ureshino, Saga', ['Ureshino Kazemachi Tea Shop', 'Ureshino Ameka Tea', 'Ureshino Kasuminiwa Tea']],
+    ['Higashisonogi, Nagasaki', ['Sonogi Kaiun Tea House', 'Nagasaki Nowatari Tea Shop', 'Namima Tea Garden']],
+    ['Miyazaki', ['Hyuga Tsuyumori Tea House', 'Miyazaki Kozue Tea', 'Hyuga Kazetani Tea Shop']],
+    ['Shimane', ['Izumo Haori Tea', 'Iwami Mizuniwa Tea', 'Izumo Kawaoto Tea House']],
+    ['Nara', ['Tsukigase Hoshitani Tea House', 'Yamato Hazuki Tea', 'Nara Aoniwa Tea Shop']],
+    ['Kumamoto', ['Higo Kumono Tea Shop', 'Kumamoto Hakage Tea House', 'Aso Shinryoku Tea Garden']]
   ];
   const themes = {
-    brewing: { name: '繁体字の淹れ方', action: '繁体字の淹れ方カードを同梱する', zh: '想知道冷泡的比例和時間，希望有繁體中文說明。', ja: '水出しの割合と時間を知りたい。繁体字の説明がほしい。', metric: '配送完了件数に対する淹れ方問い合わせ率' },
-    gift: { name: 'ギフト包装', action: 'ギフト包装を選べるようにする', zh: '茶很適合送禮，如果能選禮盒包裝會更好。', ja: '贈り物に向いているので、ギフト箱を選べるとうれしい。', metric: 'ギフト包装の選択率と包装費控除後の利益' },
-    freight: { name: '送料・配送日数', action: '配送込みの価格と到着目安を商品ページに表示する', zh: '結帳前想先知道運費和大約幾天會到。', ja: '決済前に送料とおおよその到着日を知りたい。', metric: '送料に関する問い合わせ率と注文当たり利益' },
-    flavor: { name: '香り・味の評価', action: '香りと味わいの比較を商品ページに追加する', zh: '焙茶香氣很明顯，想看看不同茶的風味比較。', ja: 'ほうじ茶の香りが強く、ほかのお茶との味の比較も見たい。', metric: '商品ページ閲覧から購入に進んだ割合' },
-    value: { name: '価格・内容量', action: '同じ販促条件で少量サイズの選択肢を試す', zh: '想先買小份試喝，再決定要不要買大包裝。', ja: 'まず少量で試してから大きなサイズを買いたい。', metric: '少量サイズの購入率とセット当たり利益' }
+    brewing: { name: 'Brewing instructions in Traditional Chinese', action: 'Include a brewing card in Traditional Chinese', zh: '想知道冷泡的比例和時間，希望有繁體中文說明。', en: 'I would like cold-brew ratios and steeping times, with instructions in Traditional Chinese.', metric: 'Brewing inquiries per delivered order' },
+    gift: { name: 'Gift packaging', action: 'Offer gift packaging as an option', zh: '茶很適合送禮，如果能選禮盒包裝會更好。', en: 'This tea would make a good gift. I wish there were a gift-box option.', metric: 'Gift-packaging selection rate and profit after packaging costs' },
+    freight: { name: 'Shipping cost and delivery time', action: 'Show the delivered price and estimated arrival on product pages', zh: '結帳前想先知道運費和大約幾天會到。', en: 'Before checkout, I want to know the shipping cost and when the order might arrive.', metric: 'Shipping inquiry rate and profit per order' },
+    flavor: { name: 'Aroma and flavor', action: 'Add an aroma and flavor comparison to product pages', zh: '焙茶香氣很明顯，想看看不同茶的風味比較。', en: 'The hojicha has a distinct aroma. I would like to compare the flavors of different teas.', metric: 'Product page-to-purchase conversion' },
+    value: { name: 'Price and pack size', action: 'Test a smaller pack under the same promotional conditions', zh: '想先買小份試喝，再決定要不要買大包裝。', en: 'I would like to try a small pack before deciding whether to buy a larger one.', metric: 'Small-pack purchase rate and profit per set' }
   };
-  const statusLabels = { paid: '入金済み', delivered: '配送完了', refunded: '返金済み', cancelled: 'キャンセル' };
+  const statusLabels = { paid: 'Paid', delivered: 'Delivered', refunded: 'Refunded', cancelled: 'Canceled' };
 
   function makeRandom(seed) {
     return () => {

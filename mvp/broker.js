@@ -382,7 +382,7 @@
       button.addEventListener('click', () => {
         const key = button.dataset.brokerDocument;
         if (!state.classification || !Object.hasOwn(documents, key)) return;
-        openDialog(documents[key].title, preview(key, shipment, state.classification), 'Close');
+        openDialog(documents[key].title, preview(key, shipment, state.classification));
         document.querySelector('#dialog [data-broker-print]').addEventListener('click', () => window.print());
       });
     }

@@ -11,7 +11,7 @@
 | Shopify開発ストア | [宇治 月野茶房](https://uji-tsukino-sabo-demo.myshopify.com/)を作成。4商品、繁体字中国語（台湾）と日本語、JPY、テスト決済を設定 | Admin API用アプリの認証・読み取り接続。SEO専用欄の翻訳は未適用 |
 | テスト注文 | [#1001](https://admin.shopify.com/store/uji-tsukino-sabo-demo/orders/19055954755837)で煎茶1点、商品1,980円＋顧客送料870円のテスト決済を確認 | この注文をAPIから読み、デモ物流へ渡す実行 |
 | OPENLOGI | API v1.6のデモ接続先・商品・出荷依頼の仕様を確認 | デモアカウント、APIトークン、必要な商品登録、接続検証 |
-| 実装 | 下記CLIと「物流連携」画面で、架空データによる処理とAPI結果の読み込みを検証する | 実際のAPI成功を示すレポートは未取得 |
+| 実装 | 下記CLIと**Fulfillment**画面で、架空データによる処理とAPI結果の読み込みを検証する | 実際のAPI成功を示すレポートは未取得 |
 
 この作業環境にはShopify／OPENLOGIのAPI認証情報が設定されていません。Shopify管理画面へのブラウザアクセスは確認できました。OPENLOGIのデモToken管理画面は、2026年11月26日の確認で「ただいま、メンテナンス中です」と表示し、HTTP 503を返したため、デモ登録・トークン発行・実API接続は未実施です。
 
@@ -35,7 +35,7 @@ node scripts/run-fulfillment-demo.mjs --mode fixture --output .runtime/fulfillme
 
 `fixture`は架空の注文・物流応答を使います。APIへの接続はしません。サンプルの追跡番号や出荷済み表示は実際の配送実績ではありません。
 
-[`mvp/index.html`](../mvp/index.html)を開いて「物流連携」を選び、生成されたJSONを読み込みます。画面内のサンプルボタンでも確認できます。36店舗の販売分析の数値には混ぜません。
+[`mvp/index.html`](../mvp/index.html)を開いて**Fulfillment**を選び、生成されたJSONを読み込みます。**Load sample fulfillment report** ボタンでも確認できます。36店舗の販売分析の数値には混ぜません。
 
 ## 2. 認証を準備する
 
@@ -102,7 +102,7 @@ node --env-file=.env scripts/run-fulfillment-demo.mjs --mode openlogi-demo --ord
 
 ## 5. 出荷結果を取り込む
 
-同じ注文IDでもう一度、`--submit-demo` を付けずに実行すると、既存の出荷依頼を照合して、その時点の状態をレポートへ出力します。JSONをMVPの「物流連携」で再選択すると表示が更新されます。
+同じ注文IDでもう一度、`--submit-demo` を付けずに実行すると、既存の出荷依頼を照合して、その時点の状態をレポートへ出力します。JSONをMVPの**Fulfillment**で再選択すると表示が更新されます。
 
 保留依頼の作成成功と発送完了は別の状態です。公開APIにはデモ在庫を増やす操作や出荷済みに強制変更する操作は確認できません。デモ倉庫の進行方法が提供元から確認できるまでは、追跡番号が未取得でも正常です。
 

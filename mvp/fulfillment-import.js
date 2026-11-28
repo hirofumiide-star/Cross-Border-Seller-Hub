@@ -3,8 +3,8 @@
 
   const source = 'seller-hub-fulfillment-demo';
   const pageSize = 20;
-  const number = value => new Intl.NumberFormat('ja-JP').format(value);
-  const money = (currency, value) => new Intl.NumberFormat('ja-JP', {
+  const number = value => new Intl.NumberFormat('en-US').format(value);
+  const money = (currency, value) => new Intl.NumberFormat('en-US', {
     style: 'currency', currency, currencyDisplay: 'code'
   }).format(Number(value));
   const escape = value => String(value).replace(/[&<>"']/g, character => ({
@@ -21,17 +21,17 @@
   const orderStates = ['planned', 'submitted', 'shipped', 'blocked'];
   const shipmentStates = ['not-submitted', 'suspended', 'pending', 'working', 'shipped', 'cancelled', 'unknown'];
   const reasons = {
-    'missing-credentials': '接続設定が必要です',
-    'order-ineligible': '注文がテスト出荷の条件を満たしていません',
-    'sku-unmapped': '商品の対応付けを確認してください',
-    'shipment-mismatch': '既存の出荷依頼と内容が一致しません',
-    'submission-uncertain': '受付結果が不明です。再送前に既存の依頼を照合してください',
-    'provider-error': '物流側の応答を確認してください'
+    'missing-credentials': 'Connection setup required.',
+    'order-ineligible': 'The order is ineligible for test shipment.',
+    'sku-unmapped': 'Check the SKU mapping.',
+    'shipment-mismatch': 'The details differ from the existing shipment request.',
+    'submission-uncertain': 'Request acceptance is uncertain. Check for an existing request before retrying.',
+    'provider-error': 'Check the fulfillment provider response.'
   };
-  const orderLabels = { planned: '依頼前', submitted: '依頼受付済み', shipped: '出荷済み', blocked: '要確認' };
+  const orderLabels = { planned: 'Not requested', submitted: 'Request accepted', shipped: 'Dispatched', blocked: 'Needs review' };
   const shipmentLabels = {
-    'not-submitted': '未送信', suspended: '倉庫作業を保留', pending: '受付・準備中',
-    working: '倉庫で作業中', shipped: '出荷済み', cancelled: 'キャンセル', unknown: '状態未確認'
+    'not-submitted': 'Not submitted', suspended: 'Warehouse processing on hold', pending: 'Accepted and preparing',
+    working: 'Processing at warehouse', shipped: 'Dispatched', cancelled: 'Canceled', unknown: 'Status unverified'
   };
   let report = null;
   let error = '';
@@ -59,12 +59,12 @@
       || !keysAre(input.connection, ['shopify', 'openlogi'])
       || !Object.values(input.connection).every(state => connectionStates.includes(state))
       || !Array.isArray(input.orders) || input.orders.length > 1000) {
-      throw new Error('物流デモの結果ファイルの形式と一致しません。出力した結果JSONを選択してください。');
+      throw new Error('This file does not match the fulfillment demo format. Select the exported results JSON.');
     }
     if (input.mode === 'fixture'
       ? Object.values(input.connection).some(state => state !== 'fixture')
       : Object.values(input.connection).includes('fixture')) {
-      throw new Error('サンプルとAPI接続結果の区分が一致しません。');
+      throw new Error('The report mode does not match its connection statuses.');
     }
 
     const ids = new Set();
@@ -81,7 +81,7 @@
         || order.lines.some(line => !keysAre(line, ['sku', 'title', 'quantity'])
           || !text(line.sku, 30) || !/^[A-Za-z0-9!#$%&'()*+,\-./:;<=>?@[\]^_`{|}~]+$/.test(line.sku)
           || !text(line.title, 100) || !Number.isSafeInteger(line.quantity) || line.quantity < 1 || line.quantity > 10000)) {
-        throw new Error('注文・商品・金額の形式に問題があります。個人情報を含まない結果JSONを使用してください。');
+        throw new Error('The order, product, or amount format is invalid. Use the redacted results JSON.');
       }
       const shipment = order.shipment;
       if (!keysAre(shipment, ['id', 'identifier', 'status', 'trackingNumber', 'trackingNumbers', 'trackingUrl', 'carrier', 'actualShippingCost'])
@@ -99,7 +99,7 @@
         || (order.status === 'planned' && shipment.status !== 'not-submitted')
         || (order.status === 'submitted' && (shipment.id === null || shipment.status === 'not-submitted'))
         || (order.status === 'blocked') !== (order.blockReason !== null)) {
-        throw new Error('出荷状況・追跡情報の形式が不正か、注文の状態と一致しません。');
+        throw new Error('Shipment or tracking details are invalid or inconsistent with the order status.');
       }
       ids.add(order.id);
       shipmentIdentifiers.add(shipment.identifier);
@@ -111,13 +111,13 @@
     const sampleOrder = (index, status, shipmentStatus, blockReason = null) => ({
       id: 'SHOP-' + String(index).padStart(14, '0'), reference: '#DEMO-' + (1000 + index),
       test: true, currency: 'JPY', subtotal: '1980', shippingCharged: '870', status,
-      lines: [{ sku: 'TSU-SENCHA-80', title: '宇治 煎茶 80g', quantity: 1 }],
+      lines: [{ sku: 'TSU-SENCHA-80', title: 'Uji Sencha, 80 g', quantity: 1 }],
       shipment: {
         id: status === 'blocked' ? null : 'DEMO-S' + index,
         identifier: 'cbsh-' + String(index).padStart(32, '0'), status: shipmentStatus,
         trackingNumber: status === 'shipped' ? 'DEMO-TRACK-0001' : null,
         trackingNumbers: status === 'shipped' ? ['DEMO-TRACK-0001'] : [],
-        trackingUrl: null, carrier: status === 'shipped' ? '架空の配送会社' : null,
+        trackingUrl: null, carrier: status === 'shipped' ? 'Sample carrier' : null,
         actualShippingCost: null
       },
       shopifyWriteback: 'not-requested', blockReason
@@ -135,36 +135,36 @@
 
   function connectionLabel(value) {
     return {
-      fixture: '架空サンプル', verified: '生成時にAPI応答を確認',
-      'not-configured': '接続未設定', failed: '接続を確認できず'
+      fixture: 'Sample data', verified: 'API response verified at report time',
+      'not-configured': 'Connection not configured', failed: 'Connection unverified'
     }[value];
   }
 
   function summary() {
     const isSample = report.mode === 'fixture';
-    const generated = new Intl.DateTimeFormat('ja-JP', {
+    const generated = new Intl.DateTimeFormat('en-US', {
       dateStyle: 'medium', timeStyle: 'short', timeZone: 'Asia/Tokyo'
     }).format(new Date(report.generatedAt));
     const counts = Object.fromEntries(orderStates.map(state => [state, report.orders.filter(order => order.status === state).length]));
     return `<section class="panel section-gap fulfillment-summary" aria-labelledby="fulfillment-summary-title">
-      <div class="panel-head"><div><span class="tag ${isSample ? 'warn' : ''}">${isSample ? '架空のサンプル結果' : 'OPENLOGIデモAPIの実行記録'}</span>
+      <div class="panel-head"><div><span class="tag ${isSample ? 'warn' : ''}">${isSample ? 'Sample results' : 'OPENLOGI demo API report'}</span>
         <h2 id="fulfillment-summary-title">${escape(report.store)}</h2>
-        <p class="sub">${escape(generated)} JST 時点のレポート</p></div>
-        <button class="button" type="button" data-fulfillment-action="clear">結果をクリア</button></div>
+        <p class="sub">Report generated ${escape(generated)} JST</p></div>
+        <button class="button" type="button" data-fulfillment-action="clear">Clear report</button></div>
       <div class="panel-inner">
         <div class="fulfillment-connections">
           <p><strong>Shopify</strong><span class="tag ${report.connection.shopify === 'failed' ? 'danger' : 'gray'}">${connectionLabel(report.connection.shopify)}</span></p>
           <p><strong>OPENLOGI</strong><span class="tag ${report.connection.openlogi === 'failed' ? 'danger' : 'gray'}">${connectionLabel(report.connection.openlogi)}</span></p>
         </div>
         <dl class="tiles fulfillment-counts">
-          <div class="tile"><dt>取込テスト注文</dt><dd>${number(report.orders.length)}件</dd></div>
-          <div class="tile"><dt>出荷依頼受付済み</dt><dd>${number(counts.submitted)}件</dd><small>出荷済みの注文を除く</small></div>
-          <div class="tile"><dt>${isSample ? '模擬出荷済み' : 'デモAPIで出荷済み'}</dt><dd>${number(counts.shipped)}件</dd></div>
-          <div class="tile"><dt>要確認</dt><dd>${number(counts.blocked)}件</dd></div>
+          <div class="tile"><dt>Imported test orders</dt><dd>${number(report.orders.length)}</dd></div>
+          <div class="tile"><dt>Requests accepted</dt><dd>${number(counts.submitted)}</dd><small>Excludes dispatched orders</small></div>
+          <div class="tile"><dt>${isSample ? 'Simulated dispatches' : 'Dispatched via demo API'}</dt><dd>${number(counts.shipped)}</dd></div>
+          <div class="tile"><dt>Needs review</dt><dd>${number(counts.blocked)}</dd></div>
         </dl>
         <p class="sub">${isSample
-          ? 'すべて架空の状態です。実際の接続・倉庫への依頼・配送は行っていません。'
-          : '接続状態はレポート生成時の確認結果です。現在の接続状況や、その後の出荷状況を自動更新する画面ではありません。'}</p>
+          ? 'Sample data illustrates the connection, warehouse request, and dispatch statuses.'
+          : 'This report shows connection and dispatch statuses at the time it was generated.'}</p>
       </div>
     </section>`;
   }
@@ -173,11 +173,11 @@
     const submitted = order.shipment.id !== null;
     const shipped = order.status === 'shipped';
     const stages = [
-      ['テスト注文', '読み取り済み', true],
-      ['出荷依頼', shipmentLabels[order.shipment.status], submitted],
-      ['発送結果', shipped ? (report.mode === 'fixture' ? '模擬出荷済み' : '出荷済み') : '未確認', shipped]
+      ['Test order', 'Imported', true],
+      ['Shipment request', shipmentLabels[order.shipment.status], submitted],
+      ['Dispatch result', shipped ? (report.mode === 'fixture' ? 'Simulated dispatch' : 'Dispatched') : 'Unverified', shipped]
     ];
-    return `<ol class="fulfillment-progress" aria-label="${escape(order.reference)}の処理状況">${stages.map(([label, detail, done]) =>
+    return `<ol class="fulfillment-progress" aria-label="Fulfillment progress for ${escape(order.reference)}">${stages.map(([label, detail, done]) =>
       `<li${done ? ' class="complete"' : ''}><strong>${label}</strong><span>${detail}</span></li>`
     ).join('')}</ol>`;
   }
@@ -186,25 +186,25 @@
     const shipment = order.shipment;
     const tracking = shipment.trackingNumbers.length
       ? `${shipment.trackingNumbers.map(value => `<strong class="fulfillment-tracking">${escape(value)}</strong>`).join('')}${shipment.carrier ? `<small>${escape(shipment.carrier)}</small>` : ''}`
-      : '<span class="sub">未取得</span>';
+      : '<span class="sub">Unavailable</span>';
     return `<article class="panel fulfillment-order">
       <div class="panel-head"><div><h3>${escape(order.reference)} <span class="tag ${order.status === 'blocked' ? 'danger' : 'gray'}">${orderLabels[order.status]}</span></h3>
-        <p class="sub">${order.lines.map(line => `${escape(line.title)} ×${number(line.quantity)}`).join('、')}</p></div>
-        <span class="tag gray">テスト注文</span></div>
+        <p class="sub">${order.lines.map(line => `${escape(line.title)} ×${number(line.quantity)}`).join(', ')}</p></div>
+        <span class="tag gray">Test order</span></div>
       <div class="panel-inner">
         ${progress(order)}
         ${order.blockReason ? `<p class="fulfillment-alert">${reasons[order.blockReason]}</p>` : ''}
-        ${shipment.status === 'suspended' ? '<p class="fulfillment-note">出荷依頼は受け付けられています。倉庫の作業開始は保留しています。</p>' : ''}
+        ${shipment.status === 'suspended' ? '<p class="fulfillment-note">The provider accepted the request. Warehouse processing is on hold.</p>' : ''}
         <dl class="fulfillment-details">
-          <div><dt>商品小計</dt><dd>${money(order.currency, order.subtotal)}</dd></div>
-          <div><dt>購入者への請求送料</dt><dd>${money(order.currency, order.shippingCharged)}</dd></div>
-          <div><dt>実績配送費</dt><dd>未取得</dd></div>
-          <div><dt>追跡番号</dt><dd>${tracking}</dd></div>
-          <div><dt>Shopifyへの出荷反映</dt><dd>未実施</dd></div>
-          <div><dt>物流側の依頼番号</dt><dd>${shipment.id ? escape(shipment.id) : '未取得'}</dd></div>
+          <div><dt>Product subtotal</dt><dd>${money(order.currency, order.subtotal)}</dd></div>
+          <div><dt>Shipping charged to buyer</dt><dd>${money(order.currency, order.shippingCharged)}</dd></div>
+          <div><dt>Actual freight cost</dt><dd>Unavailable</dd></div>
+          <div><dt>Tracking number</dt><dd>${tracking}</dd></div>
+          <div><dt>Shopify fulfillment update</dt><dd>Not performed</dd></div>
+          <div><dt>Provider request ID</dt><dd>${shipment.id ? escape(shipment.id) : 'Unavailable'}</dd></div>
         </dl>
-        <details class="fulfillment-identifiers"><summary>照合に使うID・商品コード</summary>
-          <p>注文ID：<code>${escape(order.id)}</code></p><p>出荷照合ID：<code>${escape(shipment.identifier)}</code></p>
+        <details class="fulfillment-identifiers"><summary>Matching IDs and SKUs</summary>
+          <p>Order ID <code>${escape(order.id)}</code></p><p>Shipment matching ID <code>${escape(shipment.identifier)}</code></p>
           <ul>${order.lines.map(line => `<li><code>${escape(line.sku)}</code> ×${number(line.quantity)}</li>`).join('')}</ul>
         </details>
       </div>
@@ -217,24 +217,24 @@
     const visible = report.orders.slice(start, start + pageSize);
     return `${summary()}
       <section class="section-gap" aria-labelledby="fulfillment-orders-title">
-        <div class="fulfillment-section-head"><h2 id="fulfillment-orders-title">注文と出荷の照合</h2>
-          <p class="sub">購入者への請求送料と、物流事業者に支払う実績配送費は別に表示します。</p></div>
-        <div class="fulfillment-orders">${visible.map(orderCard).join('') || '<p class="panel status-copy">注文の実行結果はまだありません。レポートの接続状態を確認してください。</p>'}</div>
-        ${report.orders.length > pageSize ? `<div class="pagination section-gap"><span>${start + 1}–${Math.min(start + pageSize, report.orders.length)} / ${number(report.orders.length)}件</span>
-          <button class="button" type="button" data-fulfillment-action="previous" ${currentPage === 0 ? 'disabled' : ''}>前へ</button>
-          <button class="button" type="button" data-fulfillment-action="next" ${start + pageSize >= report.orders.length ? 'disabled' : ''}>次へ</button></div>` : ''}
+        <div class="fulfillment-section-head"><h2 id="fulfillment-orders-title">Orders and shipments</h2>
+          <p class="sub">Compare the shipping charge paid by the buyer with the cost charged by the fulfillment provider.</p></div>
+        <div class="fulfillment-orders">${visible.map(orderCard).join('') || '<p class="panel status-copy">There are no order results yet. Check the connection status in the report.</p>'}</div>
+        ${report.orders.length > pageSize ? `<div class="pagination section-gap"><span>${start + 1}–${Math.min(start + pageSize, report.orders.length)} of ${number(report.orders.length)}</span>
+          <button class="button" type="button" data-fulfillment-action="previous" ${currentPage === 0 ? 'disabled' : ''}>Previous</button>
+          <button class="button" type="button" data-fulfillment-action="next" ${start + pageSize >= report.orders.length ? 'disabled' : ''}>Next</button></div>` : ''}
       </section>`;
   }
 
   function render() {
     return `<section class="panel section-gap" aria-labelledby="fulfillment-import-title">
-      <div class="panel-head"><div><h2 id="fulfillment-import-title">物流連携の実行結果</h2>
-        <p class="sub">テスト注文とOPENLOGIへの出荷依頼を照合する結果ファイルを選択します。</p></div></div>
+      <div class="panel-head"><div><h2 id="fulfillment-import-title">Fulfillment report</h2>
+        <p class="sub">Select the results file that links Shopify test orders to OPENLOGI shipment requests.</p></div></div>
       <div class="panel-inner">
-        <div class="store-controls fulfillment-upload"><label for="fulfillment-file">結果JSON</label>
+        <div class="store-controls fulfillment-upload"><label for="fulfillment-file">Results JSON</label>
           <input type="file" id="fulfillment-file" accept=".json,application/json" aria-describedby="fulfillment-file-help fulfillment-report-error">
-          <button class="button" type="button" data-fulfillment-action="sample">架空の物流サンプルを見る</button></div>
-        <p class="sub" id="fulfillment-file-help">この画面は結果の確認用です。取込内容はこのページを開いている間だけ保持し、36店舗の架空集計には加えません。</p>
+          <button class="button" type="button" data-fulfillment-action="sample">Load sample fulfillment report</button></div>
+        <p class="sub" id="fulfillment-file-help">Imported results stay in this page until you reload it. The 36-store sample analytics uses a separate dataset.</p>
         <p class="fulfillment-error" id="fulfillment-report-error" role="alert">${escape(error)}</p>
       </div>
     </section>${results()}`;
@@ -247,7 +247,7 @@
       if (!file) return;
       const sequence = ++loadSequence;
       try {
-        if (file.size > 6_000_000) throw new Error('6 MB以下の結果JSONを選んでください。');
+        if (file.size > 6_000_000) throw new Error('Choose a results JSON file no larger than 6 MB.');
         const parsed = validate(JSON.parse(await file.text()));
         if (sequence !== loadSequence || !input.isConnected) return;
         report = parsed;
@@ -257,7 +257,7 @@
         if (sequence !== loadSequence || !input.isConnected) return;
         report = null;
         currentPage = 0;
-        error = failure instanceof SyntaxError ? 'JSONを読み取れませんでした。結果ファイルを確認してください。' : failure.message;
+        error = failure instanceof SyntaxError ? 'Could not read the JSON. Check the results file.' : failure.message;
       }
       repaint();
       container.querySelector('#fulfillment-file')?.focus();

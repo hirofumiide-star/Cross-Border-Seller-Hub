@@ -10,12 +10,12 @@
   const $ = id => document.getElementById(id);
   const content = $('content');
   const dialog = $('dialog');
-  const navigationLabels = [...document.querySelectorAll('[data-nav-label]')].map(node => [node, node.textContent]);
-  const n = value => new Intl.NumberFormat('ja-JP').format(value);
+  const numberFormat = new Intl.NumberFormat('en-US');
+  const n = value => numberFormat.format(value);
   const money = value => `NT$${n(value)}`;
   const rate = value => `${(value * 100).toFixed(1)}%`;
   const shortDate = value => `${Number(value.slice(5, 7))}/${Number(value.slice(8, 10))}`;
-  const describeOrder = row => row.lines.map(line => `${categories[line.type].name} ×${line.quantity}`).join('、');
+  const describeOrder = row => row.lines.map(line => `${categories[line.type].name} ×${line.quantity}`).join(', ');
 
   let shopSearch = '';
   let shopsPage = 0;
@@ -97,12 +97,13 @@
 
   function marketOptions(selected) {
     const items = Object.entries(markets).map(([key, market]) => [key, market.name]);
-    return options([['all', 'すべての市場'], ...items], selected);
+    return options([['all', 'All markets'], ...items], selected);
   }
 
-  function page(crumb, title, note, body, label = '架空データ', storeLabel = 'Shopifyデモ店舗を開く') {
+  function page(crumb, title, note, body, label = 'Sample data') {
+    document.title = `Seller Hub | ${title}`;
     return `<div class="content-wrap">
-      <div class="topbar"><span>Seller Hub / ${crumb}</span><div><span class="tag gray">${label}</span><a class="button" href="${shopifyStorefront}">${storeLabel}</a></div></div>
+      <div class="topbar"><span>Seller Hub / ${crumb}</span><div><span class="tag gray">${label}</span><a class="button" href="${shopifyStorefront}">Open Shopify demo store</a></div></div>
       <header class="page-head"><div><h1>${title}</h1><p class="sub">${note}</p></div></header>
       ${body}
     </div>`;
@@ -110,10 +111,10 @@
 
   function filterBar(data) {
     return `<div class="filter-bar">
-      <label>期間 <select id="filter-days">${options([[7, '直近7日'], [30, '直近30日'], [90, '直近90日']], filters.days)}</select></label>
-      <label>市場 <select id="filter-market">${marketOptions(filters.market)}</select></label>
-      <label>店舗 <select id="filter-store">${options([['all', `${stores.length}店舗すべて`], ...stores.map(store => [store.id, store.name])], filters.store)}</select></label>
-      <span class="filter-period">${data.start} – ${data.end} · 通貨 TWD</span>
+      <label>Period <select id="filter-days">${options([[7, 'Last 7 days'], [30, 'Last 30 days'], [90, 'Last 90 days']], filters.days)}</select></label>
+      <label>Market <select id="filter-market">${marketOptions(filters.market)}</select></label>
+      <label>Store <select id="filter-store">${options([['all', `All ${stores.length} stores`], ...stores.map(store => [store.id, store.name])], filters.store)}</select></label>
+      <span class="filter-period">${data.start} – ${data.end} · TWD</span>
     </div>`;
   }
 
@@ -132,9 +133,9 @@
     const size = Math.max(1, ...buckets.map(bucket => bucket.value));
     const step = Math.max(1, 10 ** (Math.floor(Math.log10(size)) - 1));
     const top = Math.ceil(size / (3 * step)) * 3 * step;
-    const axis = value => value >= 1000 ? `${n(Math.round(value / 1000))}千` : n(value);
+    const axis = value => value >= 1000 ? `${n(Math.round(value / 1000))}k` : n(value);
     return `<figure class="figure" style="--bars:${buckets.length}">
-      <figcaption class="sr-only">純商品売上の1日平均。${buckets.map(bucket => `${bucket.label}から${bucket.end}、${money(bucket.value)}`).join('。')}</figcaption>
+      <figcaption class="sr-only">Average daily net product sales. ${buckets.map(bucket => `${bucket.label} through ${bucket.end}, ${money(bucket.value)}`).join('. ')}.</figcaption>
       <div class="chart-axis" aria-hidden="true">${[top, top * 2 / 3, top / 3, 0].map(value => `<span>${axis(value)}</span>`).join('')}</div>
       <div class="chart-bars" aria-hidden="true">${buckets.map(bucket => `<div class="chart-bar" style="--height:${bucket.value / top * 100}%" title="${bucket.label}–${bucket.end} ${money(bucket.value)}"></div>`).join('')}</div>
       <div class="chart-labels" aria-hidden="true">${buckets.map(bucket => `<span>${bucket.label}</span>`).join('')}</div>
@@ -145,7 +146,7 @@
     const overall = data.sales || 1;
     const rows = Object.entries(data.marketStats).sort((a, b) => b[1].sales - a[1].sales);
     return `<section class="panel">
-      <div class="panel-head"><div><h2>市場別売上</h2><p class="sub">対象期間の商品売上</p></div></div>
+      <div class="panel-head"><div><h2>Sales by market</h2><p class="sub">Product sales for the selected period</p></div></div>
       <div class="panel-inner market-list">${rows.map(([code, stat]) =>
         `<div class="market-row"><span>${markets[code].name}</span><div class="track" aria-hidden="true"><i style="--share:${stat.sales / overall * 100}%"></i></div><strong>${money(stat.sales)}</strong></div>`
       ).join('')}</div>
@@ -154,8 +155,8 @@
 
   function rankingPanel(data) {
     return `<section class="panel">
-      <div class="panel-head"><div><h2>店舗別実績</h2><p class="sub">${data.storeList.length}店舗を対象に集計</p></div><a class="button inline" href="#shops">全店舗を見る</a></div>
-      <div class="table-scroll"><table><thead><tr><th scope="col">店舗</th><th scope="col" class="num">有効注文</th><th scope="col" class="num">純商品売上</th></tr></thead><tbody>
+      <div class="panel-head"><div><h2>Store performance</h2><p class="sub">${data.storeList.length} ${data.storeList.length === 1 ? 'store' : 'stores'} in scope</p></div><a class="button inline" href="#shops">View all stores</a></div>
+      <div class="table-scroll"><table><thead><tr><th scope="col">Store</th><th scope="col" class="num">Valid orders</th><th scope="col" class="num">Net product sales</th></tr></thead><tbody>
       ${data.storeList.slice(0, 5).map(({ store, count, sales }) => `<tr><td><button class="table-button" data-action="filter-shop" data-store="${store.id}">${store.name}</button><small>${store.region}</small></td><td class="num">${n(count)}</td><td class="num">${money(sales)}</td></tr>`).join('')}
       </tbody></table></div>
     </section>`;
@@ -165,26 +166,26 @@
     const lead = data.themeList[0];
     const evidence = lead.count ? themes[lead.key] : null;
     const metrics = [
-      ['純商品売上', money(data.sales), '全額返金・キャンセルを除外'],
-      ['有効注文', `${n(data.orders)}件`, data.testOrders ? `保存済みの模擬注文 ${n(data.testOrders)}件を含む` : '入金済み＋配送完了'],
-      ['台湾團購からの注文', `${n(data.groupOrders)}件`, data.orders ? `有効注文の ${rate(data.groupOrders / data.orders)}` : '有効注文なし'],
-      ['配送費率', data.freightRate === null ? '—' : rate(data.freightRate), '配送費 ÷ 対応する配送完了注文の商品売上']
+      ['Net product sales', money(data.sales), 'Excludes fully refunded and canceled orders'],
+      ['Valid orders', n(data.orders), data.testOrders ? `Includes ${n(data.testOrders)} saved demo ${data.testOrders === 1 ? 'order' : 'orders'}` : 'Paid or delivered orders'],
+      ['Taiwan group-buy orders', n(data.groupOrders), data.orders ? `${rate(data.groupOrders / data.orders)} of valid orders` : 'No valid orders'],
+      ['Freight-to-sales ratio', data.freightRate === null ? '—' : rate(data.freightRate), 'Freight divided by product sales for the corresponding delivered orders']
     ];
-    return page('販売分析', '日本茶の販売分析', `${stores.length}の架空ショップから取り込んだ注文・配送・レビューを比較。`, `
+    return page('Sales analytics', 'Japanese Tea Sales Analytics', `Compare orders, shipments, and reviews across ${stores.length} fictional stores.`, `
       ${filterBar(data)}
       <dl class="tiles">${metrics.map(([label, value, helper], i) => `<div class="tile"><dt>${label}</dt><dd id="kpi-${i}">${value}</dd><small>${helper}</small></div>`).join('')}</dl>
       <div class="grid-top">
         <section class="panel">
-          <div class="panel-head"><div><h2>売上の推移</h2><p class="sub">純商品売上の1日平均 · 台湾ドル</p></div><span class="tag gray">TWD</span></div>
+          <div class="panel-head"><div><h2>Sales trend</h2><p class="sub">Average daily net product sales</p></div><span class="tag gray">TWD</span></div>
           <div class="panel-inner">${chart(data.daily)}</div>
         </section>
         <section class="panel insight-card">
-          <div class="panel-head"><span class="tag">AI分析デモ</span></div>
+          <div class="panel-head"><span class="tag">AI insights demo</span></div>
           <div class="panel-inner">
-            <p class="meta">レビューからの提案</p>
-            <h3>${evidence ? evidence.action : 'この範囲のレビューを確認する'}</h3>
-            <p class="sub">${evidence ? `対象のレビュー ${n(data.reviews)}件のうち、${n(lead.count)}件が「${evidence.name}」に言及。` : '集計条件を広げると、提案の根拠を確認できます。'}</p>
-            <a class="button" href="#insights">分析と根拠を見る</a>
+            <p class="meta">Recommendation from customer reviews</p>
+            <h3>${evidence ? evidence.action : 'No reviews in this selection'}</h3>
+            <p class="sub">${evidence ? `${n(lead.count)} of ${n(data.reviews)} reviews mention “${evidence.name}.”` : 'Try a wider date range or market.'}</p>
+            <a class="button" href="#insights">View insights and evidence</a>
           </div>
         </section>
       </div>
@@ -202,72 +203,72 @@
     const pair = data.pairList[0];
     const cohortActions = actions.filter(action => action.scope === scopeKey());
     const searchReferrals = data.channelStats.AI.count;
-    return page('AIインサイト', '市場インサイト', '集計値から、次回の販売で検証する施策を作ります。提案はルールで生成したAI分析デモです。', `
+    return page('AI insights', 'Market Insights', 'Explore ideas for the next sales experiment. This demo uses rules and sample data to generate recommendations.', `
       ${filterBar(data)}
       <div class="evidence-grid">
         <article class="evidence">
-          <span class="tag">顧客の声</span>
-          <h2>${theme ? theme.action : 'レビューの根拠がありません'}</h2>
+          <span class="tag">Customer feedback</span>
+          <h2>${theme ? theme.action : 'No reviews in this selection'}</h2>
           ${theme ? `
-            <p>配送完了注文のレビュー ${n(data.reviews)}件のうち ${n(lead.count)}件（${rate(lead.count / data.reviews)}）が「${theme.name}」に言及。</p>
-            <blockquote lang="zh-Hant">${theme.zh}<small lang="ja">訳｜${theme.ja}</small></blockquote>
-            <p>次回の評価｜${theme.metric}</p>
-            <div class="row-actions"><button class="button" data-action="review-evidence" data-topic="${lead.key}">根拠の注文を見る</button>
-            <button class="button primary" data-action="add-experiment" data-topic="${lead.key}" ${cohortActions.some(item => item.topic === lead.key) ? 'disabled' : ''}>施策に登録する</button></div>`
-            : '<p>期間や市場を広げて対象注文を変更できます。</p>'}
+            <p>${n(lead.count)} of ${n(data.reviews)} reviews from delivered orders (${rate(lead.count / data.reviews)}) mention “${theme.name}.”</p>
+            <blockquote>${theme.en}<small>Translated from Traditional Chinese</small></blockquote>
+            <p>Measure next time · ${theme.metric}</p>
+            <div class="row-actions"><button class="button" data-action="review-evidence" data-topic="${lead.key}">View supporting orders</button>
+            <button class="button primary" data-action="add-experiment" data-topic="${lead.key}" ${cohortActions.some(item => item.topic === lead.key) ? 'disabled' : ''}>Save experiment</button></div>`
+            : '<p>Try a wider date range or market to see more orders.</p>'}
         </article>
         <article class="evidence">
-          <span class="tag">併買</span>
-          <h2>${pair ? pair.types.map(type => categories[type].name).join(' × ') : '併買データがありません'}</h2>
-          <p>${pair ? `${n(pair.count)}件で同時購入。両商品を扱う店舗の有効注文 ${n(pair.eligible)}件が分母（${rate(pair.count / pair.eligible)}）。` : '2種類以上を購入した有効注文から集計します。'}</p>
-          ${pair ? `<button class="button" data-action="pair-evidence" data-pair="${pair.key}">併買の注文明細を見る</button>` : ''}
+          <span class="tag">Bought together</span>
+          <h2>${pair ? pair.types.map(type => categories[type].name).join(' × ') : 'No product pairs in this selection'}</h2>
+          <p>${pair ? `Bought together in ${n(pair.count)} of ${n(pair.eligible)} valid orders (${rate(pair.count / pair.eligible)}) at stores that sell both products.` : 'This metric uses valid orders with at least two product types.'}</p>
+          ${pair ? `<button class="button" data-action="pair-evidence" data-pair="${pair.key}">View orders with both products</button>` : ''}
         </article>
         <article class="evidence">
-          <span class="tag">価格・配送費</span>
-          <h2>配送込み価格を検証する</h2>
-          <p>送料実績 ${money(data.freight)} · 対応する配送完了注文の商品売上 ${money(data.deliveredSales)}。商品原価と配送費を差し引くと ${money(data.deliveredBalance)}。</p>
-          <p>市場・配送条件を固定し、価格を変えたときの注文件数と注文当たり利益を比較する。</p>
+          <span class="tag">Pricing and freight</span>
+          <h2>Test a price that includes shipping</h2>
+          <p>Freight totaled ${money(data.freight)} on ${money(data.deliveredSales)} in delivered product sales. ${money(data.deliveredBalance)} remained after product and freight costs.</p>
+          <p>Compare order volume and profit per order at different prices in the same market and under the same shipping terms.</p>
         </article>
         <article class="evidence">
-          <span class="tag">販売経路</span>
-          <h2>台湾團購と参照元を比較する</h2>
-          <p>台湾團購 ${n(data.groupOrders)}件 · AI検索として記録された参照元 ${n(searchReferrals)}件。いずれも模擬の有効注文。</p>
-          <p>次の募集で販促リンクを分け、注文と経路を照合する。</p>
+          <span class="tag">Sales channels</span>
+          <h2>Compare Taiwan group buys and AI search referrals</h2>
+          <p>Among valid demo orders, ${n(data.groupOrders)} came from Taiwan group buys and ${n(searchReferrals)} were attributed to AI search.</p>
+          <p>Use a separate campaign link for each channel to verify the source of new orders.</p>
         </article>
       </div>
       <section class="panel">
-        <div class="panel-head"><div><h2>次回の施策</h2><p class="sub">現在選択している範囲の施策を表示</p></div></div>
-        ${cohortActions.length ? `<div class="table-scroll"><table><thead><tr><th>施策と評価指標</th><th>状態</th><th>操作</th></tr></thead><tbody>
-          ${cohortActions.map(action => `<tr><td><strong>${themes[action.topic].action}</strong><small>${themes[action.topic].metric}</small></td><td><span class="tag">${action.complete ? '実施済み' : '次回に実施'}</span></td>
-          <td><button class="button inline" data-action="toggle-experiment" data-topic="${action.topic}">${action.complete ? '実施予定に戻す' : '実施済みにする'}</button></td></tr>`).join('')}
-        </tbody></table></div>` : '<p class="status-copy">顧客の声から試したい提案を選ぶと、ここで実施状況を確認できます。</p>'}
+        <div class="panel-head"><div><h2>Saved experiments</h2><p class="sub">Experiments for the current selection</p></div></div>
+        ${cohortActions.length ? `<div class="table-scroll"><table><thead><tr><th>Experiment and metric</th><th>Status</th><th>Action</th></tr></thead><tbody>
+          ${cohortActions.map(action => `<tr><td><strong>${themes[action.topic].action}</strong><small>${themes[action.topic].metric}</small></td><td><span class="tag">${action.complete ? 'Completed' : 'Planned'}</span></td>
+          <td><button class="button inline" data-action="toggle-experiment" data-topic="${action.topic}">${action.complete ? 'Mark as planned' : 'Mark complete'}</button></td></tr>`).join('')}
+        </tbody></table></div>` : '<p class="status-copy">Save a recommendation from customer feedback to track it here.</p>'}
       </section>
     `);
   }
 
   function allShopRows(target) {
-    const query = shopSearch.trim().toLocaleLowerCase('ja-JP');
-    const results = stores.filter(store => `${store.name} ${store.region}`.toLocaleLowerCase('ja-JP').includes(query));
+    const query = shopSearch.trim().toLowerCase();
+    const results = stores.filter(store => `${store.name} ${store.region}`.toLowerCase().includes(query));
     const pageSize = 12;
     const start = shopsPage * pageSize;
     const source = joinedSources();
     target.innerHTML = `
-      <div class="table-scroll"><table><thead><tr><th scope="col">店舗</th><th scope="col">産地</th><th scope="col" class="num">掲載商品</th><th scope="col" class="num">取込注文</th><th scope="col">操作</th></tr></thead><tbody>
-      ${results.slice(start, start + pageSize).map(store => `<tr><td><strong>${store.name}</strong>${store.id === sample.id ? '<small>Shopifyデモ店舗の架空分析データ</small>' : ''}</td><td>${store.region}</td><td class="num">${store.products.length}</td>
-        <td class="num">${n(source.find(item => item.storeId === store.id).orders.length)}件</td><td><button class="table-button" data-action="filter-shop" data-store="${store.id}">店舗を分析</button></td></tr>`).join('')
-        || '<tr><td colspan="5">一致する店舗がありません。</td></tr>'}
+      <div class="table-scroll"><table><thead><tr><th scope="col">Store</th><th scope="col">Region</th><th scope="col" class="num">Products listed</th><th scope="col" class="num">Imported orders</th><th scope="col">Action</th></tr></thead><tbody>
+      ${results.slice(start, start + pageSize).map(store => `<tr><td><strong>${store.name}</strong>${store.id === sample.id ? '<small>Sample analytics for the Shopify demo store</small>' : ''}</td><td>${store.region}</td><td class="num">${store.products.length}</td>
+        <td class="num">${n(source.find(item => item.storeId === store.id).orders.length)}</td><td><button class="table-button" data-action="filter-shop" data-store="${store.id}">View analytics</button></td></tr>`).join('')
+        || '<tr><td colspan="5">No stores match your search.</td></tr>'}
       </tbody></table></div>
       <div class="panel-foot pagination">
-        <span>${results.length ? `${start + 1}–${Math.min(start + pageSize, results.length)} / ${results.length}店舗` : '0店舗'}</span>
-        <button class="button" data-action="shops-page" data-page="${shopsPage - 1}" ${shopsPage === 0 ? 'disabled' : ''}>前へ</button>
-        <button class="button" data-action="shops-page" data-page="${shopsPage + 1}" ${start + pageSize >= results.length ? 'disabled' : ''}>次へ</button>
+        <span>${results.length ? `${start + 1}–${Math.min(start + pageSize, results.length)} of ${results.length}` : '0 stores'}</span>
+        <button class="button" data-action="shops-page" data-page="${shopsPage - 1}" ${shopsPage === 0 ? 'disabled' : ''}>Previous</button>
+        <button class="button" data-action="shops-page" data-page="${shopsPage + 1}" ${start + pageSize >= results.length ? 'disabled' : ''}>Next</button>
       </div>`;
   }
 
   function shops() {
-    return page('取り込み店舗', '取り込み店舗', `${stores.length}店舗の独立した架空データ。宇治 月野茶房の販売画面はShopifyで開けます。`, `
+    return page('Connected stores', 'Connected Stores', `Browse ${stores.length} stores with sample data or open the Uji Tsukino Tea House demo on Shopify.`, `
       <section class="panel section-gap">
-        <div class="panel-head"><div class="store-controls"><label for="shop-search" class="sr-only">店舗名・産地で検索</label><input id="shop-search" class="search" type="search" placeholder="店舗名・産地で検索"></div><a class="button primary" href="${shopifyStorefront}">Shopifyデモ店舗を開く</a></div>
+        <div class="panel-head"><div class="store-controls"><label for="shop-search" class="sr-only">Search by store name or region</label><input id="shop-search" class="search" type="search" placeholder="Search stores or regions"></div><a class="button primary" href="${shopifyStorefront}">Open Shopify demo store</a></div>
         <div id="shop-results"></div>
       </section>`);
   }
@@ -275,57 +276,49 @@
   function sources(data) {
     const shipments = data.records.filter(row => row.shipment).length;
     const latestRows = data.records.slice(0, 14);
-    return page('取り込みデータ', '取り込みデータ', '店舗ごとの注文・配送・レビューの模擬データを、店舗IDと注文IDで照合。', `
+    return page('Data sources', 'Data Sources', 'Explore sample orders, shipments, and reviews matched by store ID and order ID.', `
       ${filterBar(data)}
       <section class="panel">
-        <div class="panel-head"><div><h2>突合した注文明細</h2><p class="sub">${n(data.records.length)}注文 · 配送費 ${n(shipments)}件 · レビュー ${n(data.reviews)}件</p></div>
-        <button class="button" data-action="download" ${!data.records.length ? 'disabled' : ''}>CSVをダウンロード</button></div>
+        <div class="panel-head"><div><h2>Matched order records</h2><p class="sub">${n(data.records.length)} orders · ${n(shipments)} freight records · ${n(data.reviews)} reviews</p></div>
+        <button class="button" data-action="download" ${!data.records.length ? 'disabled' : ''}>Download CSV</button></div>
         <div class="table-scroll">
-          <table><thead><tr><th scope="col">注文ID・日付</th><th scope="col">店舗</th><th scope="col">市場・経路</th><th scope="col">状態</th><th scope="col" class="num">商品額</th><th scope="col" class="num">配送費</th><th scope="col">VOC</th></tr></thead><tbody>
+          <table><thead><tr><th scope="col">Order ID and date</th><th scope="col">Store</th><th scope="col">Market and channel</th><th scope="col">Status</th><th scope="col" class="num">Product amount</th><th scope="col" class="num">Freight</th><th scope="col">Review topic</th></tr></thead><tbody>
             ${latestRows.map(({ order, value, shipment, review }) => `<tr>
-              <td><strong>${order.id}</strong><small>${order.date}${order.test ? ' · テスト注文' : ''}</small></td>
+              <td><strong>${order.id}</strong><small>${order.date}${order.test ? ' · Test order' : ''}</small></td>
               <td>${storeById.get(order.storeId).name}</td><td>${markets[order.market].name}<small>${channels[order.channel]}</small></td>
               <td><span class="tag ${order.status === 'refunded' ? 'warn' : 'gray'}">${statusLabels[order.status]}</span></td>
               <td class="num">${money(value)}</td><td class="num">${shipment ? money(shipment.freight) : '—'}</td><td>${review ? themes[review.topic].name : '—'}</td></tr>`).join('')
-              || '<tr><td colspan="7">該当する注文がありません。</td></tr>'}
+              || '<tr><td colspan="7">No orders match these filters.</td></tr>'}
           </tbody></table>
         </div>
-        <p class="panel-foot">最新${latestRows.length}件を表示。明細の商品額は返金・取消前の値。CSVには選択範囲の全明細を含みます。</p>
+        <p class="panel-foot">Showing the latest ${latestRows.length} records. Product amounts are before refunds and cancellations. The CSV includes all records in the selection.</p>
       </section>`);
   }
 
   function render() {
     const route = activeRoute();
-    const brokerLocale = route === 'broker';
-    document.documentElement.lang = brokerLocale ? 'en' : 'ja';
-    for (const [node, japanese] of navigationLabels) node.textContent = brokerLocale ? node.dataset.navLabel : japanese;
-    document.querySelector('.side-nav').setAttribute('aria-label', brokerLocale ? 'Main navigation' : 'メインナビゲーション');
-    document.querySelector('.brand').setAttribute('aria-label', brokerLocale ? 'Seller Hub sales analytics' : 'Seller Hub 販売分析');
-    document.querySelector('.skip').textContent = brokerLocale ? 'Skip to content' : 'コンテンツに移動';
     for (const link of document.querySelectorAll('[data-nav]')) {
       if (link.dataset.nav === route) link.setAttribute('aria-current', 'page');
       else link.removeAttribute('aria-current');
     }
 
     if (route === 'store') {
-      content.innerHTML = page('Shopify', '宇治 月野茶房', 'Shopifyの開発ストアへ移動します。', '');
+      content.innerHTML = page('Shopify', 'Uji Tsukino Tea House', 'Opening the Shopify development store.', '');
       location.replace(shopifyStorefront);
       return;
     }
-    document.title = 'Seller Hub | 日本茶の販売分析';
     if (route === 'broker') {
-      document.title = 'Seller Hub | Customs Broker Portal';
-      content.innerHTML = page('Taiwan group buy', 'Customs Broker Portal', 'Review the shipment, prepare customs documents, and track the case through clearance and local delivery.', BrokerDemo.render(), 'Demo case', 'Open Shopify demo store');
+      content.innerHTML = page('Taiwan group buy', 'Customs Broker Portal', 'Review the shipment, prepare customs documents, and track the case through clearance and local delivery.', BrokerDemo.render(), 'Demo case');
       BrokerDemo.bind(content, render, toast, openDialog);
       return;
     }
     if (route === 'shopify') {
-      content.innerHTML = page('Shopify取込', 'Shopifyテスト注文', '開発ストア1店の注文を読み取り、商品別・入金状態別に確認。ページを再読み込みすると取り込み結果はクリアされます。', ShopifyTestImport.render(), '開発ストア');
+      content.innerHTML = page('Shopify import', 'Shopify Test Orders', 'Review test orders from one development store by product and payment status. Reloading the page clears the import.', ShopifyTestImport.render(), 'Development store');
       ShopifyTestImport.bind(content, render);
       return;
     }
     if (route === 'fulfillment') {
-      content.innerHTML = page('物流連携', 'テスト注文の物流連携', '注文・出荷依頼・発送結果を確認。サンプルとデモAPIの結果を区別して表示します。', FulfillmentDemoImport.render(), '物流の検証');
+      content.innerHTML = page('Fulfillment', 'Test Order Fulfillment', 'Review orders, shipment requests, and dispatch results. Reports identify sample data and OPENLOGI demo API results.', FulfillmentDemoImport.render(), 'Fulfillment demo');
       FulfillmentDemoImport.bind(content, render);
       return;
     }
@@ -339,14 +332,14 @@
     content.innerHTML = (route === 'insights' ? insights : route === 'sources' ? sources : overview)(data);
   }
 
-  function openDialog(title, body, closeLabel = '閉じる') {
-    dialog.innerHTML = `<div class="panel-head"><h2 id="dialog-title">${title}</h2><form method="dialog"><button class="button" type="submit">${closeLabel}</button></form></div><div class="dialog-body">${body}</div>`;
+  function openDialog(title, body) {
+    dialog.innerHTML = `<div class="panel-head"><h2 id="dialog-title">${title}</h2><form method="dialog"><button class="button" type="submit">Close</button></form></div><div class="dialog-body">${body}</div>`;
     if (!dialog.open) dialog.showModal();
   }
 
   function showEvidence(title, rows, extra = '') {
-    openDialog(title, `<p class="sub">対象 ${n(rows.length)}件から、最近の ${Math.min(8, rows.length)}件を表示。</p>
-      <div class="table-scroll"><table><thead><tr><th scope="col">注文</th><th scope="col">店舗</th><th scope="col">市場</th><th scope="col">商品</th></tr></thead><tbody>
+    openDialog(title, `<p class="sub">Showing the latest ${Math.min(8, rows.length)} of ${n(rows.length)} matching orders.</p>
+      <div class="table-scroll"><table><thead><tr><th scope="col">Order</th><th scope="col">Store</th><th scope="col">Market</th><th scope="col">Products</th></tr></thead><tbody>
       ${rows.slice(0, 8).map(({ order }) => `<tr><td>${order.date}<small>${order.id}</small></td><td>${storeById.get(order.storeId).name}</td><td>${markets[order.market].name}</td><td>${describeOrder(order)}</td></tr>`).join('')}
       </tbody></table></div>${extra}`);
   }
@@ -407,8 +400,9 @@
         viewStoreAnalytics(store);
         break;
       case 'shops-page': {
-        shopsPage = Number(button.dataset.page);
-        const delta = button.textContent.trim() === '次へ' ? 1 : -1;
+        const selectedPage = Number(button.dataset.page);
+        const delta = Math.sign(selectedPage - shopsPage);
+        shopsPage = selectedPage;
         allShopRows($('shop-results'));
         const sameDirection = $('shop-results').querySelector(`[data-page="${shopsPage + delta}"]:not([disabled])`);
         (sameDirection ?? $('shop-search')).focus();
@@ -416,13 +410,13 @@
       }
       case 'review-evidence': {
         const target = themes[topic];
-        showEvidence(`${target.name}の根拠`, allScoped().records.filter(row => row.order.status === 'delivered' && row.review?.topic === topic),
-          `<p class="sub" lang="zh-Hant">${target.zh}</p>`);
+        showEvidence(target.name, allScoped().records.filter(row => row.order.status === 'delivered' && row.review?.topic === topic),
+          `<p class="sub">${target.en}</p>`);
         break;
       }
       case 'pair-evidence': {
         const types = pair.split('|');
-        showEvidence('併買の根拠', allScoped().records.filter(({ order }) => (
+        showEvidence('Orders with both products', allScoped().records.filter(({ order }) => (
           (order.status === 'delivered' || order.status === 'paid')
           && types.every(type => order.lines.some(line => line.type === type))
         )));
@@ -434,7 +428,7 @@
           save(keys.actions, actions);
           render();
           content.querySelector('[data-action="toggle-experiment"]')?.focus();
-          toast('次回の施策に登録しました。');
+          toast('Experiment saved.');
         }
         break;
       case 'toggle-experiment': {
